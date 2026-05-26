@@ -1,4 +1,4 @@
-package examen1.proyectofinaldesarrollo3;
+package proyectofinaldesarrolloIII;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

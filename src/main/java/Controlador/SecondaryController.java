@@ -1,6 +1,6 @@
 package Controlador;
 
-import examen1.proyectofinaldesarrollo3.App;
+import proyectofinaldesarrolloIII.App;
 import java.io.IOException;
 import javafx.fxml.FXML;
 
