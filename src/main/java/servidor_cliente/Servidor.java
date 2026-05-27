@@ -1,4 +1,4 @@
-package MySQL;
+package servidor_cliente;
 
 import java.net.ServerSocket;
 import java.net.Socket;

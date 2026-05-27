@@ -1,5 +1,6 @@
-package MySQL;
+package servidor_cliente;
 
+import MySQL.ConexionBaseDeDatos;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
