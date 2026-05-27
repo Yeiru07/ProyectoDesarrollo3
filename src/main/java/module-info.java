@@ -2,6 +2,7 @@ module proyectofinaldesarrolloIII {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.sql;
+    requires java.base;
 
     opens Controlador to javafx.fxml;
     opens Modelo to javafx.fxml;
