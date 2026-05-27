@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" spacing="25.0" prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://fxml.com/fxml/1" fx:controller="controlador.LobbyJugadorController">
+    <children>
+        <Label text="¡Conectado Exitosamente!">
+            <font>
+                <Font name="System Bold" size="24.0" />
+            </font>
+        </Label>
+        
+        <Label fx:id="lblEstadoSala" text="Esperando a que el administrador inicie la partida...">
+            <font>
+                <Font size="16.0" />
+            </font>
+        </Label>
+        
+        <ProgressIndicator prefHeight="60.0" prefWidth="60.0" />
+        
+        <Label fx:id="lblNombreJugador" text="Jugador: " textFill="#555555">
+            <font>
+                <Font name="System Italic" size="14.0" />
+            </font>
+        </Label>
+    </children>
+</VBox>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox fx:id="panelFondo" alignment="CENTER" spacing="22.0" prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://fxml.com/fxml/1" fx:controller="controlador.ResultadoPreguntaController">
+    <children>
+        <Label fx:id="lblResultado" text="¡Resultado!" textFill="#111111">
+            <font>
+                <Font name="System Bold" size="40.0" />
+            </font>
+        </Label>
+        
+        <Label fx:id="lblDetalle" text="Respuesta correcta / incorrecta" textFill="#333333">
+            <font>
+                <Font name="System Bold" size="20.0" />
+            </font>
+        </Label>
+        
+        <Label fx:id="lblTiempoEspera" text="Siguiente pregunta en: 30s" textFill="#555555">
+            <font>
+                <Font name="System Bold" size="16.0" />
+            </font>
+        </Label>
+        
+        <Label text="Espera a que el administrador avance o a que se agote el tiempo..." textFill="#666666" textAlignment="CENTER" wrapText="true">
+            <font>
+                <Font name="System Italic" size="14.0" />
+            </font>
+        </Label>
+    </children>
+</VBox>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" spacing="25.0" prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://fxml.com/fxml/1" fx:controller="controlador.AccesoCreadorController">
+    <children>
+        <Label text="Panel del Creador de Juego">
+            <font>
+                <Font name="System Bold" size="26.0" />
+            </font>
+        </Label>
+        
+        <Label text="Gestione sus salas de juego o cree una cuenta nueva" textFill="#555555">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Label>
+        
+        <VBox alignment="CENTER" spacing="15.0">
+            <children>
+                <Button fx:id="btnIniciarSesion" mnemonicParsing="false" onAction="#onIniciarSesion" text="Iniciar Sesión" prefWidth="220.0" prefHeight="45.0">
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                </Button>
+                
+                <Button fx:id="btnRegistrarse" mnemonicParsing="false" onAction="#onRegistrarse" text="Registrarse" prefWidth="220.0" prefHeight="45.0">
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                </Button>
+            </children>
+        </VBox>
+        
+        <Button fx:id="btnVolver" mnemonicParsing="false" onAction="#onVolver" text="Volver al Menú" prefWidth="120.0" prefHeight="35.0" />
+    </children>
+</VBox>

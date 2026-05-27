@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" spacing="20.0" prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://fxml.com/fxml/1" fx:controller="controlador.PreguntaJugadorController">
+    <children>
+        <VBox alignment="CENTER" spacing="5.0">
+            <children>
+                <Label fx:id="lblCronometro" text="Tiempo restante: 60s">
+                    <font>
+                        <Font name="System Bold" size="16.0" />
+                    </font>
+                </Label>
+                <ProgressBar fx:id="progressTiempo" prefWidth="400.0" progress="1.0" />
+            </children>
+        </VBox>
+        
+        <Label fx:id="lblEnunciado" text="Cargando pregunta..." textAlignment="CENTER" wrapText="true">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Label>
+        
+        <GridPane hgap="15.0" vgap="15.0" maxWidth="500.0" alignment="CENTER">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <Button fx:id="btnOpcion1" mnemonicParsing="false" onAction="#onResponderOpcion1" prefWidth="240.0" prefHeight="60.0" text="Opción A" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <Button fx:id="btnOpcion2" mnemonicParsing="false" onAction="#onResponderOpcion2" prefWidth="240.0" prefHeight="60.0" text="Opción B" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                <Button fx:id="btnOpcion3" mnemonicParsing="false" onAction="#onResponderOpcion3" prefWidth="240.0" prefHeight="60.0" text="Opción C" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <Button fx:id="btnOpcion4" mnemonicParsing="false" onAction="#onResponderOpcion4" prefWidth="240.0" prefHeight="60.0" text="Opción D" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            </children>
+        </GridPane>
+        
+        <Label fx:id="lblEstadoSeleccion" text="Selecciona una opción..." textFill="#555555">
+            <font>
+                <Font name="System Italic" size="14.0" />
+            </font>
+        </Label>
+    </children>
+</VBox>

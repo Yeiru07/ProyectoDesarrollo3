@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" spacing="25.0" prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://fxml.com/fxml/1" fx:controller="controlador.PreguntaVFJugadorController">
+    <children>
+        <VBox alignment="CENTER" spacing="5.0">
+            <children>
+                <Label fx:id="lblCronometro" text="Tiempo restante: 60s">
+                    <font>
+                        <Font name="System Bold" size="16.0" />
+                    </font>
+                </Label>
+                <ProgressBar fx:id="progressTiempo" prefWidth="400.0" progress="1.0" />
+            </children>
+        </VBox>
+        
+        <Label fx:id="lblEnunciado" text="Cargando pregunta de Verdadero o Falso..." textAlignment="CENTER" wrapText="true">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Label>
+        
+        <HBox alignment="CENTER" spacing="30.0">
+            <children>
+                <Button fx:id="btnVerdadero" mnemonicParsing="false" onAction="#onResponderVerdadero" prefWidth="200.0" prefHeight="80.0" text="Verdadero">
+                    <font>
+                        <Font name="System Bold" size="16.0" />
+                    </font>
+                </Button>
+                
+                <Button fx:id="btnFalso" mnemonicParsing="false" onAction="#onResponderFalso" prefWidth="200.0" prefHeight="80.0" text="Falso">
+                    <font>
+                        <Font name="System Bold" size="16.0" />
+                    </font>
+                </Button>
+            </children>
+        </HBox>
+        
+        <Label fx:id="lblEstadoSeleccion" text="Selecciona una opción..." textFill="#555555">
+            <font>
+                <Font name="System Italic" size="14.0" />
+            </font>
+        </Label>
+    </children>
+</VBox>
