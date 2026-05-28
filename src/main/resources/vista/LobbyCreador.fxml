@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+
+<VBox alignment="CENTER" spacing="20.0" prefHeight="500.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://fxml.com/fxml/1" fx:controller="controlador.LobbyCreadorController">
+    <children>
+        <Label text="Sala de Juego Abierta" textFill="#111111">
+            <font>
+                <Font name="System Bold" size="24.0" />
+            </font>
+        </Label>
+        
+        <VBox alignment="CENTER" spacing="5.0" style="-fx-background-color: #f4f4f4; -fx-border-color: #dddddd; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 15;" maxWidth="300.0">
+            <children>
+                <Label text="PIN DE ACCESO:" textFill="#555555">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Label>
+                <Label fx:id="lblPin" text="0000" textFill="#2b2b2b">
+                    <font>
+                        <Font name="System Bold" size="48.0" />
+                    </font>
+                </Label>
+            </children>
+        </VBox>
+        
+        <VBox spacing="8.0" maxWidth="400.0" alignment="CENTER_LEFT">
+            <children>
+                <HBox alignment="BASELINE_LEFT" spacing="10.0">
+                    <children>
+                        <Label text="Jugadores en la sala:" textFill="#222222">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="lblContadorJugadores" text="(0 conectados)" textFill="#666666">
+                            <font>
+                                <Font name="System Italic" size="13.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+                <ListView fx:id="lvJugadores" prefHeight="180.0" prefWidth="400.0" />
+            </children>
+        </VBox>
+        
+        <Label fx:id="lblError" textFill="RED">
+            <font>
+                <Font size="13.0" />
+            </font>
+        </Label>
+        
+        <HBox alignment="CENTER" spacing="20.0">
+            <children>
+                <Button fx:id="btnCancelarSala" mnemonicParsing="false" onAction="#onCancelarSala" text="Cancelar y Volver" prefWidth="150.0" prefHeight="40.0" />
+                <Button fx:id="btnIniciarPartida" mnemonicParsing="false" onAction="#onIniciarPartida" text="Iniciar Partida" prefWidth="180.0" prefHeight="40.0">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Button>
+            </children>
+        </HBox>
+    </children>
+</VBox>

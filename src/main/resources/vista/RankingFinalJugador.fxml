@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" spacing="20.0" prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://fxml.com/fxml/1" fx:controller="controlador.RankingFinalJugadorController">
+    <children>
+        <Label text="Tabla de Posiciones Final">
+            <font>
+                <Font name="System Bold" size="26.0" />
+            </font>
+        </Label>
+        
+        <TableView fx:id="tblRanking" maxWidth="500.0" prefHeight="250.0">
+            <columns>
+                <TableColumn fx:id="colNombre" prefWidth="200.0" text="Jugador" />
+                <TableColumn fx:id="colCorrectas" prefWidth="150.0" text="Aciertos" />
+                <TableColumn fx:id="colIncorrectas" prefWidth="150.0" text="Errores" />
+            </columns>
+        </TableView>
+        
+        <Button fx:id="btnSalir" mnemonicParsing="false" onAction="#onSalir" text="Volver al Menú Principal" prefWidth="200.0" prefHeight="40.0">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Button>
+    </children>
+</VBox>

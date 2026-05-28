@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" spacing="20.0" prefHeight="380.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://fxml.com/fxml/1" fx:controller="controlador.FormularioVFController">
+    <children>
+        <Label text="Nueva Pregunta de Verdadero o Falso" textFill="#111111">
+            <font>
+                <Font name="System Bold" size="20.0" />
+            </font>
+        </Label>
+        
+        <VBox spacing="12.0" maxWidth="450.0" alignment="CENTER_LEFT">
+            <children>
+                <VBox spacing="4.0">
+                    <children>
+                        <Label text="Enunciado de la pregunta:" textFill="#222222" />
+                        <TextField fx:id="txtEnunciado" promptText="Escriba la afirmación aquí...">
+                            <font>
+                                <Font size="13.0" />
+                            </font>
+                        </TextField>
+                    </children>
+                </VBox>
+                
+                <VBox spacing="4.0">
+                    <children>
+                        <Label text="Respuesta Correcta:" textFill="#222222" />
+                        <ComboBox fx:id="cmbCorrecta" promptText="Seleccione la respuesta" prefWidth="200.0" />
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+        
+        <Label fx:id="lblError" textFill="RED">
+            <font>
+                <Font size="13.0" />
+            </font>
+        </Label>
+        
+        <HBox alignment="CENTER" spacing="20.0">
+            <children>
+                <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#onCancelar" text="Cancelar" prefWidth="120.0" prefHeight="35.0" />
+                <Button fx:id="btnAgregar" mnemonicParsing="false" onAction="#onAgregar" text="Añadir Pregunta" prefWidth="140.0" prefHeight="35.0">
+                    <font>
+                        <Font name="System Bold" size="13.0" />
+                    </font>
+                </Button>
+            </children>
+        </HBox>
+    </children>
+</VBox>

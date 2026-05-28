@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" spacing="22.0" prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://fxml.com/fxml/1" fx:controller="controlador.CrearBancoPreguntasController">
+    <children>
+        <Label text="Crear Nuevo Banco de Preguntas" textFill="#111111">
+            <font>
+                <Font name="System Bold" size="22.0" />
+            </font>
+        </Label>
+        
+        <VBox spacing="6.0" maxWidth="400.0" alignment="CENTER_LEFT">
+            <children>
+                <Label text="Nombre del Cuestionario / Banco:" textFill="#222222">
+                    <font>
+                        <Font name="System Bold" size="13.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="txtNombreBanco" promptText="Ej: Trivia de Programación Concurrente">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </TextField>
+            </children>
+        </VBox>
+        
+        <VBox alignment="CENTER" spacing="12.0" style="-fx-border-color: #cccccc; -fx-border-width: 1; -fx-border-radius: 5; -fx-padding: 15;" maxWidth="400.0">
+            <children>
+                <Label text="Añadir Preguntas al Banco:" textFill="#333333">
+                    <font>
+                        <Font name="System Bold" size="13.0" />
+                    </font>
+                </Label>
+                
+                <HBox alignment="CENTER" spacing="15.0">
+                    <children>
+                        <Button fx:id="btnAgregarMultiple" mnemonicParsing="false" onAction="#onAgregarMultiple" text="+ Selección Múltiple" prefWidth="160.0" prefHeight="35.0" />
+                        <Button fx:id="btnAgregarVF" mnemonicParsing="false" onAction="#onAgregarVF" text="+ Verdadero o Falso" prefWidth="160.0" prefHeight="35.0" />
+                    </children>
+                </HBox>
+                
+                <Label fx:id="lblContadorPreguntas" text="Preguntas añadidas temporalmente: 0" textFill="#666666">
+                    <font>
+                        <Font name="System Italic" size="12.0" />
+                    </font>
+                </Label>
+            </children>
+        </VBox>
+        
+        <Label fx:id="lblError" textFill="RED">
+            <font>
+                <Font size="13.0" />
+            </font>
+        </Label>
+        
+        <HBox alignment="CENTER" spacing="20.0">
+            <children>
+                <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#onCancelar" text="Cancelar y Volver" prefWidth="150.0" prefHeight="38.0" />
+                <Button fx:id="btnGuardarBanco" mnemonicParsing="false" onAction="#onGuardarBanco" text="Guardar Banco de Preguntas" prefWidth="210.0" prefHeight="38.0">
+                    <font>
+                        <Font name="System Bold" size="13.0" />
+                    </font>
+                </Button>
+            </children>
+        </HBox>
+    </children>
+</VBox>
