@@ -6,12 +6,14 @@ public class Sala {
     private String nombreSala;
     private boolean estado;
     private int cantidadJugadores;
+    private Usuario usuario;
 
     public Sala(int codigoSala, String nombreSala, boolean estado, int cantidadJugadores) {
         this.codigoSala = codigoSala;
         this.nombreSala = nombreSala;
         this.estado = estado;
         this.cantidadJugadores = cantidadJugadores;
+        this.usuario= usuario;//AGREGACION DE USUARIO A LA SALA
     }
 
     public int getCodigoSala() {

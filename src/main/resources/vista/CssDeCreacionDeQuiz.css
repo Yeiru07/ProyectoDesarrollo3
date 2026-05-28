@@ -1,0 +1,174 @@
+.root {
+    -fx-font-family: "Segoe UI";
+    -fx-background-color: #f5f5f5;
+}
+
+/* SIDEBAR */
+.sidebar {
+    -fx-background-color: #ffffff;
+    -fx-padding: 20;
+    -fx-pref-width: 220;
+    -fx-border-color: #dddddd;
+    -fx-border-width: 0 1 0 0;
+}
+
+.logo {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #5c2d91;
+}
+
+.question-card,
+.question-card-selected {
+    -fx-padding: 15;
+    -fx-background-radius: 10;
+    -fx-spacing: 5;
+}
+
+.question-card {
+    -fx-background-color: #f0f0f0;
+}
+
+.question-card-selected {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #2f80ed;
+    -fx-border-width: 2;
+    -fx-border-radius: 10;
+}
+
+.quiz-number {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.question-title {
+    -fx-font-size: 14px;
+}
+
+/* BOTONES */
+.add-button {
+    -fx-background-color: #1677ff;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-padding: 12 20;
+}
+
+.generate-button {
+    -fx-background-color: white;
+    -fx-border-color: #7b2ff7;
+    -fx-border-radius: 10;
+    -fx-text-fill: #7b2ff7;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 12 20;
+}
+
+/* CENTRO */
+.center-container {
+    -fx-padding: 20;
+    -fx-background-color: linear-gradient(to bottom, #6f42c1, #8f5ce6);
+}
+
+.title-input {
+    -fx-pref-width: 300;
+    -fx-background-radius: 10;
+    -fx-font-size: 15px;
+}
+
+.top-button {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-padding: 10 20;
+}
+
+.save-label {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+}
+
+.question-input {
+    -fx-font-size: 28px;
+    -fx-background-radius: 12;
+    -fx-padding: 15;
+}
+
+.media-box {
+    -fx-background-color: rgba(255,255,255,0.8);
+    -fx-background-radius: 20;
+    -fx-padding: 50;
+}
+
+.plus-label {
+    -fx-font-size: 48px;
+    -fx-text-fill: #555;
+}
+
+.media-text {
+    -fx-font-size: 20px;
+    -fx-text-fill: #333;
+}
+
+/* RESPUESTAS */
+.answer-red,
+.answer-blue,
+.answer-yellow,
+.answer-green {
+    -fx-padding: 25;
+    -fx-background-radius: 12;
+}
+
+.answer-red {
+    -fx-background-color: #e21b3c;
+}
+
+.answer-blue {
+    -fx-background-color: #1368ce;
+}
+
+.answer-yellow {
+    -fx-background-color: #d89e00;
+}
+
+.answer-green {
+    -fx-background-color: #26890c;
+}
+
+.answer-field {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-prompt-text-fill: white;
+    -fx-border-color: transparent;
+}
+
+/* PANEL DERECHO */
+.properties-panel {
+    -fx-background-color: white;
+    -fx-padding: 20;
+    -fx-pref-width: 300;
+    -fx-border-color: #dddddd;
+    -fx-border-width: 0 0 0 1;
+}
+
+.properties-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.combo-box {
+    -fx-pref-width: 240;
+    -fx-background-radius: 8;
+}
+
+.delete-button {
+    -fx-background-color: #f44336;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+}
+
+.duplicate-button {
+    -fx-background-color: #e0e0e0;
+    -fx-background-radius: 8;
+}

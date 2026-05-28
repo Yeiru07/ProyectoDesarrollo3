@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+
+<BorderPane prefHeight="768.0" prefWidth="1400" stylesheets="@CssDeCreacionDeQuiz.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.GestorPartida">
+
+    <!-- SIDEBAR IZQUIERDA -->
+    <left>
+        <VBox prefHeight="723.0" spacing="15" styleClass="sidebar">
+
+            <Label styleClass="logo" text="Kahoot! GO" />
+
+            <VBox spacing="10">
+
+                <VBox styleClass="question-card-selected">
+                    <Label styleClass="quiz-number" text="1 Quiz" />
+                    <Label styleClass="question-title" text="Pregunta" />
+                </VBox>
+
+                <VBox styleClass="question-card">
+                    <Label styleClass="quiz-number" text="2 Quiz" />
+                    <Label styleClass="question-title" text="Pregunta" />
+                </VBox>
+
+            </VBox>
+
+            <Button styleClass="add-button" text="+ Añadir" />
+
+        </VBox>
+    </left>
+
+    <!-- CONTENIDO CENTRAL -->
+    <center>
+        <VBox spacing="20" styleClass="center-container">
+
+            <!-- BARRA SUPERIOR -->
+            <HBox alignment="CENTER_LEFT" spacing="15">
+
+                <TextField promptText="Ingresar título..." styleClass="title-input" />
+            <Label styleClass="save-label" text="✔ Bienvenido &quot;Usuario&quot;" />
+
+            </HBox>
+
+            <!-- PREGUNTA -->
+            <TextField promptText="Escribe tu pregunta" styleClass="question-input" />
+
+            <!-- CONTENEDOR MULTIMEDIA -->
+            <StackPane styleClass="media-box">
+
+                <VBox alignment="CENTER" spacing="15">
+
+                    <Label styleClass="plus-label" text="+" />
+
+                    <Label styleClass="media-text" text="Busca e inserta los elementos multimedia" />
+
+                    <Hyperlink text="Cargar archivo" />
+
+                </VBox>
+
+            </StackPane>
+
+            <!-- RESPUESTAS -->
+            <GridPane hgap="15" vgap="15">
+
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="50" />
+                    <ColumnConstraints percentWidth="50" />
+                </columnConstraints>
+
+                <rowConstraints>
+                    <RowConstraints percentHeight="50" />
+                    <RowConstraints percentHeight="50" />
+                </rowConstraints>
+
+                <!-- RESPUESTA ROJA -->
+                <HBox alignment="CENTER_LEFT" spacing="20" styleClass="answer-red" GridPane.columnIndex="0" GridPane.rowIndex="0">
+
+                    <!-- ICONO -->
+                    <Circle fill="white" radius="12" />
+
+                    <!-- TEXTO RESPUESTA -->
+                    <TextField styleClass="answer-field" text="Pregunta Ejemplo 1" HBox.hgrow="ALWAYS" />
+
+                    <!-- RADIO BUTTON RESPUESTA CORRECTA -->
+                    <RadioButton fx:id="rbRespuesta1" />
+
+                </HBox>
+
+                <!-- RESPUESTA AZUL -->
+                <HBox alignment="CENTER_LEFT" spacing="20" styleClass="answer-blue" GridPane.columnIndex="1" GridPane.rowIndex="0">
+
+                    <!-- ICONO -->
+                    <Circle fill="white" radius="12" />
+
+                    <!-- TEXTO RESPUESTA -->
+                    <TextField styleClass="answer-field" text="Pregunta Ejemplo 1" HBox.hgrow="ALWAYS" />
+
+                    <!-- RADIO BUTTON RESPUESTA CORRECTA -->
+                    <RadioButton fx:id="rbRespuesta2" />
+
+                </HBox>
+
+                <!-- RESPUESTA AMARILLA -->
+                <HBox alignment="CENTER_LEFT" spacing="20" styleClass="answer-yellow" GridPane.columnIndex="0" GridPane.rowIndex="1">
+
+                    <!-- ICONO -->
+                    <Circle fill="white" radius="12" />
+
+                    <!-- TEXTO RESPUESTA -->
+                    <TextField styleClass="answer-field" text="Pregunta Ejemplo 1" HBox.hgrow="ALWAYS" />
+
+                    <!-- RADIO BUTTON RESPUESTA CORRECTA -->
+                    <RadioButton fx:id="rbRespuesta3" />
+
+                </HBox>
+
+                <!-- RESPUESTA VERDE -->
+                <HBox alignment="CENTER_LEFT" spacing="20" styleClass="answer-green" GridPane.columnIndex="1" GridPane.rowIndex="1">
+
+                    <!-- ICONO -->
+                    <Circle fill="white" radius="12" />
+
+                    <!-- TEXTO RESPUESTA -->
+                    <TextField styleClass="answer-field" text="Pregunta Ejemplo 1" HBox.hgrow="ALWAYS" />
+
+                    <!-- RADIO BUTTON RESPUESTA CORRECTA -->
+                    <RadioButton fx:id="rbRespuesta4" />
+
+                </HBox>
+
+            </GridPane>
+
+        </VBox>
+    </center>
+
+    <!-- PANEL DERECHO -->
+    <right>
+        <VBox spacing="20" styleClass="properties-panel">
+
+            <Label styleClass="properties-title" text="Configuraciones" />
+
+            <VBox spacing="10">
+
+                <Label text="Tipo de pregunta" />
+                <ComboBox promptText="Quiz" />
+            </VBox>
+
+            <VBox spacing="10">
+
+                <Label text="Límite de tiempo" />
+                <ComboBox promptText="20 segundos" />
+            </VBox>
+
+            <VBox spacing="10">
+
+                <Label text="Puntos" />
+                <ComboBox promptText="Estándar" />
+            </VBox>
+
+            <VBox spacing="10">
+
+                <Label text="Opciones de respuesta" />
+                <ComboBox promptText="Selección simple" />
+            </VBox>
+
+            <HBox spacing="10">
+
+                <Button styleClass="delete-button" text="Eliminar" />
+
+                <Button styleClass="duplicate-button" text="Duplicar" />
+
+            </HBox>
+            <Button styleClass="generate-button" text="Generar" />
+
+        </VBox>
+    </right>
+
+</BorderPane>

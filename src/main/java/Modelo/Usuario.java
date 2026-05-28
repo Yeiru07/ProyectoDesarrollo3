@@ -1,6 +1,6 @@
 package Modelo;
 
-public class Usuario {
+public class Usuario implements Interfaces.ItipoUsuario {
 
     private int idUsuario;
     private String nombreUsuario;
@@ -54,6 +54,11 @@ public class Usuario {
 
     public void setPuntuajeAcumulado(double puntuajeAcumulado) {
         this.puntuajeAcumulado = puntuajeAcumulado;
+    }
+
+    @Override
+    public String getTipo() {
+        return "Normal";
     }
 
 }

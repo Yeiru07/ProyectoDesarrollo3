@@ -1,6 +1,6 @@
 package Modelo;
 
 
-public class Partida {
+public class Partida {//singleton
 
 }

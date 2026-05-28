@@ -1,0 +1,106 @@
+.rootPane {
+    -fx-background-color: linear-gradient(to bottom right, #5d2ea8, #8c5ae6);
+    -fx-font-family: "Segoe UI";
+}
+
+/* LOGO */
+.logo {
+    -fx-text-fill: white;
+    -fx-font-size: 52px;
+    -fx-font-weight: bold;
+}
+
+/* BOTON SONIDO */
+.sound-button {
+    -fx-background-color: #4b1fa3;
+    -fx-text-fill: white;
+    -fx-font-size: 28px;
+    -fx-background-radius: 15;
+    -fx-pref-width: 70;
+    -fx-pref-height: 70;
+    -fx-cursor: hand;
+}
+
+/* PANEL CENTRAL */
+.main-panel {
+    -fx-background-color: rgba(255,255,255,0.15);
+    -fx-background-radius: 25;
+    -fx-border-color: rgba(255,255,255,0.25);
+    -fx-border-radius: 25;
+}
+
+/* HEADER */
+.top-bar {
+    -fx-background-color: #4b169b;
+    -fx-background-radius: 25 25 0 0;
+    -fx-padding: 0 25 0 25;
+}
+
+.title-label {
+    -fx-text-fill: white;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+.days-label {
+    -fx-text-fill: white;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+/* PARTICIPANTES */
+.participants-label {
+    -fx-background-color: #5b22ba;
+    -fx-text-fill: white;
+    -fx-padding: 12 25;
+    -fx-background-radius: 12;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+/* TAGS */
+.player-tag {
+    -fx-background-color: #4b169b;
+    -fx-text-fill: white;
+    -fx-padding: 12 24;
+    -fx-background-radius: 12;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+/* INPUT */
+.name-input {
+    -fx-pref-width: 520;
+    -fx-pref-height: 80;
+    -fx-font-size: 28px;
+    -fx-background-radius: 15;
+    -fx-background-color: white;
+    -fx-prompt-text-fill: #777;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+}
+
+/* BOTON */
+.start-button {
+    -fx-pref-width: 520;
+    -fx-pref-height: 80;
+    -fx-background-color: #222;
+    -fx-text-fill: white;
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 15;
+    -fx-cursor: hand;
+}
+
+.start-button:hover {
+    -fx-background-color: #111;
+}
+
+/* INFO */
+.info-label {
+    -fx-background-color: rgba(255,255,255,0.7);
+    -fx-padding: 10 20;
+    -fx-background-radius: 10;
+    -fx-font-size: 18px;
+    -fx-text-fill: #444;
+}
