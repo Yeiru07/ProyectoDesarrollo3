@@ -8,8 +8,7 @@
 <?import javafx.scene.text.*?>
 
 <VBox alignment="CENTER" spacing="15.0" prefHeight="500.0" prefWidth="600.0" 
-      xmlns="http://javafx.com/javafx/17" xmlns:fx="http://fxml.com/fxml/1" 
-      fx:controller="controlador.RegistroCreadorController"
+      xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"      fx:controller="Controlador.GestorUsuarios"
       stylesheets="@RegistroCreador.css">
     <children>
         <Label fx:id="lblTitulo" text="Registro de Nuevo Creador">

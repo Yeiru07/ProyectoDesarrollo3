@@ -4,6 +4,10 @@
  */
 package Controlador;
 
+import java.io.IOException;
+import javafx.fxml.FXML;
+import proyectofinaldesarrolloIII.App;
+
 /**
  *
  * @author sronn
@@ -11,5 +15,15 @@ package Controlador;
 public class GestorUsuarios {
    
     
+    @FXML
+    private void onVolver() throws IOException {
+        App.setRoot("VistaPantallaDeIngreso");
+    }
+
+    @FXML
+    private void onRegistrar() throws IOException {
+        App.setRoot("RegistroCreador");
+    }
+
     
 }
