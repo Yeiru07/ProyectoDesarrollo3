@@ -5,16 +5,20 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" spacing="25.0" prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://fxml.com/fxml/1" fx:controller="controlador.MenuPrincipalController">
+<VBox alignment="CENTER" spacing="25.0" prefHeight="450.0" prefWidth="600.0" 
+      xmlns="http://javafx.com/javafx/17" xmlns:fx="http://fxml.com/fxml/1" 
+      fx:controller="controlador.MenuPrincipalController"
+      stylesheets="@MenuPrincipal.css"> 
     <children>
-        <Label text="Batalla de Preguntas en Línea">
+        <Label fx:id="lblTitulo" text="Batalla de Preguntas en Línea">
             <font>
                 <Font name="System Bold" size="28.0" />
             </font>
         </Label>
         
-        <Label text="EducaGuana Interactiva" textFill="#666666">
+        <Label fx:id="lblSubtitulo" text="EducaGuana Interactiva">
             <font>
                 <Font name="System Italic" size="16.0" />
             </font>

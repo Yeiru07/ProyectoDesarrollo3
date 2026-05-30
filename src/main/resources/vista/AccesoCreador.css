@@ -1,0 +1,80 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : May 29, 2026, 10:46:58 PM
+    Author     : alexl
+*/
+
+.root {
+    -fx-background-color: linear-gradient(to bottom, #46178f, #250b5a);
+    -fx-padding: 20;
+}
+
+.label {
+    -fx-font-family: "Segoe UI", "Arial", "sans-serif";
+}
+
+#lblTitulo {
+    -fx-text-fill: #ffffff;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 8, 0, 0, 3);
+}
+
+#lblSubtitulo {
+    -fx-text-fill: #f3e8ff;
+    -fx-font-weight: bold;
+}
+
+.button {
+    -fx-font-family: "Segoe UI", "Arial", "sans-serif";
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+    -fx-text-fill: #ffffff;
+    -fx-cursor: hand;
+}
+
+#btnIniciarSesion {
+    -fx-background-color: #26890c;
+    -fx-effect: dropshadow(one-pass-box, #1e6b0a, 0, 0, 0, 5);
+}
+
+#btnIniciarSesion:hover {
+    -fx-background-color: #329e17;
+}
+
+#btnIniciarSesion:pressed {
+    -fx-background-color: #1e6b0a;
+    -fx-translate-y: 3;
+    -fx-effect: dropshadow(one-pass-box, #1e6b0a, 0, 0, 0, 2);
+}
+
+#btnRegistrarse {
+    -fx-background-color: #d89e00;
+    -fx-effect: dropshadow(one-pass-box, #ab7d00, 0, 0, 0, 5);
+}
+
+#btnRegistrarse:hover {
+    -fx-background-color: #f0b000;
+}
+
+#btnRegistrarse:pressed {
+    -fx-background-color: #ab7d00;
+    -fx-translate-y: 3;
+    -fx-effect: dropshadow(one-pass-box, #ab7d00, 0, 0, 0, 2);
+}
+
+#btnVolver {
+    -fx-background-color: #6c757d;
+    -fx-effect: dropshadow(one-pass-box, #495057, 0, 0, 0, 4);
+}
+
+#btnVolver:hover {
+    -fx-background-color: #5a6268;
+}
+
+#btnVolver:pressed {
+    -fx-background-color: #495057;
+    -fx-translate-y: 3;
+    -fx-effect: dropshadow(one-pass-box, #495057, 0, 0, 0, 1);
+}

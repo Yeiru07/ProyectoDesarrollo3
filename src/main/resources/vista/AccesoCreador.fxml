@@ -5,16 +5,20 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" spacing="25.0" prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://fxml.com/fxml/1" fx:controller="controlador.AccesoCreadorController">
+<VBox alignment="CENTER" spacing="25.0" prefHeight="450.0" prefWidth="600.0" 
+      xmlns="http://javafx.com/javafx/17" xmlns:fx="http://fxml.com/fxml/1" 
+      fx:controller="controlador.AccesoCreadorController"
+      stylesheets="@AccesoCreador.css">
     <children>
-        <Label text="Panel del Creador de Juego">
+        <Label fx:id="lblTitulo" text="Panel del Creador de Juego">
             <font>
                 <Font name="System Bold" size="26.0" />
             </font>
         </Label>
         
-        <Label text="Gestione sus salas de juego o cree una cuenta nueva" textFill="#555555">
+        <Label fx:id="lblSubtitulo" text="Gestione sus salas de juego o cree una cuenta nueva">
             <font>
                 <Font size="14.0" />
             </font>
