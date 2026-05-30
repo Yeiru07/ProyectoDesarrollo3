@@ -36,7 +36,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.4</version>
                 <configuration>
-                    <mainClass>examen1.proyectofinaldesarrollo3.App</mainClass>
+                    <mainClass>proyectofinaldesarrolloIII.App</mainClass>
                 </configuration>
                 <executions>
                     <execution>
