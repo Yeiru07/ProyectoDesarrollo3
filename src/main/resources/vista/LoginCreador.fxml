@@ -5,10 +5,14 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" spacing="20.0" prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://fxml.com/fxml/1" fx:controller="controlador.LoginCreadorController">
+<VBox alignment="CENTER" spacing="20.0" prefHeight="450.0" prefWidth="600.0" 
+      xmlns="http://javafx.com/javafx/17" xmlns:fx="http://fxml.com/fxml/1" 
+      fx:controller="controlador.LoginCreadorController"
+      stylesheets="@LoginCreador.css">
     <children>
-        <Label text="Inicio de Sesión">
+        <Label fx:id="lblTitulo" text="Inicio de Sesión">
             <font>
                 <Font name="System Bold" size="26.0" />
             </font>

@@ -5,10 +5,14 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" spacing="15.0" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://fxml.com/fxml/1" fx:controller="controlador.RegistroCreadorController">
+<VBox alignment="CENTER" spacing="15.0" prefHeight="500.0" prefWidth="600.0" 
+      xmlns="http://javafx.com/javafx/17" xmlns:fx="http://fxml.com/fxml/1" 
+      fx:controller="controlador.RegistroCreadorController"
+      stylesheets="@RegistroCreador.css">
     <children>
-        <Label text="Registro de Nuevo Creador" textFill="#111111">
+        <Label fx:id="lblTitulo" text="Registro de Nuevo Creador">
             <font>
                 <Font name="System Bold" size="24.0" />
             </font>
@@ -18,7 +22,7 @@
             <children>
                 <VBox alignment="CENTER_LEFT" spacing="3.0">
                     <children>
-                        <Label text="Nombre de Usuario:" textFill="#222222" />
+                        <Label text="Nombre de Usuario:" />
                         <TextField fx:id="txtUsuario" promptText="Ej: alexl">
                             <font>
                                 <Font size="13.0" />
@@ -29,7 +33,7 @@
                 
                 <VBox alignment="CENTER_LEFT" spacing="3.0">
                     <children>
-                        <Label text="Correo Electrónico:" textFill="#222222" />
+                        <Label text="Correo Electrónico:" />
                         <TextField fx:id="txtCorreo" promptText="usuario@correo.com">
                             <font>
                                 <Font size="13.0" />
@@ -40,7 +44,7 @@
                 
                 <VBox alignment="CENTER_LEFT" spacing="3.0">
                     <children>
-                        <Label text="Contraseña:" textFill="#222222" />
+                        <Label text="Contraseña:" />
                         <PasswordField fx:id="txtContrasena" promptText="Mínimo 6 caracteres">
                             <font>
                                 <Font size="13.0" />
@@ -51,7 +55,7 @@
                 
                 <VBox alignment="CENTER_LEFT" spacing="3.0">
                     <children>
-                        <Label text="Confirmar Contraseña:" textFill="#222222" />
+                        <Label text="Confirmar Contraseña:" />
                         <PasswordField fx:id="txtConfirmarContrasena" promptText="Repita la contraseña">
                             <font>
                                 <Font size="13.0" />
@@ -62,7 +66,7 @@
                 
                 <VBox alignment="CENTER_LEFT" spacing="3.0">
                     <children>
-                        <Label text="Fecha de Nacimiento:" textFill="#222222" />
+                        <Label text="Fecha de Nacimiento:" />
                         <HBox spacing="10.0">
                             <children>
                                 <ComboBox fx:id="cmbDia" promptText="Día" prefWidth="100.0" />
@@ -75,7 +79,7 @@
             </children>
         </VBox>
         
-        <Label fx:id="lblError" textFill="RED">
+        <Label fx:id="lblError">
             <font>
                 <Font size="13.0" />
             </font>
