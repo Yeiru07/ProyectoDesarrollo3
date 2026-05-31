@@ -8,6 +8,7 @@ import Modelo.Partida;
 import Modelo.Usuario;
 import MySQL.ConexionBaseDeDatos;
 import Utilidades.AlertaParaUsar;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -63,8 +64,13 @@ public class VistaInicioController {
     }
 
     @FXML
-    void btnIniciarSesion(ActionEvent event) {
-
+    void btnIniciarSesion(ActionEvent event) throws IOException {
+       String usuarioInicioSecion=txtUsuarioIniciarSesion.getText().trim();
+       String contraInicioSesion=txtContrasenaIniciarSesion.getText().trim();
+       
+       
+        
+        App.setRoot("VIstaPantallaDeIngreso");
     }
 
     @FXML
@@ -76,6 +82,7 @@ public class VistaInicioController {
 
         if (!contra.equalsIgnoreCase(contraConfirmacion)) {
             AlertaParaUsar.mostrar("Erorr", "Contraseñas diferentes", Alert.AlertType.WARNING);
+            return;
 
         }
 
@@ -94,7 +101,7 @@ public class VistaInicioController {
             int filas = ps.executeUpdate();
 
             AlertaParaUsar.mostrar("Exito", "Cliente registrado", Alert.AlertType.INFORMATION);
-            AlertaParaUsar.mostrar("Exito", "Filas Afectadas " + filas, Alert.AlertType.WARNING);
+            AlertaParaUsar.mostrar("Exito", "Filas Afectadas " + filas, Alert.AlertType.INFORMATION);
 
         }
 
