@@ -26,20 +26,20 @@ public class ManejadorDeUsuarios extends Thread {
 
             String datosRecibidos;
             while ((datosRecibidos = lector.readLine()) != null) {
-                // Separamos por el pipe
-                String[] partes = datosRecibidos.split("\\|");
+                System.out.println("TRAMA RECIBIDA:");
+                System.out.println(datosRecibidos);
 
-                // 1. SI ES UN PRODUCTO NUEVO (Ejemplo trama: PRODUCTO|paracetamol|1500|...)
+                String[] partes = datosRecibidos.split("\\|");
                 if (partes[0].equals("Pregunta")) {
                     try {
                         guardarPreguntaNuevobd(partes);
-                        escritor.println("OK: Producto guardado");
+                        escritor.println("OK: Pregunta guardada");
                     } catch (Exception e) {
                         System.out.println("Error al guardar: " + e.getMessage());
                         escritor.println("Error: No se pudo guardar el producto");
                     }
                 } // 2. SI ES UNA VENTA (Ejemplo trama: VENTA|idProd,cant,precio,sub,provN,provT,provC,provTip|idProd2...)
-               /* if (partes[0].equals("VENTA")) {
+                /* if (partes[0].equals("VENTA")) {
                     guardarVentaCompletaBD(partes);
                     escritor.println("OK: Venta procesada correctamente");
                 } else {
@@ -53,23 +53,29 @@ public class ManejadorDeUsuarios extends Thread {
     }
 
     private void guardarPreguntaNuevobd(String[] partes) throws Exception {
+
         Connection conexion = ConexionBaseDeDatos.conectar();
+
         String sql = "INSERT INTO preguntas (enunciado, respuesta1, respuesta2, respuesta3, respuesta4) VALUES (?, ?, ?, ?, ?)";
+
         PreparedStatement ps = conexion.prepareStatement(sql);
 
         ps.setString(1, partes[1]);
         ps.setString(2, partes[2]);
         ps.setString(3, partes[3]);
         ps.setString(4, partes[4]);
-       
+        ps.setString(5, partes[5]);
 
         ps.executeUpdate();
+
+        System.out.println("Pregunta guardada correctamente");
+
         ps.close();
         conexion.close();
     }
 
     private void guardarVentaCompletaBD(String[] partes) throws Exception {
-        
+
         Connection conexion = ConexionBaseDeDatos.conectar();
         //String sql = "{call obtener_usuarios_por_rol(?)}";//PARA PROCEDIMIENTOS ALMACENADOS
 
