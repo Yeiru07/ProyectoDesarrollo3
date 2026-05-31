@@ -3,49 +3,23 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to c
 Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
 */
 /* 
-    Created on : May 30, 2026, 10:10:14 AM
+    Created on : May 30, 2026, 6:12:07 PM
     Author     : alexl
 */
 
 .root {
     -fx-background-color: linear-gradient(to bottom right, #4b008f, #8b2cff);
     -fx-font-family: "Segoe UI";
-    -fx-padding: 25;
-}
-
-.label {
-    -fx-font-family: "Segoe UI";
-    -fx-text-fill: white;
 }
 
 #lblTitulo {
+    -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 10, 0.2, 0, 3);
 }
 
-.text-field, .password-field, .combo-box {
-    -fx-font-family: "Segoe UI";
-    -fx-background-color: #ffffff;
-    -fx-background-radius: 8;
-    -fx-padding: 10;
-    -fx-text-fill: #333333;
-}
-
-.text-field:focused, .password-field:focused, .combo-box:focused {
-    -fx-background-color: #ffffff;
-    -fx-border-color: #ffca28;
-    -fx-border-width: 2;
-    -fx-border-radius: 6;
-}
-
-.combo-box .list-cell {
-    -fx-text-fill: #333333;
-}
-
-#lblError {
-    -fx-text-fill: #ff4444;
-    -fx-font-weight: bold;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 4, 0, 0, 1);
+#lblSubtitulo {
+    -fx-text-fill: rgba(255, 255, 255, 0.85);
 }
 
 .button {
@@ -55,14 +29,26 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
     -fx-cursor: hand;
 }
 
-#btnRegistrar {
-    -fx-background-color: #26890c;
+#btnUnirsePartida {
+    -fx-background-color: #e21b3c;
     -fx-background-radius: 12;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0.2, 0, 3);
 }
 
-#btnRegistrar:hover {
-    -fx-background-color: #20730a;
+#btnUnirsePartida:hover {
+    -fx-background-color: #b8142f;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+#btnIniciarSesion {
+    -fx-background-color: #1368ce;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0.2, 0, 3);
+}
+
+#btnIniciarSesion:hover {
+    -fx-background-color: #0f52a5;
     -fx-scale-x: 1.05;
     -fx-scale-y: 1.05;
 }
