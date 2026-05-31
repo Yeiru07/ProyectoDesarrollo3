@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" spacing="15.0" prefHeight="500.0" prefWidth="600.0" 
-      xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"      fx:controller="Controlador.GestorUsuarios"
-      stylesheets="@RegistroCreador.css">
+<VBox alignment="CENTER" prefHeight="500.0" prefWidth="600.0" spacing="15.0" stylesheets="@RegistroCreador.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.GestorUsuarios">
     <children>
-        <Label fx:id="lblTitulo" text="Registro de Nuevo Creador">
+        <Label fx:id="lblTitulo" text="Registar Nuevo Usuario">
             <font>
                 <Font name="System Bold" size="24.0" />
             </font>
         </Label>
         
-        <VBox alignment="CENTER" spacing="10.0" maxWidth="360.0">
+        <VBox alignment="CENTER" maxWidth="360.0" spacing="10.0">
             <children>
                 <VBox alignment="CENTER_LEFT" spacing="3.0">
                     <children>
@@ -68,9 +68,9 @@
                         <Label text="Fecha de Nacimiento:" />
                         <HBox spacing="10.0">
                             <children>
-                                <ComboBox fx:id="cmbDia" promptText="Día" prefWidth="100.0" />
-                                <ComboBox fx:id="cmbMes" promptText="Mes" prefWidth="130.0" />
-                                <ComboBox fx:id="cmbAnno" promptText="Año" prefWidth="110.0" />
+                                <ComboBox fx:id="cmbDia" prefWidth="100.0" promptText="Día" />
+                                <ComboBox fx:id="cmbMes" prefWidth="130.0" promptText="Mes" />
+                                <ComboBox fx:id="cmbAnno" prefWidth="110.0" promptText="Año" />
                             </children>
                         </HBox>
                     </children>
@@ -86,8 +86,8 @@
         
         <HBox alignment="CENTER" spacing="15.0">
             <children>
-                <Button fx:id="btnVolver" mnemonicParsing="false" onAction="#onVolver" text="Volver" prefWidth="110.0" prefHeight="35.0" />
-                <Button fx:id="btnRegistrar" mnemonicParsing="false" onAction="#onRegistrar" text="Registrar" prefWidth="110.0" prefHeight="35.0" />
+                <Button fx:id="btnVolver" mnemonicParsing="false" onAction="#onVolver" prefHeight="35.0" prefWidth="110.0" text="Volver" />
+                <Button fx:id="btnRegistrar" mnemonicParsing="false" onAction="#onRegistrar" prefHeight="35.0" prefWidth="110.0" text="Registrar" />
             </children>
         </HBox>
     </children>

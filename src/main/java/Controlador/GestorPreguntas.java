@@ -109,35 +109,6 @@ public class GestorPreguntas implements Initializable {
         preguntaActual = numero - 1;
     }
 
-    /*  private VBox crearTarjeta(int numero) {
-
-        VBox card = new VBox();
-
-        card.getStyleClass().add("question-card");
-
-        Label lblNumero = new Label(numero + " Quiz");
-        lblNumero.getStyleClass().add("quiz-number");
-
-        Label lblPregunta = new Label("Pregunta");
-        lblPregunta.getStyleClass().add("question-title");
-
-        card.getChildren().addAll(lblNumero, lblPregunta);
-
-        card.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-            @Override
-            public void handle(MouseEvent event) {
-
-                guardarPreguntaActual();
-
-                preguntaActual = numero - 1;
-
-                cargarPregunta(preguntaActual);
-            }
-        });
-
-        return card;
-    }*/
     @FXML
     private void seleccionarPregunta(ActionEvent event) {
 

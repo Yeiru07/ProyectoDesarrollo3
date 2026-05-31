@@ -9,7 +9,7 @@
 
 <VBox alignment="CENTER" spacing="25.0" prefHeight="450.0" prefWidth="600.0" 
       xmlns="http://javafx.com/javafx/17" xmlns:fx="http://fxml.com/fxml/1" 
-      fx:controller="controlador.MenuPrincipalController"
+      fx:controller="Controlador.VistaPartidaController"
       stylesheets="@MenuPrincipal.css"> 
     <children>
         <Label fx:id="lblTitulo" text="Batalla de Preguntas en Línea">
@@ -26,13 +26,13 @@
         
         <VBox alignment="CENTER" spacing="15.0">
             <children>
-                <Button fx:id="btnUnirseJuego" mnemonicParsing="false" onAction="#onUnirseJuego" text="Unirse a un Juego" prefWidth="220.0" prefHeight="45.0">
+                <Button fx:id="btnUnirseJuego" mnemonicParsing="false"  text="Unirse a un Juego" prefWidth="220.0" prefHeight="45.0">
                     <font>
                         <Font size="15.0" />
                     </font>
                 </Button>
                 
-                <Button fx:id="btnCrearJuego" mnemonicParsing="false" onAction="#onCrearJuego" text="Crear un Juego" prefWidth="220.0" prefHeight="45.0">
+                <Button fx:id="btnCrearJuego" mnemonicParsing="false" text="Crear un Juego" prefWidth="220.0" prefHeight="45.0">
                     <font>
                         <Font size="15.0" />
                     </font>
