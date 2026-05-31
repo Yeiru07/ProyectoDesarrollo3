@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane styleClass="root" stylesheets="@VistaInicio.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://fxml.com/fxml/1" fx:controller="com.controlador.AccesoClienteVistaController">
+<StackPane styleClass="root" stylesheets="@VistaInicio.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controlador.AccesoClienteVistaController">
     <children>
         <Button fx:id="btnAdmin" mnemonicParsing="false" onAction="#btnIngresarAdmin" text="A" StackPane.alignment="TOP_RIGHT">
             <styleClass>
@@ -25,9 +25,9 @@
 
         <VBox alignment="CENTER" spacing="35.0" StackPane.alignment="CENTER">
             <children>
-                <Label styleClass="centerLogo" text="Auditorio" />
+                <Label styleClass="centerLogo" text="Kahoot UCR!" />
                 
-                <VBox alignment="CENTER" maxHeight="740.0" maxWidth="580.0" styleClass="loginPanel">
+                <VBox alignment="CENTER" maxHeight="820.0" maxWidth="580.0" styleClass="loginPanel">
                     <children>
                         <TabPane fx:id="tabLogin" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
                             <tabs>
@@ -35,7 +35,7 @@
                                     <content>
                                         <VBox alignment="CENTER" spacing="22.0">
                                             <children>
-                                                <TextField fx:id="txtUsuarioIniciarSesion" promptText="Usuario" styleClass="pinInput" />
+                                                <TextField fx:id="txtUsuarioIniciarSesion" promptText="Usuario o Correo Electronico" styleClass="pinInput" />
                                                 <PasswordField fx:id="txtContrasenaIniciarSesion" promptText="Contraseña" styleClass="pinInput" />
                                                 <Button fx:id="btnIniciarSesion" mnemonicParsing="false" onAction="#btnIniciarSesion" text="Iniciar Sesión">
                                                     <styleClass>
@@ -56,6 +56,7 @@
                                         <VBox alignment="CENTER" spacing="22.0">
                                             <children>
                                                 <TextField fx:id="txtRegistarUsuario" promptText="Nombre de Usuario" styleClass="pinInput" />
+                                                <TextField fx:id="txtRegistrarCorreo" promptText="Correo Electrónico" styleClass="pinInput" />
                                                 <PasswordField fx:id="txtRegistrarContrasena" promptText="Contraseña Nueva" styleClass="pinInput" />
                                                 <PasswordField fx:id="txtConfirmarContrasena" promptText="Confirmar Contraseña" styleClass="pinInput" />
                                                 <Button fx:id="btnRegistrarUsuario" mnemonicParsing="false" onAction="#btnRegistrarUsuario" text="Registrarme">
