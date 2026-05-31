@@ -90,9 +90,33 @@ public class GestorPreguntas implements Initializable {
         agregarBotonPregunta();
     }
 
-    private void agregarBotonPregunta() {
+    @FXML
+    public void crearNuevaPregunta() {
+        try {
+            String titulo = txtTituloPregunta.getText().trim();
+            String respuestaRojo = txtRespuestaRojo.getText().trim();
+            String respuestaVerde = txtRespuestaVerde.getText().trim();
+            String respuestaAmarillo = txtRespuestaAmarillo.getText().trim();
+            String respuestaAzul = txtRespuestaAzul.getText().trim();
+            
+            Preguntas pregunta = partida.getListaPreguntas().get(NumeroDePreguntaActual);
+             pregunta.setEnunciado(titulo);
 
-        guardarPreguntaActual();
+            pregunta.getArregloDeRespuestasParaPreguntas().clear();
+
+            pregunta.getArregloDeRespuestasParaPreguntas().add(new Respuestas(1, respuestaRojo));
+
+            pregunta.getArregloDeRespuestasParaPreguntas().add(new Respuestas(2, respuestaAzul));
+
+            pregunta.getArregloDeRespuestasParaPreguntas().add(new Respuestas(3, respuestaAmarillo));
+
+            pregunta.getArregloDeRespuestasParaPreguntas().add(new Respuestas(4, respuestaVerde));
+        } catch (Exception e) {
+        }
+
+    }
+
+    private void agregarBotonPregunta() {
 
         Preguntas nuevaPregunta = new Preguntas("", new ArrayList<Respuestas>());
 
@@ -152,7 +176,6 @@ public class GestorPreguntas implements Initializable {
             pregunta.getArregloDeRespuestasParaPreguntas().add(new Respuestas(3, respuestaAmarillo));
 
             pregunta.getArregloDeRespuestasParaPreguntas().add(new Respuestas(4, respuestaVerde));
-
 
         } catch (Exception e) {
             AlertaParaUsar.mostrar("Error", e.getMessage(), Alert.AlertType.NONE);
