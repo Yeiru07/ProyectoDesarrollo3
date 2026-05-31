@@ -1,31 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" spacing="25.0" prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://fxml.com/fxml/1" fx:controller="controlador.LobbyJugadorController">
+<StackPane styleClass="root" stylesheets="@LobbyJugador.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://fxml.com/fxml/1" fx:controller="controlador.LobbyJugadorController">
     <children>
-        <Label text="¡Conectado Exitosamente!">
-            <font>
-                <Font name="System Bold" size="24.0" />
-            </font>
-        </Label>
-        
-        <Label fx:id="lblEstadoSala" text="Esperando a que el administrador inicie la partida...">
-            <font>
-                <Font size="16.0" />
-            </font>
-        </Label>
-        
-        <ProgressIndicator prefHeight="60.0" prefWidth="60.0" />
-        
-        <Label fx:id="lblNombreJugador" text="Jugador: " textFill="#555555">
-            <font>
-                <Font name="System Italic" size="14.0" />
-            </font>
-        </Label>
+        <VBox alignment="CENTER" spacing="40.0" StackPane.alignment="CENTER">
+            <children>
+                
+                <Label styleClass="lobbyTitle" text="¡Conectado Exitosamente!" />
+                
+                <VBox alignment="CENTER" maxWidth="580.0" spacing="30.0" styleClass="statusCard">
+                    <children>
+                        <Label fx:id="lblEstadoSala" styleClass="lobbyStatusLabel" text="Esperando a que el administrador inicie la partida..." wrapText="true" textAlignment="CENTER" />
+                        
+                        <ProgressIndicator fx:id="progressLobby" styleClass="lobbyProgress" prefHeight="75.0" prefWidth="75.0" />
+                    </children>
+                </VBox>
+                
+                <Label fx:id="lblNombreJugador" styleClass="lobbyPlayerLabel" text="Jugador: " />
+                
+            </children>
+            <padding>
+                <Insets bottom="50.0" left="40.0" right="40.0" top="50.0" />
+            </padding>
+        </VBox>
     </children>
-</VBox>
+</StackPane>
