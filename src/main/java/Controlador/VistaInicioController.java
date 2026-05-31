@@ -4,12 +4,22 @@
  */
 package Controlador;
 
+import Modelo.Partida;
+import Modelo.Usuario;
+import MySQL.ConexionBaseDeDatos;
+import Utilidades.AlertaParaUsar;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
+import proyectofinaldesarrolloIII.App;
 
 /**
  *
@@ -17,17 +27,15 @@ import javafx.scene.control.TextField;
  */
 public class VistaInicioController {
 
-    @FXML
-    private Button btnAdmin;
+    public Connection conexion;
+
+    Partida partida;
 
     @FXML
     private Button btnIniciarSesion;
 
     @FXML
     private Button btnRegistrarUsuario;
-
-    @FXML
-    private TabPane tabLogin;
 
     @FXML
     private PasswordField txtConfirmarContrasena;
@@ -47,10 +55,10 @@ public class VistaInicioController {
     @FXML
     private TextField txtUsuarioIniciarSesion;
 
-    
-    
     @FXML
-    void btnIngresarAdmin(ActionEvent event) {
+    public void initialize() {
+        this.partida = App.partida;
+        conexion = ConexionBaseDeDatos.conectar();
 
     }
 
@@ -60,8 +68,40 @@ public class VistaInicioController {
     }
 
     @FXML
-    void btnRegistrarUsuario(ActionEvent event) {
+    void btnRegistrarUsuario(ActionEvent event) throws SQLException {
+        String nombre = txtRegistarUsuario.getText().trim();
+        String correo = txtRegistrarCorreo.getText().trim();
+        String contra = txtRegistrarContrasena.getText().trim();
+        String contraConfirmacion = txtConfirmarContrasena.getText().trim();
 
+        if (!contra.equalsIgnoreCase(contraConfirmacion)) {
+            AlertaParaUsar.mostrar("Erorr", "Contraseñas diferentes", Alert.AlertType.WARNING);
+
+        }
+
+        if (nombre.isEmpty() || contra.isEmpty() || contraConfirmacion.isEmpty() || correo.isEmpty()) {
+            AlertaParaUsar.mostrar("Error", "Complete todos los campos", Alert.AlertType.WARNING);
+            return;
+        }
+
+        String sql = "INSERT INTO usuarios(nombreUsuario, correo,contraseña) VALUES (?,?,?)";
+
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, nombre);
+            ps.setString(2, correo);
+            ps.setString(3, contra);
+
+            int filas = ps.executeUpdate();
+
+            AlertaParaUsar.mostrar("Exito", "Cliente registrado", Alert.AlertType.INFORMATION);
+            AlertaParaUsar.mostrar("Exito", "Filas Afectadas " + filas, Alert.AlertType.WARNING);
+
+        }
+
+//        if (partida.getGestor().usuarioExiste(nombre)) {
+//            AlertaParaUsar.mostrar("Error", "El usuario ya existe", Alert.AlertType.WARNING);
+//            return;
+//        }
     }
 
 }

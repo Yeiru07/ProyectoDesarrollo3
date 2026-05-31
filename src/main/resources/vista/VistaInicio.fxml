@@ -13,7 +13,7 @@
 
 <StackPane styleClass="root" stylesheets="@VistaInicio.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.VistaInicioController">
     <children>
-        <Button fx:id="btnAdmin" mnemonicParsing="false" onAction="#btnIngresarAdmin" text="A" StackPane.alignment="TOP_RIGHT">
+        <Button fx:id="btnAdmin" mnemonicParsing="false"  text="A" StackPane.alignment="TOP_RIGHT">
             <styleClass>
                 <String fx:value="menuButton" />
                 <String fx:value="purple" />

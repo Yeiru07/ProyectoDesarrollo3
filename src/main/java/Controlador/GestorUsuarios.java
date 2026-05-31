@@ -4,7 +4,9 @@
  */
 package Controlador;
 
+import Modelo.Usuario;
 import java.io.IOException;
+import java.util.ArrayList;
 import javafx.fxml.FXML;
 import proyectofinaldesarrolloIII.App;
 
@@ -13,8 +15,24 @@ import proyectofinaldesarrolloIII.App;
  * @author sronn
  */
 public class GestorUsuarios {
-   
-    
+
+    Usuario usuario;
+    ArrayList<Usuario> usuarioLista = new ArrayList<>();
+
+    public void agregarUsuario(Usuario usuario) {
+        usuarioLista.add(usuario);
+
+    }
+
+    public boolean usuarioExiste(String nombre) {
+        for (Usuario usuario1 : usuarioLista) {
+            if (usuario.getNombreUsuario().equalsIgnoreCase(nombre)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @FXML
     private void onVolver() throws IOException {
         App.setRoot("VistaPantallaDeIngreso");
@@ -25,5 +43,4 @@ public class GestorUsuarios {
         App.setRoot("RegistroCreador");
     }
 
-    
 }
