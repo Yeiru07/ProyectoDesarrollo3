@@ -31,7 +31,7 @@ public class MotorJuego {
 
     @FXML
     private void presentarSala() throws IOException {
-        App.setRoot("secondary");
+        App.setRoot("PresentarSalas");
     }
 
 }
