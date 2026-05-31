@@ -73,99 +73,91 @@ public class GestorPreguntas implements Initializable {
     @FXML
     private TextField txtTituloSala;
 
-    private int NumeroDePreguntaActual = -1;
+    private int numeroDePreguntaActual = -1;
 
     Partida partida;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.partida = App.partida;
+
+        partida = App.partida;
+
         btnAgregarPregunta.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent event) {
-                agregarBotonPregunta();
+                crearNuevaPregunta();
             }
         });
-        agregarBotonPregunta();
+
+        crearNuevaPregunta();
     }
 
     @FXML
-    public void crearNuevaPregunta() {
-        try {
-            String titulo = txtTituloPregunta.getText().trim();
-            String respuestaRojo = txtRespuestaRojo.getText().trim();
-            String respuestaVerde = txtRespuestaVerde.getText().trim();
-            String respuestaAmarillo = txtRespuestaAmarillo.getText().trim();
-            String respuestaAzul = txtRespuestaAzul.getText().trim();
-            
-            Preguntas pregunta = partida.getListaPreguntas().get(NumeroDePreguntaActual);
-             pregunta.setEnunciado(titulo);
+    public void crearBotonPregunta(int indice) {
 
-            pregunta.getArregloDeRespuestasParaPreguntas().clear();
+        Button boton = new Button((indice + 1) + " Quiz");
 
-            pregunta.getArregloDeRespuestasParaPreguntas().add(new Respuestas(1, respuestaRojo));
+        boton.setPrefWidth(180);
 
-            pregunta.getArregloDeRespuestasParaPreguntas().add(new Respuestas(2, respuestaAzul));
+        boton.getStyleClass().add("question-card");
 
-            pregunta.getArregloDeRespuestasParaPreguntas().add(new Respuestas(3, respuestaAmarillo));
+        boton.setUserData(indice);
 
-            pregunta.getArregloDeRespuestasParaPreguntas().add(new Respuestas(4, respuestaVerde));
-        } catch (Exception e) {
-        }
+        boton.setOnAction(new EventHandler<ActionEvent>() {
 
+            @Override
+            public void handle(ActionEvent event) {
+                seleccionarPregunta(event);
+            }
+        });
+
+        contenedorPreguntas.getChildren().add(boton);
     }
 
-    private void agregarBotonPregunta() {
+    public void seleccionarPregunta(ActionEvent event) {
 
-        Preguntas nuevaPregunta = new Preguntas("", new ArrayList<Respuestas>());
-
-        partida.getListaPreguntas().add(nuevaPregunta);
-
-        int numero = partida.getListaPreguntas().size();
-
-        Button btnPregunta = new Button(numero + " Quiz\nPregunta");
-
-        btnPregunta.setPrefWidth(180);
-        btnPregunta.getStyleClass().add("question-card");
-
-        btnPregunta.setUserData(numero - 1);
-
-        btnPregunta.setOnAction(this::seleccionarPregunta);
-
-        contenedorPreguntas.getChildren().add(btnPregunta);
-
-        NumeroDePreguntaActual = numero - 1;
-    }
-
-    @FXML
-    private void seleccionarPregunta(ActionEvent event) {
+        guardarPreguntaActual();
 
         Button boton = (Button) event.getSource();
 
         int indice = (Integer) boton.getUserData();
 
-        guardarPreguntaActual();
-
         cargarPregunta(indice);
     }
 
-    @FXML
-    private void guardarPreguntaActual() {
+    public void crearNuevaPregunta() {
 
+        guardarPreguntaActual();
+
+        Preguntas pregunta = new Preguntas();
+
+        partida.getListaPreguntas().add(pregunta);
+
+        int indice = partida.getListaPreguntas().size() - 1;
+
+        crearBotonPregunta(indice);
+
+        numeroDePreguntaActual = indice;
+
+        limpiarCampos();
+    }
+
+    public void guardarPreguntaActual() {
+
+        if (numeroDePreguntaActual < 0) {
+            return;
+        }
         try {
-            if (NumeroDePreguntaActual < 0) {
-                return;
-            }
-            String titulo = txtTituloPregunta.getText().trim();
+            String tituloPregunta = txtTituloPregunta.getText().trim();
             String respuestaRojo = txtRespuestaRojo.getText().trim();
-            String respuestaVerde = txtRespuestaVerde.getText().trim();
-            String respuestaAmarillo = txtRespuestaAmarillo.getText().trim();
             String respuestaAzul = txtRespuestaAzul.getText().trim();
+            String respuestaAmarillo = txtRespuestaAmarillo.getText().trim();
+            String respuestaVerde = txtRespuestaVerde.getText().trim();
 
-            Preguntas pregunta = partida.getListaPreguntas().get(NumeroDePreguntaActual);
+            Preguntas pregunta = partida.getListaPreguntas().get(numeroDePreguntaActual);
 
-            pregunta.setEnunciado(titulo);
+            pregunta.setEnunciado(tituloPregunta);
 
             pregunta.getArregloDeRespuestasParaPreguntas().clear();
 
@@ -176,34 +168,36 @@ public class GestorPreguntas implements Initializable {
             pregunta.getArregloDeRespuestasParaPreguntas().add(new Respuestas(3, respuestaAmarillo));
 
             pregunta.getArregloDeRespuestasParaPreguntas().add(new Respuestas(4, respuestaVerde));
-
         } catch (Exception e) {
-            AlertaParaUsar.mostrar("Error", e.getMessage(), Alert.AlertType.NONE);
         }
+
     }
 
-    private void cargarPregunta(int indice) {
+    public void cargarPregunta(int indice) {
 
         Preguntas pregunta = partida.getListaPreguntas().get(indice);
 
-        NumeroDePreguntaActual = indice;
+        numeroDePreguntaActual = indice;
 
         txtTituloPregunta.setText(pregunta.getEnunciado());
 
-        ArrayList<Respuestas> respuestas = pregunta.getArregloDeRespuestasParaPreguntas();
+        if (pregunta.getArregloDeRespuestasParaPreguntas().size() >= 4) {
 
-        if (respuestas.size() >= 4) {
+            txtRespuestaRojo.setText(pregunta.getArregloDeRespuestasParaPreguntas().get(0).getRespuestas());
 
-            txtRespuestaRojo.setText(respuestas.get(0).getRespuestas());
-            txtRespuestaAzul.setText(respuestas.get(1).getRespuestas());
-            txtRespuestaAmarillo.setText(respuestas.get(2).getRespuestas());
-            txtRespuestaVerde.setText(respuestas.get(3).getRespuestas());
+            txtRespuestaAzul.setText(pregunta.getArregloDeRespuestasParaPreguntas().get(1).getRespuestas());
 
-        } else {
-            txtRespuestaRojo.clear();
-            txtRespuestaAzul.clear();
-            txtRespuestaAmarillo.clear();
-            txtRespuestaVerde.clear();
+            txtRespuestaAmarillo.setText(pregunta.getArregloDeRespuestasParaPreguntas().get(2).getRespuestas());
+
+            txtRespuestaVerde.setText(pregunta.getArregloDeRespuestasParaPreguntas().get(3).getRespuestas());
         }
+    }
+
+    public void limpiarCampos() {
+        txtTituloPregunta.clear();
+        txtRespuestaRojo.clear();
+        txtRespuestaAzul.clear();
+        txtRespuestaAmarillo.clear();
+        txtRespuestaVerde.clear();
     }
 }

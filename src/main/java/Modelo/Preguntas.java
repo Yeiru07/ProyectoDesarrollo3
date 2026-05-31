@@ -6,6 +6,7 @@ public class Preguntas {
 
     private String enunciado;
     private ArrayList<Respuestas> arregloDeRespuestasParaPreguntas;
+    private int repuestaCorrecta;
 
     public Preguntas(String enunciado, ArrayList<Respuestas> arregloDeRespuestasParaPreguntas) {
         this.enunciado = enunciado;
