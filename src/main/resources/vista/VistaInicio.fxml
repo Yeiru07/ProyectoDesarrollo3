@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane styleClass="root" stylesheets="@VistaInicio.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controlador.AccesoClienteVistaController">
+<StackPane styleClass="root" stylesheets="@VistaInicio.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.VistaInicioController">
     <children>
         <Button fx:id="btnAdmin" mnemonicParsing="false" onAction="#btnIngresarAdmin" text="A" StackPane.alignment="TOP_RIGHT">
             <styleClass>
