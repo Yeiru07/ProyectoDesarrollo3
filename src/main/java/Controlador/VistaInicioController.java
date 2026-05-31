@@ -70,7 +70,7 @@ public class VistaInicioController {
        
        
         
-        App.setRoot("VistaDeCreacionDeQuiz");
+        App.setRoot("VIstaPantallaDeIngreso");
     }
 
     @FXML
