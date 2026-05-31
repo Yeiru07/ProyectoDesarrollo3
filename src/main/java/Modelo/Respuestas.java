@@ -12,6 +12,22 @@ private String respuestas;
         this.respuestas = respuestas;
     }
 
+    public int getNumeroDeRespuesta() {
+        return numeroDeRespuesta;
+    }
+
+    public void setNumeroDeRespuesta(int numeroDeRespuesta) {
+        this.numeroDeRespuesta = numeroDeRespuesta;
+    }
+
+    public String getRespuestas() {
+        return respuestas;
+    }
+
+    public void setRespuestas(String respuestas) {
+        this.respuestas = respuestas;
+    }
+
 
 
 }

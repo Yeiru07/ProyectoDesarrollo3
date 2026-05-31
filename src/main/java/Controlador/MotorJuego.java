@@ -26,7 +26,7 @@ public class MotorJuego {
 
     @FXML
     private void crearUnaSala() throws IOException {
-        App.setRoot("secondary");
+        App.setRoot("VistaDeCreacionDeQuiz");
     }
 
     @FXML

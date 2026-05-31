@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
-<BorderPane prefHeight="768.0" prefWidth="1400" stylesheets="@CssDeCreacionDeQuiz.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.GestorPartida">
+<BorderPane prefHeight="768.0" prefWidth="1400" stylesheets="@CssDeCreacionDeQuiz.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.GestorPreguntas">
 
     <!-- SIDEBAR IZQUIERDA -->
     <left>
@@ -23,21 +23,9 @@
 
             <Label styleClass="logo" text="Kahoot! GO" />
 
-            <VBox spacing="10">
+            <VBox fx:id="contenedorPreguntas" spacing="10" />
 
-                <VBox styleClass="question-card-selected">
-                    <Label styleClass="quiz-number" text="1 Quiz" />
-                    <Label styleClass="question-title" text="Pregunta" />
-                </VBox>
-
-                <VBox styleClass="question-card">
-                    <Label styleClass="quiz-number" text="2 Quiz" />
-                    <Label styleClass="question-title" text="Pregunta" />
-                </VBox>
-
-            </VBox>
-
-            <Button styleClass="add-button" text="+ Añadir" />
+            <Button fx:id="btnAgregarPregunta" styleClass="add-button" text="+ Añadir" />
 
         </VBox>
     </left>
@@ -49,13 +37,13 @@
             <!-- BARRA SUPERIOR -->
             <HBox alignment="CENTER_LEFT" spacing="15">
 
-                <TextField promptText="Ingresar título..." styleClass="title-input" />
-            <Label styleClass="save-label" text="✔ Bienvenido &quot;Usuario&quot;" />
+                <TextField fx:id="txtTituloSala" promptText="Ingresar título..." styleClass="title-input" />
+                <Label styleClass="save-label" text="✔ Bienvenido &quot;Usuario&quot;" />
 
             </HBox>
 
             <!-- PREGUNTA -->
-            <TextField promptText="Escribe tu pregunta" styleClass="question-input" />
+            <TextField fx:id="txtTituloPregunta" promptText="Escribe tu pregunta" styleClass="question-input" />
 
             <!-- CONTENEDOR MULTIMEDIA -->
             <StackPane styleClass="media-box">
@@ -92,10 +80,10 @@
                     <Circle fill="white" radius="12" />
 
                     <!-- TEXTO RESPUESTA -->
-                    <TextField styleClass="answer-field" text="Pregunta Ejemplo 1" HBox.hgrow="ALWAYS" />
+                    <TextField fx:id="txtRespuestaRojo" styleClass="answer-field" text="Pregunta Ejemplo 1" HBox.hgrow="ALWAYS" />
 
                     <!-- RADIO BUTTON RESPUESTA CORRECTA -->
-                    <RadioButton fx:id="rbRespuesta1" />
+                    <RadioButton fx:id="rbRespuestaRojo" />
 
                 </HBox>
 
@@ -106,10 +94,10 @@
                     <Circle fill="white" radius="12" />
 
                     <!-- TEXTO RESPUESTA -->
-                    <TextField styleClass="answer-field" text="Pregunta Ejemplo 1" HBox.hgrow="ALWAYS" />
+                    <TextField fx:id="txtRespuestaAzul" styleClass="answer-field" text="Pregunta Ejemplo 1" HBox.hgrow="ALWAYS" />
 
                     <!-- RADIO BUTTON RESPUESTA CORRECTA -->
-                    <RadioButton fx:id="rbRespuesta2" />
+                    <RadioButton fx:id="rbRespuestaAzul" />
 
                 </HBox>
 
@@ -120,10 +108,10 @@
                     <Circle fill="white" radius="12" />
 
                     <!-- TEXTO RESPUESTA -->
-                    <TextField styleClass="answer-field" text="Pregunta Ejemplo 1" HBox.hgrow="ALWAYS" />
+                    <TextField fx:id="txtRespuestaAmarillo" styleClass="answer-field" text="Pregunta Ejemplo 1" HBox.hgrow="ALWAYS" />
 
                     <!-- RADIO BUTTON RESPUESTA CORRECTA -->
-                    <RadioButton fx:id="rbRespuesta3" />
+                    <RadioButton fx:id="rbRespuestaAmarillo" />
 
                 </HBox>
 
@@ -134,10 +122,10 @@
                     <Circle fill="white" radius="12" />
 
                     <!-- TEXTO RESPUESTA -->
-                    <TextField styleClass="answer-field" text="Pregunta Ejemplo 1" HBox.hgrow="ALWAYS" />
+                    <TextField fx:id="txtRespuestaVerde" styleClass="answer-field" text="Pregunta Ejemplo 1" HBox.hgrow="ALWAYS" />
 
                     <!-- RADIO BUTTON RESPUESTA CORRECTA -->
-                    <RadioButton fx:id="rbRespuesta4" />
+                    <RadioButton fx:id="rbRespuestaVerde" />
 
                 </HBox>
 
@@ -155,13 +143,13 @@
             <VBox spacing="10">
 
                 <Label text="Tipo de pregunta" />
-                <ComboBox promptText="Quiz" />
+                <ComboBox fx:id="cmbTipoDePregunta" promptText="Quiz" />
             </VBox>
 
             <VBox spacing="10">
 
                 <Label text="Límite de tiempo" />
-                <ComboBox promptText="20 segundos" />
+                <ComboBox fx:id="cmbLimiteDeTiempo" promptText="20 segundos" />
             </VBox>
 
             <VBox spacing="10">

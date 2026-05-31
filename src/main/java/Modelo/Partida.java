@@ -2,14 +2,16 @@ package Modelo;
 
 import java.util.ArrayList;
 
-
 public class Partida {//singleton
+
     private ArrayList<Usuario> arrayDeUsuarios;
     private ArrayList<Sala> arrayDeSalas;
+    private ArrayList<Preguntas> listaPreguntas = new ArrayList<>();
 
-    public Partida(ArrayList<Usuario> arrayDeUsuarios, ArrayList<Sala> arrayDeSalas) {
-        this.arrayDeUsuarios = arrayDeUsuarios;
-        this.arrayDeSalas = arrayDeSalas;
+
+    public Partida() {
+        this.arrayDeUsuarios = new ArrayList<>();
+        this.arrayDeSalas = new ArrayList<>();
     }
 
     public ArrayList<Usuario> getArrayDeUsuarios() {
@@ -27,6 +29,13 @@ public class Partida {//singleton
     public void setArrayDeSalas(ArrayList<Sala> arrayDeSalas) {
         this.arrayDeSalas = arrayDeSalas;
     }
-    
+
+    public ArrayList<Preguntas> getListaPreguntas() {
+        return listaPreguntas;
+    }
+
+    public void setListaPreguntas(ArrayList<Preguntas> listaPreguntas) {
+        this.listaPreguntas = listaPreguntas;
+    }
 
 }

@@ -2,22 +2,27 @@ package Modelo;
 
 import java.util.ArrayList;
 
-
 public class Preguntas {
-    private ArrayList<String> arregloDePreguntas;
+
+    private String enunciado;
     private ArrayList<Respuestas> arregloDeRespuestasParaPreguntas;
 
-    public Preguntas(ArrayList<String> arregloDePreguntas, ArrayList<Respuestas> arregloDeRespuestasParaPreguntas) {
-        this.arregloDePreguntas = new ArrayList<>();
+    public Preguntas(String enunciado, ArrayList<Respuestas> arregloDeRespuestasParaPreguntas) {
+        this.enunciado = enunciado;
         this.arregloDeRespuestasParaPreguntas = new ArrayList<>();
     }
 
-    public ArrayList<String> getArregloDePreguntas() {
-        return arregloDePreguntas;
+    public Preguntas() {
+        this.enunciado = "";
+        this.arregloDeRespuestasParaPreguntas = new ArrayList<>();
     }
 
-    public void setArregloDePreguntas(ArrayList<String> arregloDePreguntas) {
-        this.arregloDePreguntas = arregloDePreguntas;
+    public String getEnunciado() {
+        return enunciado;
+    }
+
+    public void setEnunciado(String enunciado) {
+        this.enunciado = enunciado;
     }
 
     public ArrayList<Respuestas> getArregloDeRespuestasParaPreguntas() {
@@ -27,5 +32,5 @@ public class Preguntas {
     public void setArregloDeRespuestasParaPreguntas(ArrayList<Respuestas> arregloDeRespuestasParaPreguntas) {
         this.arregloDeRespuestasParaPreguntas = arregloDeRespuestasParaPreguntas;
     }
-    
+
 }
