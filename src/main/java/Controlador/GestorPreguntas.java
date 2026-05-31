@@ -227,6 +227,18 @@ public class GestorPreguntas implements Initializable {
             System.out.println("No se pudo conectar al servidor: " + e.getMessage());
         }
     }
+
+    @FXML
+    public void guardarPregunta(ActionEvent event) {
+
+        guardarPreguntaActual();
+
+        Preguntas pregunta = partida.getListaPreguntas().get(numeroDePreguntaActual);
+
+        enviarPreguntaPorSocket(pregunta);
+
+        System.out.println("Pregunta mandada");
+    }
     /*  public void guardarPreguntaEnBaseDeDatos(Preguntas p) {
         String sql = "INSERT INTO preguntas (enunciado, respuesta1, respuesta2, respuesta3, respuesta4) VALUES (?, ?, ?, ?, ?)";
 
