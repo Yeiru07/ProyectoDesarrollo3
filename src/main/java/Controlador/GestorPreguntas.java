@@ -7,8 +7,14 @@ package Controlador;
 import Modelo.Partida;
 import Modelo.Preguntas;
 import Modelo.Respuestas;
+import MySQL.ConexionBaseDeDatos;
 import Utilidades.AlertaParaUsar;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -200,4 +206,32 @@ public class GestorPreguntas implements Initializable {
         txtRespuestaAmarillo.clear();
         txtRespuestaVerde.clear();
     }
+
+ private void enviarPreguntaPorSocket(Preguntas p) {
+        try (Socket s = new Socket("localhost", 5000); PrintWriter out = new PrintWriter(s.getOutputStream(), true)) {
+            String trama = "Pregunta|" + p.getEnunciado()+ "|" + p.getArregloDeRespuestasParaPreguntas();
+            out.println(trama);
+        } catch (Exception e) {
+            System.out.println("No se pudo conectar al servidor: " + e.getMessage());
+        }
+    }
+  /*  public void guardarPreguntaEnBaseDeDatos(Preguntas p) {
+        String sql = "INSERT INTO preguntas (enunciado, respuesta1, respuesta2, respuesta3, respuesta4) VALUES (?, ?, ?, ?, ?)";
+
+        try (Connection con = ConexionBaseDeDatos.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setString(1, p.getEnunciado());
+            pst.setString(2, p.getArregloDeRespuestasParaPreguntas().get(0).getRespuestas());
+            pst.setString(3, p.getArregloDeRespuestasParaPreguntas().get(1).getRespuestas());
+            pst.setString(4, p.getArregloDeRespuestasParaPreguntas().get(2).getRespuestas());
+            pst.setString(5, p.getArregloDeRespuestasParaPreguntas().get(3).getRespuestas());
+
+            pst.executeUpdate();
+            System.out.println("¡Mascota guardada en la base de datos!");
+
+        } catch (SQLException e) {
+            System.out.println("Error al guardar: " + e.getMessage());
+        }
+    }*/
+
 }
