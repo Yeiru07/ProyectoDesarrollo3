@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane styleClass="root" stylesheets="@PreguntaMultipleJugador.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://fxml.com/fxml/1" fx:controller="controlador.PreguntaJugadorController">
+    <children>
+        <VBox alignment="CENTER" spacing="35.0" StackPane.alignment="CENTER">
+            <children>
+                
+                <VBox alignment="CENTER" spacing="12.0" styleClass="timerContainer">
+                    <children>
+                        <Label fx:id="lblCronometro" styleClass="timerLabel" text="Tiempo restante: 60s" />
+                        <ProgressBar fx:id="progressTiempo" prefWidth="650.0" progress="1.0" styleClass="customProgressBar" />
+                    </children>
+                </VBox>
+                
+                <VBox alignment="CENTER" maxWidth="900.0" styleClass="questionCard">
+                    <children>
+                        <Label fx:id="lblEnunciado" styleClass="questionLabel" text="¿Cargando enunciado de la pregunta desde el servidor?" textAlignment="CENTER" wrapText="true" />
+                    </children>
+                </VBox>
+                
+                <GridPane hgap="20.0" vgap="20.0" maxWidth="850.0" alignment="CENTER">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="95.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="95.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <Button fx:id="btnOpcion1" mnemonicParsing="false" onAction="#onResponderOpcion1" text="Opción A" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                            <styleClass>
+                                <String fx:value="optionButton" />
+                                <String fx:value="kahootRed" />
+                            </styleClass>
+                        </Button>
+                        <Button fx:id="btnOpcion2" mnemonicParsing="false" onAction="#onResponderOpcion2" text="Opción B" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <styleClass>
+                                <String fx:value="optionButton" />
+                                <String fx:value="kahootBlue" />
+                            </styleClass>
+                        </Button>
+                        <Button fx:id="btnOpcion3" mnemonicParsing="false" onAction="#onResponderOpcion3" text="Opción C" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                            <styleClass>
+                                <String fx:value="optionButton" />
+                                <String fx:value="kahootGold" />
+                            </styleClass>
+                        </Button>
+                        <Button fx:id="btnOpcion4" mnemonicParsing="false" onAction="#onResponderOpcion4" text="Opción D" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <styleClass>
+                                <String fx:value="optionButton" />
+                                <String fx:value="kahootGreen" />
+                            </styleClass>
+                        </Button>
+                    </children>
+                </GridPane>
+                
+                <Label fx:id="lblEstadoSeleccion" styleClass="statusFooterLabel" text="Selecciona una opción antes de que se agote el tiempo..." />
+                
+            </children>
+            <padding>
+                <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+            </padding>
+        </VBox>
+    </children>
+</StackPane>
