@@ -13,7 +13,7 @@ public class Usuario implements Interfaces.ItipoUsuario {
         this.nombreUsuario = nombreUsuario;
         this.correo = correo;
         this.contraseña = contraseña;
-        this.puntuajeAcumulado = puntuajeAcumulado;
+        this.puntuajeAcumulado = 0.0;
     }
 
     public int getIdUsuario() {

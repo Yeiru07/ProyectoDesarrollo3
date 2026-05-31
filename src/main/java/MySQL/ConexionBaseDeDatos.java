@@ -4,11 +4,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 public class ConexionBaseDeDatos {
 
-private static final String URL = "jdbc:mysql://localhost:3306/batallas_preguntas";//con esto le digo que base usar
 
-    private static final String USUARIO = "root";
+private static final String URL = "jdbc:mysql://proyecto-u-mysql-vpnaprueba121-b9f7.d.aivencloud.com:25848/batallas_preguntas";//con esto le digo que base usar
 
-    private static final String PASSWORD = "6085";
+    private static final String USUARIO = "avnadmin";
+
+    private static final String PASSWORD = "AVNS_0gUHrNaURYyhMDxJYwF";
 
     public static Connection conectar() {
 

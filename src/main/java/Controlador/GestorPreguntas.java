@@ -150,7 +150,6 @@ public class GestorPreguntas implements Initializable {
     }
 
     public void guardarPreguntaActual() {
-
         if (numeroDePreguntaActual < 0) {
             return;
         }
@@ -162,21 +161,24 @@ public class GestorPreguntas implements Initializable {
             String respuestaVerde = txtRespuestaVerde.getText().trim();
 
             Preguntas pregunta = partida.getListaPreguntas().get(numeroDePreguntaActual);
-
             pregunta.setEnunciado(tituloPregunta);
 
+            // Limpiamos y aseguramos que el arreglo interno esté inicializado
+            if (pregunta.getArregloDeRespuestasParaPreguntas() == null) {
+                pregunta.setArregloDeRespuestasParaPreguntas(new ArrayList<>());
+            }
             pregunta.getArregloDeRespuestasParaPreguntas().clear();
 
+            // Agregamos las respuestas de la pantalla
             pregunta.getArregloDeRespuestasParaPreguntas().add(new Respuestas(1, respuestaRojo));
-
             pregunta.getArregloDeRespuestasParaPreguntas().add(new Respuestas(2, respuestaAzul));
-
             pregunta.getArregloDeRespuestasParaPreguntas().add(new Respuestas(3, respuestaAmarillo));
-
             pregunta.getArregloDeRespuestasParaPreguntas().add(new Respuestas(4, respuestaVerde));
-        } catch (Exception e) {
-        }
 
+        } catch (Exception e) {
+            System.out.println("ERROR CRÍTICO AL GUARDAR EN MEMORIA: " + e.getMessage());
+            e.printStackTrace(); // Esto te dirá exactamente si el problema es en el controlador
+        }
     }
 
     public void cargarPregunta(int indice) {
@@ -208,20 +210,23 @@ public class GestorPreguntas implements Initializable {
     }
 
     private void enviarPreguntaPorSocket(Preguntas p) {
+        // Validación preventiva: No enviar si el objeto interno no se llenó correctamente
+        if (p.getEnunciado().isEmpty() || p.getArregloDeRespuestasParaPreguntas().size() < 4) {
+            System.out.println("No se puede enviar: La pregunta en memoria está incompleta.");
+            return;
+        }
 
-        try (Socket s = new Socket("localhost", 5000); PrintWriter out = new PrintWriter(s.getOutputStream(), true)) {
+        try  {
 
-            String trama
-                    = "Pregunta|"
+            String trama = "Pregunta|"
                     + p.getEnunciado() + "|"
                     + p.getArregloDeRespuestasParaPreguntas().get(0).getRespuestas() + "|"
                     + p.getArregloDeRespuestasParaPreguntas().get(1).getRespuestas() + "|"
                     + p.getArregloDeRespuestasParaPreguntas().get(2).getRespuestas() + "|"
                     + p.getArregloDeRespuestasParaPreguntas().get(3).getRespuestas();
 
-            out.println(trama);
-
-            System.out.println("Enviado: " + trama);
+            proyectofinaldesarrolloIII.App.escritor.println(trama);
+            System.out.println("Enviado exitosamente al servidor: " + trama);
 
         } catch (Exception e) {
             System.out.println("No se pudo conectar al servidor: " + e.getMessage());

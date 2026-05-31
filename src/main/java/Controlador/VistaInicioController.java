@@ -1,35 +1,25 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Controlador;
 
 import Modelo.Partida;
-import Modelo.Usuario;
-import MySQL.ConexionBaseDeDatos;
 import Utilidades.AlertaParaUsar;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import proyectofinaldesarrolloIII.App;
 
 /**
- *
  * @author sronn
  */
 public class VistaInicioController {
 
-    public Connection conexion;
-
+    // SE REMOVIÓ LA VARIABLE CONEXIÓN (El controlador ya no sabe qué es una BD)
     Partida partida;
 
     @FXML
@@ -59,56 +49,93 @@ public class VistaInicioController {
     @FXML
     public void initialize() {
         this.partida = App.partida;
-        conexion = ConexionBaseDeDatos.conectar();
-
+        // SE REMOVIÓ: ConexionBaseDeDatos.conectar();
     }
 
     @FXML
-    void btnIniciarSesion(ActionEvent event) throws IOException {
-       String usuarioInicioSecion=txtUsuarioIniciarSesion.getText().trim();
-       String contraInicioSesion=txtContrasenaIniciarSesion.getText().trim();
-       
-       
-        
-        App.setRoot("VIstaPantallaDeIngreso");
+    void btnIniciarSesion(ActionEvent event) {
+        String usuarioInicioSesion = txtUsuarioIniciarSesion.getText().trim();
+        String contraInicioSesion = txtContrasenaIniciarSesion.getText().trim();
+
+        if (usuarioInicioSesion.isEmpty() || contraInicioSesion.isEmpty()) {
+            AlertaParaUsar.mostrar("Error", "Complete todos los campos de inicio de sesión", Alert.AlertType.WARNING);
+            return;
+        }
+
+        try {
+            // 1. Crear la trama para el Login
+            String trama = "LOGIN|" + usuarioInicioSesion + "|" + contraInicioSesion;
+
+            // 2. Enviar la trama al servidor usando los flujos de comunicación globales
+            App.escritor.println(trama);
+
+            // 3. Esperar la respuesta inmediata del servidor
+            String respuesta = App.lector.readLine();
+
+            if (respuesta != null && respuesta.startsWith("OK")) {
+                AlertaParaUsar.mostrar("Éxito", "Sesión iniciada correctamente", Alert.AlertType.INFORMATION);
+
+                // Si el login es correcto, cambia de pantalla al Lobby de Salas
+                App.setRoot("VIstaPantallaDeIngreso");
+            } else {
+                String[] partesRepuesta = respuesta.split("\\|");
+                String mensajeError = partesRepuesta.length > 1 ? partesRepuesta[1] : "Credenciales incorrectas";
+                AlertaParaUsar.mostrar("Error", mensajeError, Alert.AlertType.ERROR);
+            }
+
+        } catch (IOException e) {
+            AlertaParaUsar.mostrar("Error de Red", "No se pudo comunicar con el servidor", Alert.AlertType.ERROR);
+            e.printStackTrace();
+        }
     }
 
     @FXML
-    void btnRegistrarUsuario(ActionEvent event) throws SQLException {
+    void btnRegistrarUsuario(ActionEvent event) {
         String nombre = txtRegistarUsuario.getText().trim();
         String correo = txtRegistrarCorreo.getText().trim();
         String contra = txtRegistrarContrasena.getText().trim();
         String contraConfirmacion = txtConfirmarContrasena.getText().trim();
 
-        if (!contra.equalsIgnoreCase(contraConfirmacion)) {
-            AlertaParaUsar.mostrar("Erorr", "Contraseñas diferentes", Alert.AlertType.WARNING);
-            return;
-
-        }
-
+        // 1. Validaciones puras de Interfaz Gráfica
         if (nombre.isEmpty() || contra.isEmpty() || contraConfirmacion.isEmpty() || correo.isEmpty()) {
-            AlertaParaUsar.mostrar("Error", "Complete todos los campos", Alert.AlertType.WARNING);
+            AlertaParaUsar.mostrar("Error", "Complete todos los campos de registro", Alert.AlertType.WARNING);
             return;
         }
 
-        String sql = "INSERT INTO usuarios(nombreUsuario, correo,contraseña) VALUES (?,?,?)";
-
-        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
-            ps.setString(1, nombre);
-            ps.setString(2, correo);
-            ps.setString(3, contra);
-
-            int filas = ps.executeUpdate();
-
-            AlertaParaUsar.mostrar("Exito", "Cliente registrado", Alert.AlertType.INFORMATION);
-            AlertaParaUsar.mostrar("Exito", "Filas Afectadas " + filas, Alert.AlertType.INFORMATION);
-
+        if (!contra.equals(contraConfirmacion)) {
+            AlertaParaUsar.mostrar("Error", "Las contraseñas no coinciden", Alert.AlertType.WARNING);
+            return;
         }
 
-//        if (partida.getGestor().usuarioExiste(nombre)) {
-//            AlertaParaUsar.mostrar("Error", "El usuario ya existe", Alert.AlertType.WARNING);
-//            return;
-//        }
-    }
+        try {
+            // 2. Armar la trama de datos formateada con pipes
+            String trama = "REGISTRO|" + nombre + "|" + correo + "|" + contra;
 
+            // 3. Enviar la trama por el Socket de forma síncrona
+            App.escritor.println(trama);
+
+            // 4. Quedarse esperando el veredicto que calcule el Gestor en el Servidor
+            String respuesta = App.lector.readLine();
+
+            // 5. Analizar la respuesta del Servidor y mostrársela al usuario en la pantalla
+            if (respuesta != null && respuesta.startsWith("OK")) {
+                AlertaParaUsar.mostrar("Éxito", "Usuario registrado correctamente en el sistema", Alert.AlertType.INFORMATION);
+
+                // Limpiar campos tras un registro exitoso
+                txtRegistarUsuario.clear();
+                txtRegistrarCorreo.clear();
+                txtRegistrarContrasena.clear();
+                txtConfirmarContrasena.clear();
+            } else {
+                // Si el servidor mandó "ERROR|El usuario ya existe", extraemos el mensaje informativo
+                String[] partesRepuesta = respuesta.split("\\|");
+                String mensajeError = partesRepuesta.length > 1 ? partesRepuesta[1] : "No se pudo completar el registro";
+                AlertaParaUsar.mostrar("Error de Registro", mensajeError, Alert.AlertType.ERROR);
+            }
+
+        } catch (IOException e) {
+            AlertaParaUsar.mostrar("Error de Red", "Hubo un problema al enviar los datos al servidor", Alert.AlertType.ERROR);
+            e.printStackTrace();
+        }
+    }
 }
