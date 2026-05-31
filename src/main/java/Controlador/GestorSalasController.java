@@ -29,22 +29,5 @@ public class GestorSalasController implements Initializable {
         this.partida = App.partida;
     }
 
-    private void enviarSalaPorSocket(Sala s) {
-        // Validación preventiva: No enviar si el objeto interno no se llenó correctamente
-        if (s.getNombreSala().isEmpty() || s.getCodigoSala() == 0) {
-            System.out.println("No se puede enviar: La SALA ESTA INCOMPLETA");
-            return;
-        }
-        try {
-            String trama = "Sala|"
-                    + s.getNombreSala() + "|"
-                    + s.getCodigoSala();
 
-            proyectofinaldesarrolloIII.App.escritor.println(trama);
-            System.out.println("Enviado exitosamente al servidor: " + trama);
-
-        } catch (Exception e) {
-            System.out.println("No se pudo conectar al servidor: " + e.getMessage());
-        }
-    }
 }

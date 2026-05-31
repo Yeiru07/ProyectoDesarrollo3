@@ -75,15 +75,11 @@ public class GestorPreguntas implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        partida = App.partida;
+        this.partida = App.partida;
 
-        btnAgregarPregunta.setOnAction(new EventHandler<ActionEvent>() {
+        sala = new Sala((int) (Math.random() * 900000) + 100000, "", true, 0);
 
-            @Override
-            public void handle(ActionEvent event) {
-                crearNuevaPregunta();
-            }
-        });
+        partida.getArrayDeSalas().add(sala);
 
         crearNuevaPregunta();
     }
@@ -128,7 +124,7 @@ public class GestorPreguntas implements Initializable {
         Preguntas pregunta = new Preguntas();
 
         sala.getListaPreguntas().add(pregunta);
-
+        
         int indice = sala.getListaPreguntas().size() - 1;
 
         crearBotonPregunta(indice);
@@ -221,7 +217,25 @@ public class GestorPreguntas implements Initializable {
             System.out.println("No se pudo conectar al servidor: " + e.getMessage());
         }
     }
-           
+
+    private void enviarSalaPorSocket(Sala s) {
+        // Validación preventiva: No enviar si el objeto interno no se llenó correctamente
+        if (s.getNombreSala().isEmpty() || s.getCodigoSala() == 0) {
+            System.out.println("No se puede enviar: La SALA ESTA INCOMPLETA");
+            return;
+        }
+        try {
+            String trama = "Sala|"
+                    + s.getNombreSala() + "|"
+                    + s.getCodigoSala();
+
+            proyectofinaldesarrolloIII.App.escritor.println(trama);
+            System.out.println("Enviado exitosamente al servidor: " + trama);
+
+        } catch (Exception e) {
+            System.out.println("No se pudo conectar al servidor: " + e.getMessage());
+        }
+    }
 
     @FXML
     public void guardarPregunta(ActionEvent event) {
