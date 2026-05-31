@@ -11,16 +11,16 @@
 
 .logo {
     -fx-text-fill: white;
-    -fx-font-size: 38px;
+    -fx-font-size: 44px;
     -fx-font-weight: bold;
 }
 
 .menuButton {
-    -fx-pref-width: 65;
-    -fx-pref-height: 50;
-    -fx-background-radius: 12;
+    -fx-pref-width: 80;
+    -fx-pref-height: 60;
+    -fx-background-radius: 14;
     -fx-text-fill: white;
-    -fx-font-size: 20px;
+    -fx-font-size: 24px;
     -fx-font-weight: bold;
     -fx-cursor: hand;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.35), 8, 0.2, 0, 3);
@@ -62,57 +62,57 @@
 
 .menuLabel {
     -fx-text-fill: white;
-    -fx-font-size: 14px;
+    -fx-font-size: 16px;
 }
 
 .menuLabelSelected {
     -fx-text-fill: white;
-    -fx-font-size: 14px;
+    -fx-font-size: 16px;
     -fx-font-weight: bold;
 }
 
 .joinContainer {
     -fx-background-color: rgba(255, 255, 255, 0.18);
-    -fx-padding: 10 15 10 15;
-    -fx-background-radius: 14;
+    -fx-padding: 12 18 12 18;
+    -fx-background-radius: 16;
     -fx-border-color: rgba(255, 255, 255, 0.12);
-    -fx-border-radius: 14;
+    -fx-border-radius: 16;
 }
 
 .languageButton {
     -fx-background-color: white;
     -fx-background-radius: 100;
-    -fx-pref-width: 50;
-    -fx-pref-height: 50;
-    -fx-font-size: 22px;
+    -fx-pref-width: 60;
+    -fx-pref-height: 60;
+    -fx-font-size: 26px;
     -fx-cursor: hand;
 }
 
 .centerLogo {
     -fx-text-fill: white;
-    -fx-font-size: 90px;
+    -fx-font-size: 110px;
     -fx-font-weight: bold;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 0, 0, 4, 4);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.35), 0, 0, 5, 5);
 }
 
 .loginPanel {
     -fx-background-color: rgba(255, 255, 255, 0.96);
-    -fx-padding: 35;
-    -fx-background-radius: 18;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.28), 18, 0.2, 0, 6);
+    -fx-padding: 45;
+    -fx-background-radius: 24;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 22, 0.2, 0, 8);
 }
 
 .pinInput {
-    -fx-pref-width: 420;
-    -fx-pref-height: 70;
-    -fx-font-size: 24px;
-    -fx-background-radius: 8;
+    -fx-pref-width: 490;
+    -fx-pref-height: 80;
+    -fx-font-size: 28px;
+    -fx-background-radius: 10;
     -fx-alignment: center;
     -fx-font-weight: bold;
     -fx-prompt-text-fill: #888;
     -fx-border-color: #cccccc;
-    -fx-border-width: 2;
-    -fx-border-radius: 8;
+    -fx-border-width: 2.5;
+    -fx-border-radius: 10;
     -fx-background-color: #f8f8f8;
 }
 
@@ -122,14 +122,14 @@
 }
 
 .enterButton {
-    -fx-pref-width: 420;
-    -fx-pref-height: 70;
+    -fx-pref-width: 490;
+    -fx-pref-height: 80;
     -fx-text-fill: white;
-    -fx-font-size: 26px;
+    -fx-font-size: 30px;
     -fx-font-weight: bold;
-    -fx-background-radius: 10;
+    -fx-background-radius: 12;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 10, 0.2, 0, 4);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 12, 0.2, 0, 5);
 }
 
 .enterButton:hover {
@@ -143,14 +143,14 @@
 
 .tab-pane .tab {
     -fx-background-color: #e0e0e0;
-    -fx-background-radius: 8 8 0 0;
-    -fx-padding: 10 35;
+    -fx-background-radius: 10 10 0 0;
+    -fx-padding: 12 50;
     -fx-cursor: hand;
 }
 
 .tab-pane .tab .tab-label {
     -fx-text-fill: #555555;
-    -fx-font-size: 16px;
+    -fx-font-size: 20px;
     -fx-font-weight: bold;
 }
 
