@@ -1,0 +1,88 @@
+/* Fondo degradado institucional al estilo Kahoot */
+.root {
+    -fx-background-color: linear-gradient(to bottom right, #25004d, #4b008f);
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+/* Tarjeta contenedora del PIN */
+.topBannerCard {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 16;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 15, 0, 0, 6);
+}
+
+/* Tipografía masiva para el PIN */
+.pinTitle {
+    -fx-text-fill: #4b008f;
+    -fx-font-size: 64px;
+    -fx-font-weight: 900;
+    -fx-letter-spacing: 3px;
+}
+
+.subtitleLabel {
+    -fx-text-fill: #444444;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+/* ScrollPane completamente plano y transparente */
+.customScrollPane {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+.customScrollPane .viewport {
+    -fx-background-color: transparent;
+}
+.playersContainer {
+    -fx-background-color: transparent;
+}
+
+/* CHIPS DE LOS JUGADORES (Estilo tarjetas blancas flotantes con texto oscuro) */
+.playerChip {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #111111;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-padding: 12 26 12 26;
+    -fx-background-radius: 30;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 8, 0, 0, 4);
+}
+
+/* Área inferior del botón de acción */
+.bottomActionArea {
+    -fx-background-color: transparent;
+}
+
+/* Estilo Base del Botón */
+.adminButton {
+    -fx-text-fill: white;
+    -fx-font-size: 24px;  /* Botón más grande e imponente */
+    -fx-font-weight: bold;
+    -fx-padding: 14 60 14 60; /* Más ancho para que luzca balanceado abajo */
+    -fx-background-radius: 12;
+    -fx-cursor: hand;
+}
+
+/* El Gran Botón Verde Central de Lanzamiento */
+.btnStartLive {
+    -fx-background-color: #26890c;
+    /* Al estar centrado abajo, un relieve más marcado simula un botón pulsable real */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 0, 0, 0, 5);
+}
+
+.btnStartLive:hover {
+    -fx-background-color: #1e6b0a;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+/* Estado deshabilitado consistente si la sala está vacía */
+.btnStartLive:disabled {
+    -fx-background-color: rgba(255, 255, 255, 0.15);
+    -fx-text-fill: rgba(255, 255, 255, 0.35);
+    -fx-cursor: default;
+    -fx-scale-x: 1.0;
+    -fx-scale-y: 1.0;
+    -fx-effect: none;
+}
