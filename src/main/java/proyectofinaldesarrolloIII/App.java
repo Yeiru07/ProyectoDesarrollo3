@@ -1,6 +1,6 @@
 package proyectofinaldesarrolloIII;
 
-import Modelo.Partida;
+import Modelo.Juego;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -23,7 +23,7 @@ public class App extends Application {
     private static Socket socket;
 
     private static Scene scene;
-    public static Partida partida = new Partida();
+    public static Juego partida = new Juego();
 
     @Override
     public void start(Stage stage) throws IOException {

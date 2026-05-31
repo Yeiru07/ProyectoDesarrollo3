@@ -1,19 +1,23 @@
 package Modelo;
 
+import java.util.ArrayList;
+
 public class Sala {
 
     private int codigoSala;
     private String nombreSala;
     private boolean estado;
     private int cantidadJugadores;
-    private Usuario usuario;
+    private ArrayList<Usuario> arrayDeUsuarios;
+    private ArrayList<Preguntas> listaPreguntas;
 
     public Sala(int codigoSala, String nombreSala, boolean estado, int cantidadJugadores) {
         this.codigoSala = codigoSala;
         this.nombreSala = nombreSala;
         this.estado = estado;
         this.cantidadJugadores = cantidadJugadores;
-        this.usuario= usuario;//AGREGACION DE USUARIO A LA SALA
+        this.arrayDeUsuarios = new ArrayList<>();//AGREGACION DE USUARIO A LA SALA
+        this.listaPreguntas = new ArrayList<>();
     }
 
     public int getCodigoSala() {
@@ -48,4 +52,23 @@ public class Sala {
         this.cantidadJugadores = cantidadJugadores;
     }
 
+    public ArrayList<Usuario> getArrayDeUsuarios() {
+        return arrayDeUsuarios;
+    }
+
+    public void setArrayDeUsuarios(ArrayList<Usuario> arrayDeUsuarios) {
+        this.arrayDeUsuarios = arrayDeUsuarios;
+    }
+
+    public int getCantidadUsuarios() {
+        return arrayDeUsuarios.size();
+    }
+
+    public ArrayList<Preguntas> getListaPreguntas() {
+        return listaPreguntas;
+    }
+
+    public void setListaPreguntas(ArrayList<Preguntas> listaPreguntas) {
+        this.listaPreguntas = listaPreguntas;
+    }
 }

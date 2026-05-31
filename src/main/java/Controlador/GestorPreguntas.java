@@ -4,37 +4,25 @@
  */
 package Controlador;
 
-import Modelo.Partida;
+import Modelo.Juego;
 import Modelo.Preguntas;
 import Modelo.Respuestas;
-import MySQL.ConexionBaseDeDatos;
-import Utilidades.AlertaParaUsar;
-import java.io.PrintWriter;
-import java.net.Socket;
+import Modelo.Sala;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import proyectofinaldesarrolloIII.App;
-import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 
-/**
- *
- * @author sronn
- */
 public class GestorPreguntas implements Initializable {
 
     @FXML
@@ -81,7 +69,8 @@ public class GestorPreguntas implements Initializable {
 
     private int numeroDePreguntaActual = -1;
 
-    Partida partida;
+    Juego partida;
+    Sala sala;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -138,9 +127,9 @@ public class GestorPreguntas implements Initializable {
 
         Preguntas pregunta = new Preguntas();
 
-        partida.getListaPreguntas().add(pregunta);
+        sala.getListaPreguntas().add(pregunta);
 
-        int indice = partida.getListaPreguntas().size() - 1;
+        int indice = sala.getListaPreguntas().size() - 1;
 
         crearBotonPregunta(indice);
 
@@ -160,7 +149,7 @@ public class GestorPreguntas implements Initializable {
             String respuestaAmarillo = txtRespuestaAmarillo.getText().trim();
             String respuestaVerde = txtRespuestaVerde.getText().trim();
 
-            Preguntas pregunta = partida.getListaPreguntas().get(numeroDePreguntaActual);
+            Preguntas pregunta = sala.getListaPreguntas().get(numeroDePreguntaActual);
             pregunta.setEnunciado(tituloPregunta);
 
             // Limpiamos y aseguramos que el arreglo interno esté inicializado
@@ -183,7 +172,7 @@ public class GestorPreguntas implements Initializable {
 
     public void cargarPregunta(int indice) {
 
-        Preguntas pregunta = partida.getListaPreguntas().get(indice);
+        Preguntas pregunta = sala.getListaPreguntas().get(indice);
 
         numeroDePreguntaActual = indice;
 
@@ -232,17 +221,24 @@ public class GestorPreguntas implements Initializable {
             System.out.println("No se pudo conectar al servidor: " + e.getMessage());
         }
     }
+           
 
     @FXML
     public void guardarPregunta(ActionEvent event) {
-
+        crearSala();
         guardarPreguntaActual();
-
-        Preguntas pregunta = partida.getListaPreguntas().get(numeroDePreguntaActual);
-
+        Preguntas pregunta = sala.getListaPreguntas().get(numeroDePreguntaActual);
         enviarPreguntaPorSocket(pregunta);
-
+        System.out.println("SALA MANDADA");
         System.out.println("Pregunta mandada");
+    }
+
+    public void crearSala() {
+        String titulo = txtTituloSala.getText().trim();
+        int numero = (int) (Math.random() * 900000) + 100000;
+        //int cantidadUsuarios = partida.obtenerCantidadUsuariosSala(numero);
+        Sala sala = new Sala(numero, titulo, true, 0);
+        partida.getArrayDeSalas().add(sala);
     }
     /*  public void guardarPreguntaEnBaseDeDatos(Preguntas p) {
         String sql = "INSERT INTO preguntas (enunciado, respuesta1, respuesta2, respuesta3, respuesta4) VALUES (?, ?, ?, ?, ?)";

@@ -1,6 +1,6 @@
 package Controlador;
 
-import Modelo.Partida;
+import Modelo.Juego;
 import Utilidades.AlertaParaUsar;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,7 +20,7 @@ import proyectofinaldesarrolloIII.App;
 public class VistaInicioController {
 
     // SE REMOVIÓ LA VARIABLE CONEXIÓN (El controlador ya no sabe qué es una BD)
-    Partida partida;
+    Juego partida;
 
     @FXML
     private Button btnIniciarSesion;
