@@ -1,0 +1,114 @@
+/* Fondo institucional morado con un degradado elegante */
+.root {
+    -fx-background-color: linear-gradient(to bottom right, #25004d, #4b008f);
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* Barra superior blanca para que resalte fuertemente sobre el fondo morado */
+.headerBar {
+    -fx-background-color: #ffffff;
+    -fx-padding: 20 25 20 25;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 15, 0, 0, 5);
+}
+
+.mainTitle {
+    -fx-text-fill: #2c3e50;
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+}
+
+.subtitle {
+    -fx-text-fill: #7f8c8d;
+    -fx-font-size: 14px;
+}
+
+/* Estilo común de botones superiores */
+.adminButton {
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 22 10 22;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 0, 0, 0, 3);
+}
+.adminButton:hover {
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
+}
+
+/* Color para el botón de Presentar (Azul corporativo) */
+.btnPresent {
+    -fx-background-color: #1368ce;
+}
+.btnPresent:hover {
+    -fx-background-color: #0f52a5;
+}
+.btnPresent:disabled {
+    -fx-background-color: #cbd5e1;
+    -fx-text-fill: #94a3b8;
+    -fx-cursor: default;
+    -fx-scale-x: 1.0;
+    -fx-scale-y: 1.0;
+    -fx-effect: none;
+}
+
+/* Color para el botón de Crear (Morado vibrante para resaltar sobre la barra blanca) */
+.btnCreate {
+    -fx-background-color: #8b2cff;
+}
+.btnCreate:hover {
+    -fx-background-color: #721ed9;
+}
+
+/* Eliminación de bordes y fondos del ScrollPane por defecto */
+.customScrollPane {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+.customScrollPane .viewport {
+    -fx-background-color: transparent;
+}
+
+.gridSalas {
+    -fx-background-color: transparent;
+    -fx-padding: 10 5 10 5;
+}
+
+/* Texto de aviso cambiado a color claro para alta legibilidad sobre el fondo morado */
+.noRoomsLabel {
+    -fx-text-fill: #e1d5f5;
+    -fx-font-size: 16px;
+    -fx-font-style: italic;
+    -fx-alignment: center;
+    -fx-max-width: 500px;
+    -fx-padding: 60 0 0 150; /* Alineación estimada en el FlowPane */
+}
+
+/* ESTILO DE LAS TARJETAS DE SALAS (Para cuando las agregues dinámicamente) */
+.salaCard {
+    -fx-background-color: #ffffff;
+    -fx-min-width: 260px;
+    -fx-max-width: 260px;
+    -fx-pref-height: 160px;
+    -fx-padding: 20;
+    -fx-background-radius: 12;
+    -fx-border-color: #e2e8f0;
+    -fx-border-width: 1;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 10, 0, 0, 4);
+}
+.salaCard:hover {
+    -fx-border-color: #8b2cff;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+    -fx-effect: dropshadow(gaussian, rgba(139, 44, 255, 0.2), 12, 0, 0, 4);
+}
+
+.salaCardSelected {
+    -fx-border-color: #1368ce;
+    -fx-border-width: 3;
+    -fx-background-color: #f0f7ff;
+}
