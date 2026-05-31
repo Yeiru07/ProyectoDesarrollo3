@@ -1,0 +1,158 @@
+/* Fondo institucional morado de Kahoot */
+.root {
+    -fx-background-color: linear-gradient(to bottom right, #25004d, #4b008f);
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+/* Tarjeta izquierda (Sidebar de salas) */
+.sidebarCard {
+    -fx-background-color: rgba(255, 255, 255, 0.95);
+    -fx-background-radius: 16;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 15, 0, 0, 5);
+}
+
+.sidebarTitle {
+    -fx-text-fill: #333333;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+}
+
+/* Tarjeta derecha (Detalle de la sala) */
+.mainContentCard {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 16;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 15, 0, 0, 5);
+}
+
+/* Estilos de los ScrollPanes para que se vean limpios y planos */
+.customScrollPane {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.customScrollPane .viewport {
+    -fx-background-color: transparent;
+}
+
+.innerVBox {
+    -fx-background-color: transparent;
+    -fx-padding: 5 2 5 2;
+}
+
+/* Texto de marcador cuando no hay salas */
+.noRoomsLabel {
+    -fx-text-fill: #888888;
+    -fx-font-size: 15px;
+    -fx-font-style: italic;
+    -fx-padding: 40 10 0 10;
+}
+
+/* Línea divisoria del encabezado superior derecho */
+.detailHeader {
+    -fx-border-color: #f0f0f0;
+    -fx-border-width: 0 0 3 0;
+    -fx-padding: 0 0 15 0;
+}
+
+.pinTitle {
+    -fx-text-fill: #4b008f;
+    -fx-font-size: 36px;
+    -fx-font-weight: 800;
+}
+
+.subtitleLabel {
+    -fx-text-fill: #666666;
+    -fx-font-size: 15px;
+}
+
+/* Estilo Base de los Botones del Administrador */
+.adminButton {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 0, 0, 0, 3);
+}
+
+.adminButton:hover {
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+/* Botón Verde Secundario (Crear Sala) */
+.btnSuccess {
+    -fx-background-color: #26890c;
+}
+.btnSuccess:hover {
+    -fx-background-color: #1e6b0a;
+}
+
+/* El gran botón de inicio estilo Kahoot Live (Verde Vibrante) */
+.btnStartLive {
+    -fx-background-color: #26890c;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-padding: 12 35 12 35;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 0, 0, 0, 4);
+}
+
+.btnStartLive:hover {
+    -fx-background-color: #1e6b0a;
+    -fx-scale-x: 1.04;
+    -fx-scale-y: 1.04;
+}
+
+/* Estilo controlado para cuando el botón deba deshabilitarse por código */
+.btnStartLive:disabled {
+    -fx-background-color: #b3dfa1;
+    -fx-text-fill: rgba(255, 255, 255, 0.7);
+    -fx-cursor: default;
+    -fx-scale-x: 1.0;
+    -fx-scale-y: 1.0;
+    -fx-effect: none;
+}
+
+/* Contenedor fluido de nombres de jugadores */
+.playersContainer {
+    -fx-background-color: #f8f9fa;
+    -fx-background-radius: 12;
+    -fx-min-height: 400px;
+}
+
+/* CHIPS/BADGES de los Jugadores conectados */
+.playerChip {
+    -fx-background-color: #8b2cff;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 8 16 8 16;
+    -fx-background-radius: 20;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.12), 4, 0, 0, 2);
+}
+
+/* Tarjetas individuales de salas que agregarás a la izquierda mediante código */
+.salaItemCard {
+    -fx-background-color: #f1f1f1;
+    -fx-padding: 12 15 12 15;
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+    -fx-border-width: 2;
+}
+
+.salaItemCard:hover {
+    -fx-background-color: #e5d5ff;
+    -fx-border-color: #8b2cff;
+}
+
+/* Estilo que le aplicarás a la sala seleccionada actualmente */
+.salaItemCardSelected {
+    -fx-background-color: #e5d5ff;
+    -fx-border-color: #4b008f;
+}
