@@ -1,50 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" spacing="25.0" prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://fxml.com/fxml/1" fx:controller="controlador.PreguntaVFJugadorController">
+<StackPane styleClass="root" stylesheets="@PreguntaVerdaderoFalsoJugador.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://fxml.com/fxml/1" fx:controller="controlador.PreguntaVFJugadorController">
     <children>
-        <VBox alignment="CENTER" spacing="5.0">
+        <VBox alignment="CENTER" spacing="35.0" StackPane.alignment="CENTER">
             <children>
-                <Label fx:id="lblCronometro" text="Tiempo restante: 60s">
-                    <font>
-                        <Font name="System Bold" size="16.0" />
-                    </font>
-                </Label>
-                <ProgressBar fx:id="progressTiempo" prefWidth="400.0" progress="1.0" />
-            </children>
-        </VBox>
-        
-        <Label fx:id="lblEnunciado" text="Cargando pregunta de Verdadero o Falso..." textAlignment="CENTER" wrapText="true">
-            <font>
-                <Font size="18.0" />
-            </font>
-        </Label>
-        
-        <HBox alignment="CENTER" spacing="30.0">
-            <children>
-                <Button fx:id="btnVerdadero" mnemonicParsing="false" onAction="#onResponderVerdadero" prefWidth="200.0" prefHeight="80.0" text="Verdadero">
-                    <font>
-                        <Font name="System Bold" size="16.0" />
-                    </font>
-                </Button>
                 
-                <Button fx:id="btnFalso" mnemonicParsing="false" onAction="#onResponderFalso" prefWidth="200.0" prefHeight="80.0" text="Falso">
-                    <font>
-                        <Font name="System Bold" size="16.0" />
-                    </font>
-                </Button>
+                <VBox alignment="CENTER" spacing="12.0" styleClass="timerContainer">
+                    <children>
+                        <Label fx:id="lblCronometro" styleClass="timerLabel" text="Tiempo restante: 60s" />
+                        <ProgressBar fx:id="progressTiempo" prefWidth="650.0" progress="1.0" styleClass="customProgressBar" />
+                    </children>
+                </VBox>
+                
+                <VBox alignment="CENTER" maxWidth="900.0" styleClass="questionCard">
+                    <children>
+                        <Label fx:id="lblEnunciado" styleClass="questionLabel" text="¿Cargando pregunta de Verdadero o Falso...?" textAlignment="CENTER" wrapText="true" />
+                    </children>
+                </VBox>
+                
+                <HBox alignment="CENTER" spacing="25.0" maxWidth="850.0" prefHeight="130.0">
+                    <children>
+                        <Button fx:id="btnVerdadero" mnemonicParsing="false" onAction="#onResponderVerdadero" text="Verdadero" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                            <styleClass>
+                                <String fx:value="optionButton" />
+                                <String fx:value="kahootBlue" />
+                            </styleClass>
+                        </Button>
+                        
+                        <Button fx:id="btnFalso" mnemonicParsing="false" onAction="#onResponderFalso" text="Falso" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                            <styleClass>
+                                <String fx:value="optionButton" />
+                                <String fx:value="kahootRed" />
+                            </styleClass>
+                        </Button>
+                    </children>
+                </HBox>
+                
+                <Label fx:id="lblEstadoSeleccion" styleClass="statusFooterLabel" text="Selecciona una opción antes de que se agote el tiempo..." />
+                
             </children>
-        </HBox>
-        
-        <Label fx:id="lblEstadoSeleccion" text="Selecciona una opción..." textFill="#555555">
-            <font>
-                <Font name="System Italic" size="14.0" />
-            </font>
-        </Label>
+            <padding>
+                <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+            </padding>
+        </VBox>
     </children>
-</VBox>
+</StackPane>
