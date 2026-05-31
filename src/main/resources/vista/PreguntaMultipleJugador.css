@@ -1,0 +1,105 @@
+/* Fondo con el degradado morado institucional de Kahoot */
+.root {
+    -fx-background-color: linear-gradient(to bottom right, #4b008f, #8b2cff);
+    -fx-font-family: "Segoe UI";
+}
+
+/* Contenedor del Tiempo */
+.timerContainer {
+    -fx-padding: 10 0 0 0;
+}
+
+/* Cambiado a blanco para resaltar sobre el fondo morado */
+.timerLabel {
+    -fx-text-fill: #ffffff; 
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 0, 0, 3, 3);
+}
+
+/* Estilo personalizado de la barra de progreso de tiempo */
+.customProgressBar {
+    -fx-pref-height: 18;
+}
+
+.customProgressBar .track {
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+    -fx-background-radius: 10;
+}
+
+.customProgressBar .bar {
+    -fx-background-color: #d89e00; /* Amarillo/oro para la barra de carga */
+    -fx-background-radius: 10;
+}
+
+/* Bloque blanco sólido para la pregunta en el centro */
+.questionCard {
+    -fx-background-color: #ffffff;
+    -fx-padding: 30 45 30 45;
+    -fx-background-radius: 18;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 15, 0, 0, 6);
+}
+
+.questionLabel {
+    -fx-text-fill: #2a2a2a;
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+}
+
+/* Estilo base de los botones de respuesta (Grandes y planos) */
+.optionButton {
+    -fx-max-width: infinity;
+    -fx-max-height: infinity;
+    -fx-text-fill: white;
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 14;
+    -fx-cursor: hand;
+    -fx-text-alignment: center;
+    -fx-wrap-text: true;
+    /* Efecto de sombra inferior que simula profundidad 3D de Kahoot */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.22), 0, 0, 0, 5);
+}
+
+.optionButton:hover {
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+/* Esquema de colores exactos de respuestas de Kahoot */
+.kahootRed {
+    -fx-background-color: #e21b3c;
+}
+.kahootRed:hover {
+    -fx-background-color: #c7122e;
+}
+
+.kahootBlue {
+    -fx-background-color: #1368ce;
+}
+.kahootBlue:hover {
+    -fx-background-color: #0f52a5;
+}
+
+.kahootGold {
+    -fx-background-color: #d89e00;
+}
+.kahootGold:hover {
+    -fx-background-color: #b88600;
+}
+
+.kahootGreen {
+    -fx-background-color: #26890c;
+}
+.kahootGreen:hover {
+    -fx-background-color: #1e6b0a;
+}
+
+/* Texto Informativo Inferior (Cambiado a blanco semi-transparente) */
+.statusFooterLabel {
+    -fx-text-fill: rgba(255, 255, 255, 0.85);
+    -fx-font-size: 20px;
+    -fx-font-style: italic;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 0, 0, 2, 2);
+}

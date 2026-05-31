@@ -30,21 +30,21 @@ public class ManejadorDeUsuarios extends Thread {
                 String[] partes = datosRecibidos.split("\\|");
 
                 // 1. SI ES UN PRODUCTO NUEVO (Ejemplo trama: PRODUCTO|paracetamol|1500|...)
-                if (partes[0].equals("PRODUCTO")) {
+                if (partes[0].equals("Pregunta")) {
                     try {
-                        guardarProductoNuevobd(partes);
+                        guardarPreguntaNuevobd(partes);
                         escritor.println("OK: Producto guardado");
                     } catch (Exception e) {
                         System.out.println("Error al guardar: " + e.getMessage());
                         escritor.println("Error: No se pudo guardar el producto");
                     }
                 } // 2. SI ES UNA VENTA (Ejemplo trama: VENTA|idProd,cant,precio,sub,provN,provT,provC,provTip|idProd2...)
-                if (partes[0].equals("VENTA")) {
+               /* if (partes[0].equals("VENTA")) {
                     guardarVentaCompletaBD(partes);
                     escritor.println("OK: Venta procesada correctamente");
                 } else {
                     escritor.println("Error: Comando desconocido o formato incorrecto");
-                }
+                }*/
             }
 
         } catch (Exception e) {
@@ -52,20 +52,16 @@ public class ManejadorDeUsuarios extends Thread {
         }
     }
 
-    private void guardarProductoNuevobd(String[] partes) throws Exception {
+    private void guardarPreguntaNuevobd(String[] partes) throws Exception {
         Connection conexion = ConexionBaseDeDatos.conectar();
-        String sql = "INSERT INTO productos (nombre_producto, precio_producto, cantidad_producto, categoria_producto, descripcion_producto, prov_nombre, prov_telefono, prov_correo, prov_tipo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO preguntas (enunciado, respuesta1, respuesta2, respuesta3, respuesta4) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement ps = conexion.prepareStatement(sql);
 
         ps.setString(1, partes[1]);
-        ps.setDouble(2, Double.parseDouble(partes[2]));
-        ps.setInt(3, Integer.parseInt(partes[3]));
+        ps.setString(2, partes[2]);
+        ps.setString(3, partes[3]);
         ps.setString(4, partes[4]);
-        ps.setString(5, partes[5]);
-        ps.setString(6, partes[6]);
-        ps.setString(7, partes[7]);
-        ps.setString(8, partes[8]);
-        ps.setString(9, partes[9]);
+       
 
         ps.executeUpdate();
         ps.close();

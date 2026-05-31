@@ -1,0 +1,48 @@
+/* Fondo con el degradado púrpura característico */
+.root {
+    -fx-background-color: linear-gradient(to bottom right, #4b008f, #8b2cff); 
+    -fx-font-family: "Segoe UI";
+}
+
+/* Título superior gigante en color blanco */
+.lobbyTitle {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 46px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.35), 0, 0, 5, 5);
+}
+
+/* Tarjeta contenedora semi-transparente estilo cristal */
+.statusCard {
+    -fx-background-color: rgba(255, 255, 255, 0.12);
+    -fx-padding: 40;
+    -fx-background-radius: 22;
+    -fx-border-color: rgba(255, 255, 255, 0.18);
+    -fx-border-width: 2.5;
+    -fx-border-radius: 22;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 15, 0, 0, 6);
+}
+
+/* Texto interno de la tarjeta de estado */
+.lobbyStatusLabel {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+}
+
+/* Spinner de carga usando el amarillo/dorado brillante de Kahoot */
+.lobbyProgress {
+    -fx-progress-color: #d89e00;
+}
+
+/* El nombre del jugador resalta sobre una píldora blanca sólida */
+.lobbyPlayerLabel {
+    -fx-text-fill: #2a2a2a;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-background-color: #ffffff; 
+    -fx-padding: 14 45 14 45;
+    -fx-background-radius: 40;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 12, 0.2, 0, 6);
+}
