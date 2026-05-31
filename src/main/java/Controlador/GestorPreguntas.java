@@ -216,7 +216,7 @@ public class GestorPreguntas implements Initializable {
             return;
         }
 
-        try  {
+        try {
 
             String trama = "Pregunta|"
                     + p.getEnunciado() + "|"
