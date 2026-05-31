@@ -4,11 +4,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 public class ConexionBaseDeDatos {
 
-private static final String URL = "jdbc:mysql://localhost:3307/macrobiotica_la_naturaleza";//con esto le digo que base usar
+private static final String URL = "jdbc:mysql://localhost:3306/batallas_preguntas";//con esto le digo que base usar
 
     private static final String USUARIO = "root";
 
-    private static final String PASSWORD = "";
+    private static final String PASSWORD = "6085";
 
     public static Connection conectar() {
 

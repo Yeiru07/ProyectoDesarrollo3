@@ -1,11 +1,13 @@
 package Modelo;
 
+import Controlador.GestorUsuarios;
 import java.util.ArrayList;
 
 public class Partida {//singleton
 
     private ArrayList<Usuario> arrayDeUsuarios;
     private ArrayList<Sala> arrayDeSalas;
+    GestorUsuarios gestor;
     private ArrayList<Preguntas> listaPreguntas = new ArrayList<>();
 
 
@@ -37,5 +39,15 @@ public class Partida {//singleton
     public void setListaPreguntas(ArrayList<Preguntas> listaPreguntas) {
         this.listaPreguntas = listaPreguntas;
     }
+
+    public GestorUsuarios getGestor() {
+        return gestor;
+    }
+
+    public void setGestor(GestorUsuarios gestor) {
+        this.gestor = gestor;
+    }
+    
+    
 
 }
