@@ -90,30 +90,26 @@ public class GestorPreguntas implements Initializable {
 
     private void agregarPregunta() {
 
-        Preguntas pregunta = new Preguntas();
-
-        pregunta.getArregloDeRespuestasParaPreguntas().add(new Respuestas(1, ""));
-
-        pregunta.getArregloDeRespuestasParaPreguntas().add(new Respuestas(2, ""));
-
-        pregunta.getArregloDeRespuestasParaPreguntas().add(new Respuestas(3, ""));
-
-        pregunta.getArregloDeRespuestasParaPreguntas().add(new Respuestas(4, ""));
-
-        partida.getListaPreguntas().add(pregunta);
+        Preguntas nuevaPregunta = new Preguntas("", new ArrayList<>());
+        partida.getListaPreguntas().add(nuevaPregunta);
 
         int numero = partida.getListaPreguntas().size();
 
-        VBox tarjeta = crearTarjeta(numero);
+        Button btnPregunta = new Button(numero + " Quiz\nPregunta");
 
-        contenedorPreguntas.getChildren().add(tarjeta);
+        btnPregunta.setPrefWidth(180);
+        btnPregunta.getStyleClass().add("question-card");
+
+        btnPregunta.setUserData(numero - 1);
+
+        btnPregunta.setOnAction(this::seleccionarPregunta);
+
+        contenedorPreguntas.getChildren().add(btnPregunta);
 
         preguntaActual = numero - 1;
-
-        cargarPregunta(preguntaActual);
     }
 
-    private VBox crearTarjeta(int numero) {
+    /*  private VBox crearTarjeta(int numero) {
 
         VBox card = new VBox();
 
@@ -141,6 +137,17 @@ public class GestorPreguntas implements Initializable {
         });
 
         return card;
+    }*/
+    @FXML
+    private void seleccionarPregunta(ActionEvent event) {
+
+        Button boton = (Button) event.getSource();
+
+        int indice = (Integer) boton.getUserData();
+
+        guardarPreguntaActual();
+
+        cargarPregunta(indice);
     }
 
     private void guardarPreguntaActual() {
@@ -153,27 +160,45 @@ public class GestorPreguntas implements Initializable {
 
         pregunta.setEnunciado(txtTituloPregunta.getText());
 
-        pregunta.getArregloDeRespuestasParaPreguntas().get(0).setRespuestas(txtRespuestaRojo.getText());
+        pregunta.getArregloDeRespuestasParaPreguntas().clear();
 
-        pregunta.getArregloDeRespuestasParaPreguntas().get(1).setRespuestas(txtRespuestaAzul.getText());
+        pregunta.getArregloDeRespuestasParaPreguntas().add(
+                new Respuestas(1, txtRespuestaRojo.getText()));
 
-        pregunta.getArregloDeRespuestasParaPreguntas().get(2).setRespuestas(txtRespuestaAmarillo.getText());
+        pregunta.getArregloDeRespuestasParaPreguntas().add(
+                new Respuestas(2, txtRespuestaAzul.getText()));
 
-        pregunta.getArregloDeRespuestasParaPreguntas().get(3).setRespuestas(txtRespuestaVerde.getText());
+        pregunta.getArregloDeRespuestasParaPreguntas().add(
+                new Respuestas(3, txtRespuestaAmarillo.getText()));
+
+        pregunta.getArregloDeRespuestasParaPreguntas().add(
+                new Respuestas(4, txtRespuestaVerde.getText()));
     }
 
     private void cargarPregunta(int indice) {
 
         Preguntas pregunta = partida.getListaPreguntas().get(indice);
 
+        preguntaActual = indice;
+
         txtTituloPregunta.setText(pregunta.getEnunciado());
 
-        txtRespuestaRojo.setText(pregunta.getArregloDeRespuestasParaPreguntas().get(0).getRespuestas());
+        ArrayList<Respuestas> respuestas
+                = pregunta.getArregloDeRespuestasParaPreguntas();
 
-        txtRespuestaAzul.setText(pregunta.getArregloDeRespuestasParaPreguntas().get(1).getRespuestas());
+        if (respuestas.size() >= 4) {
 
-        txtRespuestaAmarillo.setText(pregunta.getArregloDeRespuestasParaPreguntas().get(2).getRespuestas());
+            txtRespuestaRojo.setText(respuestas.get(0).getRespuestas());
+            txtRespuestaAzul.setText(respuestas.get(1).getRespuestas());
+            txtRespuestaAmarillo.setText(respuestas.get(2).getRespuestas());
+            txtRespuestaVerde.setText(respuestas.get(3).getRespuestas());
 
-        txtRespuestaVerde.setText(pregunta.getArregloDeRespuestasParaPreguntas().get(3).getRespuestas());
+        } else {
+
+            txtRespuestaRojo.clear();
+            txtRespuestaAzul.clear();
+            txtRespuestaAmarillo.clear();
+            txtRespuestaVerde.clear();
+        }
     }
 }
