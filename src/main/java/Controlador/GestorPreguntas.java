@@ -207,15 +207,27 @@ public class GestorPreguntas implements Initializable {
         txtRespuestaVerde.clear();
     }
 
- private void enviarPreguntaPorSocket(Preguntas p) {
+    private void enviarPreguntaPorSocket(Preguntas p) {
+
         try (Socket s = new Socket("localhost", 5000); PrintWriter out = new PrintWriter(s.getOutputStream(), true)) {
-            String trama = "Pregunta|" + p.getEnunciado()+ "|" + p.getArregloDeRespuestasParaPreguntas();
+
+            String trama
+                    = "Pregunta|"
+                    + p.getEnunciado() + "|"
+                    + p.getArregloDeRespuestasParaPreguntas().get(0).getRespuestas() + "|"
+                    + p.getArregloDeRespuestasParaPreguntas().get(1).getRespuestas() + "|"
+                    + p.getArregloDeRespuestasParaPreguntas().get(2).getRespuestas() + "|"
+                    + p.getArregloDeRespuestasParaPreguntas().get(3).getRespuestas();
+
             out.println(trama);
+
+            System.out.println("Enviado: " + trama);
+
         } catch (Exception e) {
             System.out.println("No se pudo conectar al servidor: " + e.getMessage());
         }
     }
-  /*  public void guardarPreguntaEnBaseDeDatos(Preguntas p) {
+    /*  public void guardarPreguntaEnBaseDeDatos(Preguntas p) {
         String sql = "INSERT INTO preguntas (enunciado, respuesta1, respuesta2, respuesta3, respuesta4) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection con = ConexionBaseDeDatos.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
