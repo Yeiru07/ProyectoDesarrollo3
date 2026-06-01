@@ -25,7 +25,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import proyectofinaldesarrolloIII.App;
 
-public class GestorPreguntas implements Initializable {
+public class GestorDeJuegoDeSalasConPreguntas implements Initializable {
 
     @FXML
     private Button btnAgregarPregunta;
@@ -262,23 +262,5 @@ public class GestorPreguntas implements Initializable {
         sala.setNombreSala(titulo);
         AlertaParaUsar.mostrar("Hecho", "Sala creada y enviada a SQL", Alert.AlertType.CONFIRMATION);
     }
-    /*  public void guardarPreguntaEnBaseDeDatos(Preguntas p) {
-        String sql = "INSERT INTO preguntas (enunciado, respuesta1, respuesta2, respuesta3, respuesta4) VALUES (?, ?, ?, ?, ?)";
-
-        try (Connection con = ConexionBaseDeDatos.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
-
-            pst.setString(1, p.getEnunciado());
-            pst.setString(2, p.getArregloDeRespuestasParaPreguntas().get(0).getRespuestas());
-            pst.setString(3, p.getArregloDeRespuestasParaPreguntas().get(1).getRespuestas());
-            pst.setString(4, p.getArregloDeRespuestasParaPreguntas().get(2).getRespuestas());
-            pst.setString(5, p.getArregloDeRespuestasParaPreguntas().get(3).getRespuestas());
-
-            pst.executeUpdate();
-            System.out.println("¡Mascota guardada en la base de datos!");
-
-        } catch (SQLException e) {
-            System.out.println("Error al guardar: " + e.getMessage());
-        }
-    }*/
 
 }
