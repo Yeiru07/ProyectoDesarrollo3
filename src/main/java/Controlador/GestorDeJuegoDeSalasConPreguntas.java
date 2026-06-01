@@ -121,6 +121,7 @@ public class GestorDeJuegoDeSalasConPreguntas implements Initializable {
         cargarPregunta(indice);
     }
 
+    @FXML
     public void crearNuevaPregunta() {
 
         guardarPreguntaActual();

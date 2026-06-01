@@ -25,7 +25,7 @@
 
             <VBox fx:id="contenedorPreguntas" spacing="10" />
 
-            <Button fx:id="btnAgregarPregunta" styleClass="add-button" text="+ Añadir"    />
+            <Button fx:id="btnAgregarPregunta" styleClass="add-button" text="+ Añadir" onAction="#crearNuevaPregunta"    />
 
         </VBox>
     </left>
