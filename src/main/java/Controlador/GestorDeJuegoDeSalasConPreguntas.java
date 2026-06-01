@@ -247,8 +247,15 @@ public class GestorDeJuegoDeSalasConPreguntas implements Initializable {
     public void guardarPregunta(ActionEvent event) {
         crearSala();
         guardarPreguntaActual();
-        Preguntas pregunta = sala.getListaPreguntas().get(numeroDePreguntaActual);
-        enviarPreguntaPorSocket(pregunta);
+        crearSala();
+
+        guardarPreguntaActual();
+
+        for (Preguntas pregunta : sala.getListaPreguntas()) {
+
+            enviarPreguntaPorSocket(pregunta);
+        }
+
         enviarSalaPorSocket(sala);
         System.out.println("SALA MANDADA");
         System.out.println("Pregunta mandada");
