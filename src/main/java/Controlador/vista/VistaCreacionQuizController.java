@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Controlador;
+package Controlador.vista;
 
 import Modelo.Juego;
 import Modelo.Preguntas;
@@ -24,9 +24,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import proyectofinaldesarrolloIII.App;
 
-public class GestorDeJuegoDeSalasConPreguntas implements Initializable {
-
-    @FXML
+/**
+ *
+ * @author sronn
+ */
+public class VistaCreacionQuizController implements Initializable {
+       @FXML
     private Button btnAgregarPregunta;
 
     @FXML
@@ -272,5 +275,4 @@ public class GestorDeJuegoDeSalasConPreguntas implements Initializable {
         sala.setNombreSala(titulo);
         AlertaParaUsar.mostrar("Hecho", "Sala creada y enviada a SQL", Alert.AlertType.CONFIRMATION);
     }
-
 }

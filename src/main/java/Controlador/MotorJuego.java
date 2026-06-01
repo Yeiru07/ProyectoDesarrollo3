@@ -19,19 +19,6 @@ public class MotorJuego {
     @FXML
     private Button btnRegistrarse;
 
-    @FXML
-    private void irARegistro() throws IOException {
-        App.setRoot("RegistroCreador");
-    }
-
-    @FXML
-    private void crearUnaSala() throws IOException {
-        App.setRoot("VistaDeCreacionDeQuiz");
-    }
-
-    @FXML
-    private void presentarSala() throws IOException {
-        App.setRoot("GestorSalas");
-    }
+  
 
 }

@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="600.0" prefWidth="900.0" spacing="25.0" styleClass="root" stylesheets="@GestorSalas.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://fxml.com/fxml/1" fx:controller="Controlador.GestorSalasController">
+<VBox prefHeight="600.0" prefWidth="900.0" spacing="25.0" styleClass="root" stylesheets="@css/GestorSalas.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.vista.VistaGestorSalasController">
     <children>
 
         <HBox alignment="CENTER_LEFT" styleClass="headerBar">
@@ -23,14 +23,14 @@
 
                 <HBox alignment="CENTER_RIGHT" spacing="15.0">
                     <children>
-                        <Button fx:id="btnRegresar" mnemonicParsing="false" onAction="#onRegresarClick" text="⬅ Regresar">
+                        <Button fx:id="btnRegresar" mnemonicParsing="false" onAction="#regresar"  text="⬅ Regresar">
                             <styleClass>
                                 <String fx:value="adminButton" />
                                 <String fx:value="btnBack" />
                             </styleClass>
                         </Button>
                         
-                        <Button fx:id="btnPresentar" mnemonicParsing="false" onAction="#onPresentarClick" text="▶ Presentar ya">
+                        <Button fx:id="btnPresentar" mnemonicParsing="false"  onAction="#presentarYa"   text="▶ Presentar ya">
                             <styleClass>
                                 <String fx:value="adminButton" />
                                 <String fx:value="btnPresent" />

@@ -9,7 +9,7 @@
 
 <VBox alignment="CENTER" spacing="25.0" prefHeight="500.0" prefWidth="640.0" 
       styleClass="creadorContainer" 
-      stylesheets="@ControlJuegoCreador.css" 
+      stylesheets="@css/ControlJuegoCreador.css" 
       xmlns="http://javafx.com/javafx/17" 
       xmlns:fx="http://fxml.com/fxml/1" 
       fx:controller="controlador.ControlJuegoCreadorController">

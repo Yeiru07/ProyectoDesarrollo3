@@ -11,17 +11,8 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane styleClass="root" stylesheets="@VistaInicio.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.VistaInicioController">
+<StackPane styleClass="root" stylesheets="@css/VistaInicio.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.vista.VistaInicioController">
     <children>
-        <Button fx:id="btnAdmin" mnemonicParsing="false"  text="A" StackPane.alignment="TOP_RIGHT">
-            <styleClass>
-                <String fx:value="menuButton" />
-                <String fx:value="purple" />
-            </styleClass>
-            <StackPane.margin>
-                <Insets right="30.0" top="30.0" />
-            </StackPane.margin>
-        </Button>
 
         <VBox alignment="CENTER" spacing="35.0" StackPane.alignment="CENTER">
             <children>

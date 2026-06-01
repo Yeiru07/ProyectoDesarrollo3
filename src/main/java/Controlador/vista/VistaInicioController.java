@@ -1,4 +1,4 @@
-package Controlador;
+package Controlador.vista;
 
 import Modelo.Juego;
 import Modelo.Usuario;
@@ -78,6 +78,8 @@ public class VistaInicioController {
                 
                 //AGREGADO
                 App.usuarioActual = new Usuario(0, usuarioInicioSesion, "", contraInicioSesion, 0);
+                
+                
                 
                 
                 

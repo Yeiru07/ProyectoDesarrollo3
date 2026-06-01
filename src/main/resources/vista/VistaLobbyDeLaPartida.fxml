@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="840.0" prefWidth="1562.0" styleClass="rootPane" stylesheets="@CssDeLobbyDePartida.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/25" fx:controller="Controlador.GestorUsuarios">
+<AnchorPane prefHeight="840.0" prefWidth="1562.0" styleClass="rootPane" stylesheets="@css/CssDeLobbyDePartida.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/25" fx:controller="Controlador.vista.VistaLobbyDeLaPartidaController">
 
     <!-- LOGO -->
     <Label layoutX="25" layoutY="20" styleClass="logo" text="Kahoot!" />
@@ -60,7 +60,7 @@
             <TextField promptText="Ingresar nombre" styleClass="name-input" />
 
             <!-- BOTON -->
-            <Button styleClass="start-button" text="¡Listo, vamos!" />
+            <Button styleClass="start-button" onAction="#ListoVamos"   text="¡Listo, vamos!" />
 
             <!-- INFO -->
             <Label styleClass="info-label" text="No uses tu verdadero nombre" />

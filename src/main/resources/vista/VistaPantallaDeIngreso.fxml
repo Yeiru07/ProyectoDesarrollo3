@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="800" prefWidth="1400" styleClass="rootPane" stylesheets="@CssPantallaDeIngreso.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.MotorJuego">
+<AnchorPane prefHeight="800" prefWidth="1400" styleClass="rootPane" stylesheets="@css/CssPantallaDeIngreso.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.vista.VistaPantallaDeIngresoController">
 
     <!-- TOP BAR -->
     <HBox alignment="CENTER_LEFT" prefHeight="90" prefWidth="1400" styleClass="topBar">
@@ -36,7 +36,7 @@
             <!-- PRESENTAR -->
             <VBox alignment="CENTER" spacing="5">
    
-                <Button fx:id="btnRegistrarse" onAction="#irARegistro"  text="▶"> 
+                <Button fx:id="btnRegistrarse" text="▶"> 
    
                     <styleClass>
                         <String fx:value="menuButton" />
@@ -96,7 +96,7 @@
             <TextField promptText="PIN de juego" styleClass="pinInput" />
 
             <!-- BOTON -->
-            <Button fx:id="btnIngresar" styleClass="enterButton" text="Ingresar" />
+            <Button fx:id="btnIngresar" styleClass="enterButton" text="Ingresar" onAction="#ingresarPin"  />
 
         </VBox>
 
