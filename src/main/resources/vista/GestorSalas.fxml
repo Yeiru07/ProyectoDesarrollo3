@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="600.0" prefWidth="900.0" spacing="25.0" styleClass="root" stylesheets="@GestorSalas.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.GestorSalasController">
+<VBox prefHeight="600.0" prefWidth="900.0" spacing="25.0" styleClass="root" stylesheets="@GestorSalas.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://fxml.com/fxml/1" fx:controller="Controlador.GestorSalasController">
     <children>
 
         <HBox alignment="CENTER_LEFT" styleClass="headerBar">
@@ -23,17 +23,17 @@
 
                 <HBox alignment="CENTER_RIGHT" spacing="15.0">
                     <children>
-                        <Button fx:id="btnPresentar" mnemonicParsing="false"  text="▶ Presentar ya">
+                        <Button fx:id="btnRegresar" mnemonicParsing="false" onAction="#onRegresarClick" text="⬅ Regresar">
+                            <styleClass>
+                                <String fx:value="adminButton" />
+                                <String fx:value="btnBack" />
+                            </styleClass>
+                        </Button>
+                        
+                        <Button fx:id="btnPresentar" mnemonicParsing="false" onAction="#onPresentarClick" text="▶ Presentar ya">
                             <styleClass>
                                 <String fx:value="adminButton" />
                                 <String fx:value="btnPresent" />
-                            </styleClass>
-                        </Button>
-
-                        <Button mnemonicParsing="false"  text="+ Crear Nueva Sala">
-                            <styleClass>
-                                <String fx:value="adminButton" />
-                                <String fx:value="btnCreate" />
                             </styleClass>
                         </Button>
                     </children>
@@ -46,7 +46,7 @@
                 <FlowPane fx:id="flowPaneSalas" hgap="20.0" styleClass="gridSalas" vgap="20.0">
                     <children>
 
-                        <Label fx:id="lblNoSalas" styleClass="noRoomsLabel" text="No hay salas creadas en este momento. Presiona el botón superior para crear tu primera sala de juego." textAlignment="CENTER" wrapText="true" />
+                        <Label fx:id="lblNoSalas" styleClass="noRoomsLabel" text="No hay salas disponibles en este catálogo en este momento." textAlignment="CENTER" wrapText="true" />
 
                     </children>
                 </FlowPane>
