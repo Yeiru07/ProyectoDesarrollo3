@@ -1,6 +1,7 @@
 package Controlador;
 
 import Modelo.Juego;
+import Modelo.Usuario;
 import Utilidades.AlertaParaUsar;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -74,7 +75,12 @@ public class VistaInicioController {
 
             if (respuesta != null && respuesta.startsWith("OK")) {
                 AlertaParaUsar.mostrar("Éxito", "Sesión iniciada correctamente", Alert.AlertType.INFORMATION);
-
+                
+                //AGREGADO
+                App.usuarioActual = new Usuario(0, usuarioInicioSesion, "", contraInicioSesion, 0);
+                
+                
+                
                 // Si el login es correcto, cambia de pantalla al Lobby de Salas
                 App.setRoot("VIstaPantallaDeIngreso");
             } else {
@@ -119,6 +125,7 @@ public class VistaInicioController {
 
             // 5. Analizar la respuesta del Servidor y mostrársela al usuario en la pantalla
             if (respuesta != null && respuesta.startsWith("OK")) {
+
                 AlertaParaUsar.mostrar("Éxito", "Usuario registrado correctamente en el sistema", Alert.AlertType.INFORMATION);
 
                 // Limpiar campos tras un registro exitoso

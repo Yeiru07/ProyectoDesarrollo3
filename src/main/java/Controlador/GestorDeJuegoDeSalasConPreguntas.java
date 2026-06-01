@@ -11,7 +11,6 @@ import Modelo.Sala;
 import Utilidades.AlertaParaUsar;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -82,6 +81,9 @@ public class GestorDeJuegoDeSalasConPreguntas implements Initializable {
         sala = new Sala((int) (Math.random() * 900000) + 100000, "", true, 0);
 
         partida.getArrayDeSalas().add(sala);
+        if (App.usuarioActual != null) {
+            App.usuarioActual.getSalasAdministradas().add(sala);
+        }
 
         crearNuevaPregunta();
     }

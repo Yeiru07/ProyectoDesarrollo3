@@ -27,7 +27,15 @@ public class GestorSalasController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.partida = App.partida;
+
     }
 
+    public void verSalas() {
+        for (Sala sala : App.usuarioActual.getSalasAdministradas()) {
+
+            System.out.println(sala.getNombreSala());
+
+        }
+    }
 
 }

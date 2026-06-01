@@ -1,6 +1,7 @@
 package proyectofinaldesarrolloIII;
 
 import Modelo.Juego;
+import Modelo.Usuario;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -24,6 +25,7 @@ public class App extends Application {
 
     private static Scene scene;
     public static Juego partida = new Juego();
+    public static Usuario usuarioActual;
 
     @Override
     public void start(Stage stage) throws IOException {

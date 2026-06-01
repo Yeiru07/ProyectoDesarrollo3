@@ -1,5 +1,7 @@
 package Modelo;
 
+import java.util.ArrayList;
+
 public class Usuario implements Interfaces.ItipoUsuario {
 
     private int idUsuario;
@@ -7,6 +9,7 @@ public class Usuario implements Interfaces.ItipoUsuario {
     private String correo;
     private String contraseña;
     private double puntuajeAcumulado;
+    private ArrayList<Sala> salasAdministradas = new ArrayList<>();
 
     public Usuario(int idUsuario, String nombreUsuario, String correo, String contraseña, double puntuajeAcumulado) {
         this.idUsuario = idUsuario;
@@ -56,9 +59,21 @@ public class Usuario implements Interfaces.ItipoUsuario {
         this.puntuajeAcumulado = puntuajeAcumulado;
     }
 
-    @Override
-    public String getTipo() {
-        return "Normal";
+    public ArrayList<Sala> getSalasAdministradas() {
+        return salasAdministradas;
     }
 
+    public void setSalasAdministradas(ArrayList<Sala> salasAdministradas) {
+        this.salasAdministradas = salasAdministradas;
+    }
+
+    @Override
+    public String getTipo() {
+
+        if (!salasAdministradas.isEmpty()) {
+            return "Administrador";
+        }
+
+        return "Normal";
+    }
 }
