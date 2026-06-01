@@ -8,6 +8,7 @@ import Modelo.Juego;
 import Modelo.Preguntas;
 import Modelo.Respuestas;
 import Modelo.Sala;
+import Utilidades.AlertaParaUsar;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Random;
@@ -16,6 +17,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
@@ -124,7 +126,7 @@ public class GestorPreguntas implements Initializable {
         Preguntas pregunta = new Preguntas();
 
         sala.getListaPreguntas().add(pregunta);
-        
+
         int indice = sala.getListaPreguntas().size() - 1;
 
         crearBotonPregunta(indice);
@@ -227,7 +229,8 @@ public class GestorPreguntas implements Initializable {
         try {
             String trama = "Sala|"
                     + s.getNombreSala() + "|"
-                    + s.getCodigoSala();
+                    + s.getCodigoSala() + "|"
+                    + s.getCantidadJugadores();
 
             proyectofinaldesarrolloIII.App.escritor.println(trama);
             System.out.println("Enviado exitosamente al servidor: " + trama);
@@ -243,16 +246,21 @@ public class GestorPreguntas implements Initializable {
         guardarPreguntaActual();
         Preguntas pregunta = sala.getListaPreguntas().get(numeroDePreguntaActual);
         enviarPreguntaPorSocket(pregunta);
+        enviarSalaPorSocket(sala);
         System.out.println("SALA MANDADA");
         System.out.println("Pregunta mandada");
     }
 
     public void crearSala() {
+
         String titulo = txtTituloSala.getText().trim();
-        int numero = (int) (Math.random() * 900000) + 100000;
-        //int cantidadUsuarios = partida.obtenerCantidadUsuariosSala(numero);
-        Sala sala = new Sala(numero, titulo, true, 0);
-        partida.getArrayDeSalas().add(sala);
+
+        if (titulo.isEmpty()) {
+            AlertaParaUsar.mostrar("Error", "Debe ingresar un nombre para la sala", Alert.AlertType.WARNING);
+            return;
+        }
+        sala.setNombreSala(titulo);
+        AlertaParaUsar.mostrar("Hecho", "Sala creada y enviada a SQL", Alert.AlertType.CONFIRMATION);
     }
     /*  public void guardarPreguntaEnBaseDeDatos(Preguntas p) {
         String sql = "INSERT INTO preguntas (enunciado, respuesta1, respuesta2, respuesta3, respuesta4) VALUES (?, ?, ?, ?, ?)";

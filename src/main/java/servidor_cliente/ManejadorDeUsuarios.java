@@ -62,7 +62,7 @@ public class ManejadorDeUsuarios extends Thread {
                             escritor.println("OK|Login correcto");
                         } else {
                             escritor.println("ERROR|Usuario o contraseña incorrectos");
-                        }   
+                        }
                         break;
 
                     case "Pregunta":
@@ -81,7 +81,16 @@ public class ManejadorDeUsuarios extends Thread {
                             escritor.println("Error: No se pudo guardar la pregunta");
                         }
                         break;
-
+                    case "Sala":
+                        try {
+                            String nombreSala = partes[1];
+                            int codigoSala = Integer.parseInt(partes[2]);
+                            int cantidadJugadores = Integer.parseInt(partes[3]);
+                            guardarSalaNuevobd(partes);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        break;
                     default:
                         escritor.println("ERROR|Comando no reconocido por el servidor");
                         break;
@@ -102,7 +111,7 @@ public class ManejadorDeUsuarios extends Thread {
         }
     }
 
-    // Tu método original para insertar preguntas de examen
+// Tu método original para insertar preguntas de examen
     private void guardarPreguntaNuevobd(String[] partes) throws Exception {
         java.sql.Connection conexion = ConexionBaseDeDatos.conectar();
         String sql = "INSERT INTO preguntas (enunciado, respuesta1, respuesta2, respuesta3, respuesta4) VALUES (?, ?, ?, ?, ?)";
@@ -114,6 +123,22 @@ public class ManejadorDeUsuarios extends Thread {
             ps.setString(5, partes[5]);
             ps.executeUpdate();
             System.out.println("Pregunta guardada correctamente");
+        } finally {
+            conexion.close();
+        }
+    }
+
+    private void guardarSalaNuevobd(String[] partes) throws Exception {
+        java.sql.Connection conexion = ConexionBaseDeDatos.conectar();
+        String sql = "INSERT INTO sala (codigoSala, nombreSala, cantidadJugadore) VALUES (?, ?, ?)";
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+
+            ps.setString(1, partes[2]);
+            ps.setString(2, partes[1]);
+            ps.setInt(3, Integer.parseInt(partes[3]));
+
+            int filas = ps.executeUpdate();
+            System.out.println("SALA guardada correctamente");
         } finally {
             conexion.close();
         }
