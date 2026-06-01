@@ -54,12 +54,12 @@
     -fx-effect: none;
 }
 
-/* Color para el botón de Crear (Morado vibrante para resaltar sobre la barra blanca) */
-.btnCreate {
-    -fx-background-color: #8b2cff;
+/* NUEVO: Color para el botón de Regresar (Gris pizarra neutro) */
+.btnBack {
+    -fx-background-color: #475569;
 }
-.btnCreate:hover {
-    -fx-background-color: #721ed9;
+.btnBack:hover {
+    -fx-background-color: #334155;
 }
 
 /* Eliminación de bordes y fondos del ScrollPane por defecto */
@@ -84,7 +84,7 @@
     -fx-font-style: italic;
     -fx-alignment: center;
     -fx-max-width: 500px;
-    -fx-padding: 60 0 0 150; /* Alineación estimada en el FlowPane */
+    -fx-padding: 60 0 0 150;
 }
 
 /* ESTILO DE LAS TARJETAS DE SALAS (Para cuando las agregues dinámicamente) */

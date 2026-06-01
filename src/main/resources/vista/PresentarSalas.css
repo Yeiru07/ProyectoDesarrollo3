@@ -49,32 +49,41 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 8, 0, 0, 4);
 }
 
-/* Área inferior del botón de acción */
+/* Área inferior de los botones de acción */
 .bottomActionArea {
     -fx-background-color: transparent;
 }
 
-/* Estilo Base del Botón */
+/* Estilo Base General de los Botones */
 .adminButton {
     -fx-text-fill: white;
-    -fx-font-size: 24px;  /* Botón más grande e imponente */
+    -fx-font-size: 24px;  
     -fx-font-weight: bold;
-    -fx-padding: 14 60 14 60; /* Más ancho para que luzca balanceado abajo */
+    -fx-padding: 14 50 14 50; 
     -fx-background-radius: 12;
     -fx-cursor: hand;
+}
+.adminButton:hover {
+    -fx-scale-x: 1.04;
+    -fx-scale-y: 1.04;
+}
+
+/* NUEVO: Botón de Regresar en el Lobby Vivo (Gris pizarra elegante) */
+.btnBackLive {
+    -fx-background-color: #55637a;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 0, 0, 0, 5);
+}
+.btnBackLive:hover {
+    -fx-background-color: #404b5c;
 }
 
 /* El Gran Botón Verde Central de Lanzamiento */
 .btnStartLive {
     -fx-background-color: #26890c;
-    /* Al estar centrado abajo, un relieve más marcado simula un botón pulsable real */
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 0, 0, 0, 5);
 }
-
 .btnStartLive:hover {
     -fx-background-color: #1e6b0a;
-    -fx-scale-x: 1.05;
-    -fx-scale-y: 1.05;
 }
 
 /* Estado deshabilitado consistente si la sala está vacía */

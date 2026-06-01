@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="720.0" prefWidth="1080.0" spacing="25.0" styleClass="root" stylesheets="@PresentarSalas.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="">
+<VBox prefHeight="720.0" prefWidth="1080.0" spacing="25.0" styleClass="root" stylesheets="@PresentarSalas.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://fxml.com/fxml/1" fx:controller="controlador.PanelAdminController">
    <children>
       
       <VBox alignment="CENTER" spacing="6.0" styleClass="topBannerCard">
@@ -32,9 +32,16 @@
          </content>
       </ScrollPane>
       
-      <HBox alignment="CENTER" styleClass="bottomActionArea">
+      <HBox alignment="CENTER" spacing="25.0" styleClass="bottomActionArea">
          <children>
-            <Button fx:id="btnIniciarJuego" mnemonicParsing="false"  text="¡Iniciar Juego!">
+            <Button fx:id="btnRegresar" mnemonicParsing="false" onAction="#onRegresarClick" text="⬅ Regresar">
+               <styleClass>
+                  <String fx:value="adminButton" />
+                  <String fx:value="btnBackLive" />
+               </styleClass>
+            </Button>
+            
+            <Button fx:id="btnIniciarJuego" mnemonicParsing="false" onAction="#onIniciarJuegoClick" text="¡Iniciar Juego!">
                <styleClass>
                   <String fx:value="adminButton" />
                   <String fx:value="btnStartLive" />
