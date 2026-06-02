@@ -25,7 +25,7 @@
 
             <VBox fx:id="contenedorPreguntas" spacing="10" />
 
-            <Button fx:id="btnAgregarPregunta" styleClass="add-button" text="+ Añadir" onAction="#crearNuevaPregunta"    />
+            <Button fx:id="btnAgregarPregunta" onAction="#crearNuevaPregunta" styleClass="add-button" text="+ Añadir" />
 
         </VBox>
     </left>
@@ -102,8 +102,12 @@
                 </HBox>
 
                 <!-- RESPUESTA AMARILLA -->
-                <HBox alignment="CENTER_LEFT" spacing="20" styleClass="answer-yellow" GridPane.columnIndex="0" GridPane.rowIndex="1">
-
+                <HBox fx:id="boxRespuestaAmarilla"
+                      alignment="CENTER_LEFT"
+                      spacing="20"
+                      styleClass="answer-yellow"
+                      GridPane.columnIndex="0"
+                      GridPane.rowIndex="1">
                     <!-- ICONO -->
                     <Circle fill="white" radius="12" />
 
@@ -116,8 +120,12 @@
                 </HBox>
 
                 <!-- RESPUESTA VERDE -->
-                <HBox alignment="CENTER_LEFT" spacing="20" styleClass="answer-green" GridPane.columnIndex="1" GridPane.rowIndex="1">
-
+                <HBox fx:id="boxRespuestaVerde"
+                      alignment="CENTER_LEFT"
+                      spacing="20"
+                      styleClass="answer-green"
+                      GridPane.columnIndex="1"
+                      GridPane.rowIndex="1">
                     <!-- ICONO -->
                     <Circle fill="white" radius="12" />
 
@@ -143,7 +151,7 @@
             <VBox spacing="10">
 
                 <Label text="Tipo de pregunta" />
-                <ComboBox fx:id="cmbTipoDePregunta" promptText="Quiz" />
+                <ComboBox fx:id="cmbTipoDePregunta" promptText="Quiz" onAction="#cambiarTipoPregunta"/>
             </VBox>
 
             <VBox spacing="10">
@@ -155,7 +163,7 @@
             <VBox spacing="10">
 
                 <Label text="Puntos" />
-                <ComboBox promptText="Estándar" />
+                <ComboBox fx:id="cmbPuntosParaPregunta" promptText="Estándar" />
             </VBox>
 
             <VBox spacing="10">
@@ -171,7 +179,7 @@
                 <Button styleClass="duplicate-button" text="Duplicar" />
 
             </HBox>
-            <Button styleClass="generate-button" text="Generar" onAction="#guardarPregunta"  />
+            <Button onAction="#guardarPregunta" styleClass="generate-button" text="Generar" />
 
         </VBox>
     </right>

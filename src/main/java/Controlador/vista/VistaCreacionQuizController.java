@@ -21,6 +21,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import proyectofinaldesarrolloIII.App;
 
@@ -29,14 +31,24 @@ import proyectofinaldesarrolloIII.App;
  * @author sronn
  */
 public class VistaCreacionQuizController implements Initializable {
-       @FXML
+
+    @FXML
     private Button btnAgregarPregunta;
+    @FXML
+    private HBox boxRespuestaAmarilla;
 
     @FXML
-    private ComboBox<?> cmbLimiteDeTiempo;
+    private HBox boxRespuestaVerde;
+    @FXML
+    private ComboBox<Integer> cmbLimiteDeTiempo;
+    @FXML
+    private ComboBox<Integer> cmbPuntosParaPregunta;
 
     @FXML
-    private ComboBox<?> cmbTipoDePregunta;
+    private ToggleGroup grupoRespuestas;
+
+    @FXML
+    private ComboBox<String> cmbTipoDePregunta;
 
     @FXML
     private RadioButton rbRespuestaAmarillo;
@@ -79,16 +91,27 @@ public class VistaCreacionQuizController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        this.partida = App.partida;
+        this.partida = App.partida;//Instancia de la partida
 
-        sala = new Sala((int) (Math.random() * 900000) + 100000, "", true, 0);
+        sala = new Sala((int) (Math.random() * 900000) + 100000, "", true, 0);//codigo de ingreso para la sala
 
-        partida.getArrayDeSalas().add(sala);
+        partida.getArrayDeSalas().add(sala);//se agrega la sala a la partida
         if (App.usuarioActual != null) {
-            App.usuarioActual.getSalasAdministradas().add(sala);
+            App.usuarioActual.getSalasAdministradas().add(sala);//se le pone una sala al usuario actual
         }
+        cmbPuntosParaPregunta.getItems().addAll(10, 20, 30, 40, 50);
+        cmbLimiteDeTiempo.getItems().addAll(15, 20, 30);
+        cmbLimiteDeTiempo.setValue(20);
+        cmbPuntosParaPregunta.setValue(10);
+        cmbTipoDePregunta.getItems().addAll("Quiz", "Verdadero O Falso");
 
-        crearNuevaPregunta();
+        grupoRespuestas = new ToggleGroup();
+
+        rbRespuestaRojo.setToggleGroup(grupoRespuestas);
+        rbRespuestaAzul.setToggleGroup(grupoRespuestas);
+        rbRespuestaAmarillo.setToggleGroup(grupoRespuestas);
+        rbRespuestaVerde.setToggleGroup(grupoRespuestas);
+
     }
 
     @FXML
@@ -110,12 +133,12 @@ public class VistaCreacionQuizController implements Initializable {
             }
         });
 
-        contenedorPreguntas.getChildren().add(boton);
+        contenedorPreguntas.getChildren().add(boton);//Este es el vbox
     }
 
     public void seleccionarPregunta(ActionEvent event) {
 
-        guardarPreguntaActual();
+        guardarPreguntaSegunTipo();
 
         Button boton = (Button) event.getSource();
 
@@ -127,19 +150,64 @@ public class VistaCreacionQuizController implements Initializable {
     @FXML
     public void crearNuevaPregunta() {
 
-        guardarPreguntaActual();
+        String tipoDeQuiz = cmbTipoDePregunta.getValue();
 
+        if (tipoDeQuiz == null) {
+            AlertaParaUsar.mostrar("Error", "Seleccione un tipo de pregunta", Alert.AlertType.WARNING);
+            return;
+        }
+
+        if (numeroDePreguntaActual >= 0) {
+            guardarPreguntaSegunTipo();
+        }
         Preguntas pregunta = new Preguntas();
-
+        pregunta.setTipoDePregunta(tipoDeQuiz);
         sala.getListaPreguntas().add(pregunta);
-
         int indice = sala.getListaPreguntas().size() - 1;
-
         crearBotonPregunta(indice);
-
         numeroDePreguntaActual = indice;
-
         limpiarCampos();
+    }
+
+    private void guardarPreguntaSegunTipo() {
+
+        String tipo = cmbTipoDePregunta.getValue();
+
+        if (tipo == null || numeroDePreguntaActual < 0) {
+            return;
+        }
+
+        if ("Quiz".equals(tipo)) {
+            guardarPreguntaActual();
+        } else {
+            guardarPreguntaActualVerdaderoOFalso();
+        }
+    }
+
+    @FXML
+    private void cambiarTipoPregunta(ActionEvent event) {
+
+        boolean esVF = "Verdadero O Falso".equals(cmbTipoDePregunta.getValue());
+
+        boxRespuestaAmarilla.setVisible(!esVF);
+        boxRespuestaAmarilla.setManaged(!esVF);
+
+        boxRespuestaVerde.setVisible(!esVF);
+        boxRespuestaVerde.setManaged(!esVF);
+
+        if (esVF) {
+
+            txtRespuestaRojo.setText("Verdadero");
+            txtRespuestaAzul.setText("Falso");
+
+            txtRespuestaAmarillo.clear();
+            txtRespuestaVerde.clear();
+
+        } else {
+
+            txtRespuestaRojo.clear();
+            txtRespuestaAzul.clear();
+        }
     }
 
     public void guardarPreguntaActual() {
@@ -152,25 +220,86 @@ public class VistaCreacionQuizController implements Initializable {
             String respuestaAzul = txtRespuestaAzul.getText().trim();
             String respuestaAmarillo = txtRespuestaAmarillo.getText().trim();
             String respuestaVerde = txtRespuestaVerde.getText().trim();
+            int tiempoParaLasPreguntas = cmbLimiteDeTiempo.getValue();
+            int puntosParaPreguntas = cmbPuntosParaPregunta.getValue();
+            String tipoPregunta = cmbTipoDePregunta.getValue();
+
+            if (tituloPregunta.isEmpty()) {
+                throw new IllegalArgumentException("Debe ingresar un enunciado a la pregunta");
+            }
+            if (respuestaAmarillo.isEmpty() || respuestaAzul.isEmpty() || respuestaRojo.isEmpty() || respuestaVerde.isEmpty()) {
+                throw new IllegalArgumentException("Debe de ingresar las 4 respuestas");
+            }
 
             Preguntas pregunta = sala.getListaPreguntas().get(numeroDePreguntaActual);
             pregunta.setEnunciado(tituloPregunta);
+            pregunta.setTiempoParaLasPreguntas(tiempoParaLasPreguntas);
+            pregunta.setValorPuntosPreguntas(puntosParaPreguntas);
+            pregunta.setTipoDePregunta(tipoPregunta);
 
-            // Limpiamos y aseguramos que el arreglo interno esté inicializado
+            // Limpiamos
             if (pregunta.getArregloDeRespuestasParaPreguntas() == null) {
                 pregunta.setArregloDeRespuestasParaPreguntas(new ArrayList<>());
             }
             pregunta.getArregloDeRespuestasParaPreguntas().clear();
 
             // Agregamos las respuestas de la pantalla
-            pregunta.getArregloDeRespuestasParaPreguntas().add(new Respuestas(1, respuestaRojo));
-            pregunta.getArregloDeRespuestasParaPreguntas().add(new Respuestas(2, respuestaAzul));
-            pregunta.getArregloDeRespuestasParaPreguntas().add(new Respuestas(3, respuestaAmarillo));
-            pregunta.getArregloDeRespuestasParaPreguntas().add(new Respuestas(4, respuestaVerde));
+            pregunta.getArregloDeRespuestasParaPreguntas().add(new Respuestas(1, respuestaRojo, rbRespuestaRojo.isSelected()));
+            pregunta.getArregloDeRespuestasParaPreguntas().add(new Respuestas(2, respuestaAzul, rbRespuestaAzul.isSelected()));
+            pregunta.getArregloDeRespuestasParaPreguntas().add(new Respuestas(3, respuestaAmarillo, rbRespuestaAmarillo.isSelected()));
+            pregunta.getArregloDeRespuestasParaPreguntas().add(new Respuestas(4, respuestaVerde, rbRespuestaVerde.isSelected()));
 
+            if (grupoRespuestas.getSelectedToggle() == null) {
+                throw new IllegalArgumentException("Debe seleccionar una respuesta correcta");
+            }
         } catch (Exception e) {
-            System.out.println("ERROR CRÍTICO AL GUARDAR EN MEMORIA: " + e.getMessage());
-            e.printStackTrace(); // Esto te dirá exactamente si el problema es en el controlador
+            AlertaParaUsar.mostrar("Error de datos", e.getMessage(), Alert.AlertType.WARNING);
+            e.printStackTrace(); 
+        }
+    }
+
+    public void guardarPreguntaActualVerdaderoOFalso() {
+        if (numeroDePreguntaActual < 0) {
+            return;
+        }
+        try {
+            String tituloPregunta = txtTituloPregunta.getText().trim();
+            String respuestaRojo = txtRespuestaRojo.getText().trim();
+            String respuestaAzul = txtRespuestaAzul.getText().trim();
+
+            int tiempoParaLasPreguntas = cmbLimiteDeTiempo.getValue();
+            int puntosParaPreguntas = cmbPuntosParaPregunta.getValue();
+            String tipoPregunta = cmbTipoDePregunta.getValue();
+
+            if (tituloPregunta.isEmpty()) {
+                throw new IllegalArgumentException("Debe ingresar un enunciado a la pregunta");
+            }
+            if (respuestaAzul.isEmpty() || respuestaRojo.isEmpty()) {
+                throw new IllegalArgumentException("Debe de ingresar las 2 respuestas");
+            }
+
+            Preguntas pregunta = sala.getListaPreguntas().get(numeroDePreguntaActual);
+            pregunta.setEnunciado(tituloPregunta);
+            pregunta.setTiempoParaLasPreguntas(tiempoParaLasPreguntas);
+            pregunta.setValorPuntosPreguntas(puntosParaPreguntas);
+            pregunta.setTipoDePregunta(tipoPregunta);
+
+            // Limpiamos
+            if (pregunta.getArregloDeRespuestasParaPreguntas() == null) {
+                pregunta.setArregloDeRespuestasParaPreguntas(new ArrayList<>());
+            }
+            pregunta.getArregloDeRespuestasParaPreguntas().clear();
+
+            //las respuestas de la pantalla
+            pregunta.getArregloDeRespuestasParaPreguntas().add(new Respuestas(1, respuestaRojo, rbRespuestaRojo.isSelected()));
+            pregunta.getArregloDeRespuestasParaPreguntas().add(new Respuestas(2, respuestaAzul, rbRespuestaAzul.isSelected()));
+
+            if (grupoRespuestas.getSelectedToggle() == null) {
+                throw new IllegalArgumentException("Debe seleccionar una respuesta correcta");
+            }
+        } catch (Exception e) {
+            AlertaParaUsar.mostrar("Error de datos", e.getMessage(), Alert.AlertType.WARNING);
+            e.printStackTrace(); // Esto te dira si hay problemas en el controlador
         }
     }
 
@@ -182,14 +311,15 @@ public class VistaCreacionQuizController implements Initializable {
 
         txtTituloPregunta.setText(pregunta.getEnunciado());
 
-        if (pregunta.getArregloDeRespuestasParaPreguntas().size() >= 4) {
+        int cantidad = pregunta.getArregloDeRespuestasParaPreguntas().size();
 
+        if (cantidad >= 2) {
             txtRespuestaRojo.setText(pregunta.getArregloDeRespuestasParaPreguntas().get(0).getRespuestas());
-
             txtRespuestaAzul.setText(pregunta.getArregloDeRespuestasParaPreguntas().get(1).getRespuestas());
+        }
 
+        if (cantidad >= 4) {
             txtRespuestaAmarillo.setText(pregunta.getArregloDeRespuestasParaPreguntas().get(2).getRespuestas());
-
             txtRespuestaVerde.setText(pregunta.getArregloDeRespuestasParaPreguntas().get(3).getRespuestas());
         }
     }
@@ -203,31 +333,31 @@ public class VistaCreacionQuizController implements Initializable {
     }
 
     private void enviarPreguntaPorSocket(Preguntas p) {
-        // Validación preventiva: No enviar si el objeto interno no se llenó correctamente
-        if (p.getEnunciado().isEmpty() || p.getArregloDeRespuestasParaPreguntas().size() < 4) {
-            System.out.println("No se puede enviar: La pregunta en memoria está incompleta.");
+
+        if (p.getEnunciado().isEmpty() || p.getArregloDeRespuestasParaPreguntas().isEmpty()) {
+            System.out.println("No se puede enviar: Pregunta incompleta.");
             return;
         }
 
         try {
+            String trama = "Pregunta|" + p.getEnunciado();
 
-            String trama = "Pregunta|"
-                    + p.getEnunciado() + "|"
-                    + p.getArregloDeRespuestasParaPreguntas().get(0).getRespuestas() + "|"
-                    + p.getArregloDeRespuestasParaPreguntas().get(1).getRespuestas() + "|"
-                    + p.getArregloDeRespuestasParaPreguntas().get(2).getRespuestas() + "|"
-                    + p.getArregloDeRespuestasParaPreguntas().get(3).getRespuestas();
+            for (Respuestas r : p.getArregloDeRespuestasParaPreguntas()) {
+                trama += "|" + r.getRespuestas();
+            }
 
-            proyectofinaldesarrolloIII.App.escritor.println(trama);
-            System.out.println("Enviado exitosamente al servidor: " + trama);
+            App.escritor.println(trama);
+
+            System.out.println("Enviado exitosamente: " + trama);
 
         } catch (Exception e) {
-            System.out.println("No se pudo conectar al servidor: " + e.getMessage());
+            AlertaParaUsar.mostrar("Error", "Error al enviar: " + e.getMessage(), Alert.AlertType.WARNING);
+            e.printStackTrace();
+
         }
     }
 
     private void enviarSalaPorSocket(Sala s) {
-        // Validación preventiva: No enviar si el objeto interno no se llenó correctamente
         if (s.getNombreSala().isEmpty() || s.getCodigoSala() == 0) {
             System.out.println("No se puede enviar: La SALA ESTA INCOMPLETA");
             return;
@@ -239,29 +369,24 @@ public class VistaCreacionQuizController implements Initializable {
                     + s.getCantidadJugadores();
 
             proyectofinaldesarrolloIII.App.escritor.println(trama);
-            System.out.println("Enviado exitosamente al servidor: " + trama);
+            AlertaParaUsar.mostrar("Hecho", "Enviado exitosamente al servidor: " + trama, Alert.AlertType.CONFIRMATION);
 
         } catch (Exception e) {
-            System.out.println("No se pudo conectar al servidor: " + e.getMessage());
+            AlertaParaUsar.mostrar("Error", "No se pudo conectar al servidor: " + e.getMessage(), Alert.AlertType.WARNING);
+            e.printStackTrace();
+
         }
     }
 
     @FXML
     public void guardarPregunta(ActionEvent event) {
         crearSala();
-        guardarPreguntaActual();
-        crearSala();
-
-        guardarPreguntaActual();
-
+        guardarPreguntaSegunTipo();
         for (Preguntas pregunta : sala.getListaPreguntas()) {
-
             enviarPreguntaPorSocket(pregunta);
         }
-
         enviarSalaPorSocket(sala);
-        System.out.println("SALA MANDADA");
-        System.out.println("Pregunta mandada");
+        AlertaParaUsar.mostrar("Hecho", "Se han enviado los datos", Alert.AlertType.CONFIRMATION);
     }
 
     public void crearSala() {

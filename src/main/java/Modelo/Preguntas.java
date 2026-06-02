@@ -6,9 +6,11 @@ public class Preguntas {
 
     private String enunciado;
     private ArrayList<Respuestas> arregloDeRespuestasParaPreguntas;
-    private int repuestaCorrecta;
+    private String tipoDePregunta;
+    private int tiempoParaLasPreguntas;
+    private int valorPuntosPreguntas;
 
-    public Preguntas(String enunciado, ArrayList<Respuestas> arregloDeRespuestasParaPreguntas) {
+    public Preguntas(String enunciado, ArrayList<Respuestas> arregloDeRespuestasParaPreguntas, String tipoDePregunta) {
         this.enunciado = enunciado;
         this.arregloDeRespuestasParaPreguntas = new ArrayList<>();
     }
@@ -32,6 +34,30 @@ public class Preguntas {
 
     public void setArregloDeRespuestasParaPreguntas(ArrayList<Respuestas> arregloDeRespuestasParaPreguntas) {
         this.arregloDeRespuestasParaPreguntas = arregloDeRespuestasParaPreguntas;
+    }
+
+    public int getTiempoParaLasPreguntas() {
+        return tiempoParaLasPreguntas;
+    }
+
+    public void setTiempoParaLasPreguntas(int tiempoParaLasPreguntas) {
+        this.tiempoParaLasPreguntas = tiempoParaLasPreguntas;
+    }
+
+    public int getValorPuntosPreguntas() {
+        return valorPuntosPreguntas;
+    }
+
+    public void setValorPuntosPreguntas(int valorPuntosPreguntas) {
+        this.valorPuntosPreguntas = valorPuntosPreguntas;
+    }
+
+    public String getTipoDePregunta() {
+        return tipoDePregunta;
+    }
+
+    public void setTipoDePregunta(String tipoDePregunta) {
+        this.tipoDePregunta = tipoDePregunta;
     }
 
 }
