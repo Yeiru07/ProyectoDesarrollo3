@@ -36,4 +36,11 @@ public class Juego {//singleton
         }
         return 0;
     }
+    public int obtenerCodigoSala(){
+        for (Sala sala : arrayDeSalas) {
+           return sala.getCodigoSala();
+            
+        }
+        return 0;
+    }
 }

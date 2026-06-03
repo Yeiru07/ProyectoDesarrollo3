@@ -72,7 +72,6 @@ public class VistaCreacionQuizController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.partida = App.partida;
-
         //Hay que refactorizar
         int codigoSala = (int) (Math.random() * 900000) + 100000;
         sala = new Sala(codigoSala, "", true, 0);
@@ -217,12 +216,15 @@ public class VistaCreacionQuizController implements Initializable {
             if (grupoRespuestas.getSelectedToggle() == null) {
                 throw new IllegalArgumentException("Debe seleccionar una respuesta correcta (Radio Button)");
             }
-
+            int codigoSala= partida.obtenerCodigoSala();
+            
             Preguntas pregunta = sala.getListaPreguntas().get(numeroDePreguntaActual);
             pregunta.setEnunciado(tituloPregunta);
             pregunta.setTiempoParaLasPreguntas(tiempoParaLasPreguntas);
             pregunta.setValorPuntosPreguntas(puntosParaPreguntas);
             pregunta.setTipoDePregunta(tipoPregunta);
+            
+            pregunta.setCodigoSala(codigoSala);
 
             if (pregunta.getArregloDeRespuestasParaPreguntas() == null) {
                 pregunta.setArregloDeRespuestasParaPreguntas(new ArrayList<>());
@@ -325,7 +327,7 @@ public class VistaCreacionQuizController implements Initializable {
         }
 
         try {
-            String trama = "Pregunta|" + p.getEnunciado();
+            String trama = "Pregunta|" + p.getEnunciado() +"Codigo"+p.getCodigoSala() ;
             for (Respuestas r : p.getArregloDeRespuestasParaPreguntas()) {
                 trama += "|" + r.getRespuestas();
             }
