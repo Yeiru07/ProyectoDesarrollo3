@@ -10,6 +10,7 @@ public class Sala {
     private int cantidadJugadores;
     private ArrayList<Usuario> arrayDeUsuarios;
     private ArrayList<Preguntas> listaPreguntas;
+    private ArrayList<Integer> listaDeCodigos;
 
     public Sala(int codigoSala, String nombreSala, boolean estado, int cantidadJugadores) {
         this.codigoSala = codigoSala;
@@ -18,6 +19,7 @@ public class Sala {
         this.cantidadJugadores = cantidadJugadores;
         this.arrayDeUsuarios = new ArrayList<>();//AGREGACION DE USUARIO A LA SALA
         this.listaPreguntas = new ArrayList<>();
+        this.listaDeCodigos= new ArrayList<>();
     }
 
     public int getCodigoSala() {
@@ -71,4 +73,14 @@ public class Sala {
     public void setListaPreguntas(ArrayList<Preguntas> listaPreguntas) {
         this.listaPreguntas = listaPreguntas;
     }
+
+    public ArrayList<Integer> getListaDeCodigos() {
+        return listaDeCodigos;
+    }
+
+    public void setListaDeCodigos(ArrayList<Integer> listaDeCodigos) {
+        this.listaDeCodigos = listaDeCodigos;
+    }
+
+
 }

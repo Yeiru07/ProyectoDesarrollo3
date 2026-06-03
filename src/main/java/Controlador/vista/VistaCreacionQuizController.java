@@ -73,8 +73,12 @@ public class VistaCreacionQuizController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         this.partida = App.partida;
 
-        sala = new Sala((int) (Math.random() * 900000) + 100000, "", true, 0);
+        //Hay que refactorizar
+        int codigoSala = (int) (Math.random() * 900000) + 100000;
+        sala = new Sala(codigoSala, "", true, 0);
+        sala.getListaDeCodigos().add(codigoSala);
         partida.getArrayDeSalas().add(sala);
+///////////////////////////////////////////////////////////////////////////////////
 
         if (App.usuarioActual != null) {
             App.usuarioActual.getSalasAdministradas().add(sala);
