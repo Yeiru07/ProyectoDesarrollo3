@@ -5,7 +5,7 @@ import java.net.Socket;
 
 public class Servidor {
 
-   private static final int PUERTO = 5000;//TOMO EL PUERTO
+    private static final int PUERTO = 5000;//TOMO EL PUERTO
 
     public static void main(String[] args) {
 
@@ -28,8 +28,7 @@ public class Servidor {
             }
 
         } catch (Exception e) {
-
-            e.printStackTrace();
+            System.out.println("Error al guardar en BD: " + e.getMessage());
         }
     }
 }

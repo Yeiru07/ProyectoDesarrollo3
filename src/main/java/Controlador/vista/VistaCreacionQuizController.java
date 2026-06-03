@@ -216,15 +216,12 @@ public class VistaCreacionQuizController implements Initializable {
             if (grupoRespuestas.getSelectedToggle() == null) {
                 throw new IllegalArgumentException("Debe seleccionar una respuesta correcta (Radio Button)");
             }
-            int codigoSala= partida.obtenerCodigoSala();
-            
             Preguntas pregunta = sala.getListaPreguntas().get(numeroDePreguntaActual);
             pregunta.setEnunciado(tituloPregunta);
             pregunta.setTiempoParaLasPreguntas(tiempoParaLasPreguntas);
             pregunta.setValorPuntosPreguntas(puntosParaPreguntas);
             pregunta.setTipoDePregunta(tipoPregunta);
-            
-            pregunta.setCodigoSala(codigoSala);
+            pregunta.setCodigoSala(sala.getCodigoSala());
 
             if (pregunta.getArregloDeRespuestasParaPreguntas() == null) {
                 pregunta.setArregloDeRespuestasParaPreguntas(new ArrayList<>());
@@ -327,14 +324,16 @@ public class VistaCreacionQuizController implements Initializable {
         }
 
         try {
-            String trama = "Pregunta|" + p.getEnunciado() +"Codigo"+p.getCodigoSala() ;
+            String trama = "Pregunta|" + p.getEnunciado();
             for (Respuestas r : p.getArregloDeRespuestasParaPreguntas()) {
                 trama += "|" + r.getRespuestas();
             }
+            trama += "|" + p.getCodigoSala();
             App.escritor.println(trama);
             System.out.println("Enviado exitosamente: " + trama);
 
         } catch (Exception e) {
+            e.printStackTrace();
             AlertaParaUsar.mostrar("Error", "Error al enviar: " + e.getMessage(), Alert.AlertType.WARNING);
         }
     }
@@ -369,11 +368,11 @@ public class VistaCreacionQuizController implements Initializable {
             return; // Se detiene TODO si falta información
         }
         // 3. Enviar todo por el Socket
+        enviarSalaPorSocket(sala);
+
         for (Preguntas pregunta : sala.getListaPreguntas()) {
             enviarPreguntaPorSocket(pregunta);
         }
-        enviarSalaPorSocket(sala);
-
         AlertaParaUsar.mostrar("Éxito", "El Quiz ha sido creado y enviado al servidor.", Alert.AlertType.INFORMATION);
     }
 }
