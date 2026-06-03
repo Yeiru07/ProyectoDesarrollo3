@@ -38,7 +38,7 @@
             <HBox alignment="CENTER_LEFT" spacing="15">
 
                 <TextField fx:id="txtTituloSala" promptText="Ingresar título..." styleClass="title-input" />
-                <Label styleClass="save-label" text="✔ Bienvenido &quot;Usuario&quot;" />
+                <Label fx:id="labelDeNombreUsuario" styleClass="save-label" text="✔ Bienvenido &quot;Usuario&quot;" />
 
             </HBox>
 
@@ -150,26 +150,19 @@
                 <ComboBox fx:id="cmbLimiteDeTiempo" promptText="20 segundos" />
             </VBox>
 
-            <VBox spacing="10">
+            <VBox spacing="10" />
 
-                <Label text="Puntos" />
-                <ComboBox fx:id="cmbPuntosParaPregunta" promptText="Estándar" />
-            </VBox>
+            <VBox spacing="10" />
 
-            <VBox spacing="10">
+            <HBox alignment="CENTER" spacing="12">
 
-                <Label text="Opciones de respuesta" />
-                <ComboBox promptText="Selección simple" />
-            </VBox>
+                <Button fx:id="btnEliminar" onAction="#eliminarPregunta" styleClass="action-delete-button" text="Eliminar" />
 
-            <HBox spacing="10">
+                <Button fx:id="btnCrearSala" onAction="#guardarPregunta" styleClass="action-generate-button" text="Crear Sala" />
 
-                <Button fx:id="btnEliminar" styleClass="delete-button" text="Eliminar" onAction="#eliminarPregunta" />
-
-                <Button styleClass="duplicate-button" text="Duplicar" />
+                <Button fx:id="btnVolver" styleClass="action-back-button" text="Volver" onAction="#regresar" />
 
             </HBox>
-            <Button onAction="#guardarPregunta" styleClass="generate-button" text="Generar" />
 
         </VBox>
     </right>

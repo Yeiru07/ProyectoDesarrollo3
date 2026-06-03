@@ -5,6 +5,7 @@ import Modelo.Preguntas;
 import Modelo.Respuestas;
 import Modelo.Sala;
 import Utilidades.AlertaParaUsar;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -15,6 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
@@ -64,6 +66,9 @@ public class VistaCreacionQuizController implements Initializable {
     @FXML
     private TextField txtTituloSala;
 
+    @FXML
+    private Label labelDeNombreUsuario;
+
     private int numeroDePreguntaActual = -1;
 
     Juego partida;
@@ -82,6 +87,7 @@ public class VistaCreacionQuizController implements Initializable {
         if (App.usuarioActual != null) {
             App.usuarioActual.getSalasAdministradas().add(sala);
         }
+        labelDeNombreUsuario.setText(App.usuarioActual.getNombreUsuario());
 
         cmbPuntosParaPregunta.getItems().addAll(10, 20, 30, 40, 50);
         cmbLimiteDeTiempo.getItems().addAll(15, 20, 30);
@@ -395,5 +401,10 @@ public class VistaCreacionQuizController implements Initializable {
             numeroDePreguntaActual = sala.getListaPreguntas().size() - 1;
         }
         cargarPregunta(numeroDePreguntaActual);
+    }
+
+    @FXML
+    public void regresar() throws IOException {
+        App.setRoot("VistaPantallaDeIngreso");
     }
 }
