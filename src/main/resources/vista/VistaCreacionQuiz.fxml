@@ -102,12 +102,7 @@
                 </HBox>
 
                 <!-- RESPUESTA AMARILLA -->
-                <HBox fx:id="boxRespuestaAmarilla"
-                      alignment="CENTER_LEFT"
-                      spacing="20"
-                      styleClass="answer-yellow"
-                      GridPane.columnIndex="0"
-                      GridPane.rowIndex="1">
+                <HBox fx:id="boxRespuestaAmarilla" alignment="CENTER_LEFT" spacing="20" styleClass="answer-yellow" GridPane.columnIndex="0" GridPane.rowIndex="1">
                     <!-- ICONO -->
                     <Circle fill="white" radius="12" />
 
@@ -120,12 +115,7 @@
                 </HBox>
 
                 <!-- RESPUESTA VERDE -->
-                <HBox fx:id="boxRespuestaVerde"
-                      alignment="CENTER_LEFT"
-                      spacing="20"
-                      styleClass="answer-green"
-                      GridPane.columnIndex="1"
-                      GridPane.rowIndex="1">
+                <HBox fx:id="boxRespuestaVerde" alignment="CENTER_LEFT" spacing="20" styleClass="answer-green" GridPane.columnIndex="1" GridPane.rowIndex="1">
                     <!-- ICONO -->
                     <Circle fill="white" radius="12" />
 
@@ -151,7 +141,7 @@
             <VBox spacing="10">
 
                 <Label text="Tipo de pregunta" />
-                <ComboBox fx:id="cmbTipoDePregunta" promptText="Quiz" onAction="#cambiarTipoPregunta"/>
+                <ComboBox fx:id="cmbTipoDePregunta" onAction="#cambiarTipoPregunta" promptText="Quiz" />
             </VBox>
 
             <VBox spacing="10">
@@ -174,7 +164,7 @@
 
             <HBox spacing="10">
 
-                <Button styleClass="delete-button" text="Eliminar" />
+                <Button fx:id="btnEliminar" styleClass="delete-button" text="Eliminar" onAction="#eliminarPregunta" />
 
                 <Button styleClass="duplicate-button" text="Duplicar" />
 

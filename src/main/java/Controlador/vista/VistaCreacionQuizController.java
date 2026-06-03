@@ -118,11 +118,7 @@ public class VistaCreacionQuizController implements Initializable {
     }
 
     public void seleccionarPregunta(ActionEvent event) {
-        // Validar antes de cambiar de pregunta
-        boolean seGuardo = guardarPreguntaSegunTipo();
-        if (!seGuardo) {
-            return; // Si faltan datos, se detiene y no cambia de pregunta
-        }
+
         Button boton = (Button) event.getSource();
         int indice = (Integer) boton.getUserData();
         cargarPregunta(indice);
@@ -374,5 +370,30 @@ public class VistaCreacionQuizController implements Initializable {
             enviarPreguntaPorSocket(pregunta);
         }
         AlertaParaUsar.mostrar("Éxito", "El Quiz ha sido creado y enviado al servidor.", Alert.AlertType.INFORMATION);
+    }
+
+    @FXML
+    private void eliminarPregunta(ActionEvent event) {
+
+        if (numeroDePreguntaActual < 0 || sala.getListaPreguntas().isEmpty()) {
+            AlertaParaUsar.mostrar("Error", "No hay ninguna pregunta seleccionada", Alert.AlertType.WARNING);
+            return;
+        }
+        sala.getListaPreguntas().remove(numeroDePreguntaActual);
+        contenedorPreguntas.getChildren().clear();
+
+        for (int i = 0; i < sala.getListaPreguntas().size(); i++) {
+            crearBotonPregunta(i);
+        }
+
+        if (sala.getListaPreguntas().isEmpty()) {
+            numeroDePreguntaActual = -1;
+            limpiarCampos();
+            return;
+        }
+        if (numeroDePreguntaActual >= sala.getListaPreguntas().size()) {
+            numeroDePreguntaActual = sala.getListaPreguntas().size() - 1;
+        }
+        cargarPregunta(numeroDePreguntaActual);
     }
 }
