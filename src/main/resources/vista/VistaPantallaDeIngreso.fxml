@@ -10,31 +10,25 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="800" prefWidth="1400" styleClass="rootPane" stylesheets="@css/CssPantallaDeIngreso.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.vista.VistaPantallaDeIngresoController">
+<AnchorPane prefHeight="720.0" prefWidth="1080.0" styleClass="rootPane" stylesheets="@css/CssPantallaDeIngreso.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.vista.VistaPantallaDeIngresoController">
 
-    <!-- TOP BAR -->
-    <HBox alignment="CENTER_LEFT" prefHeight="90" prefWidth="1400" styleClass="topBar">
+    <HBox alignment="CENTER_LEFT" prefHeight="90.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" styleClass="topBar">
 
         <padding>
-            <Insets bottom="15" left="25" right="25" top="15" />
+            <Insets bottom="15.0" left="25.0" right="25.0" top="15.0" />
         </padding>
 
-        <!-- LOGO -->
         <Label styleClass="logo" text="Kahoot! GO" />
 
         <Pane HBox.hgrow="ALWAYS" />
 
-        <!-- MENU -->
-        <HBox alignment="CENTER" prefHeight="82.0" prefWidth="274.0" spacing="20">
+        <HBox alignment="CENTER" prefHeight="82.0" prefWidth="274.0" spacing="20.0">
 
-            <!-- DESCUBRE -->
-            <VBox alignment="CENTER" spacing="5" />
+            <VBox alignment="CENTER" spacing="5.0" />
 
-            <!-- APRENDE -->
-            <VBox alignment="CENTER" spacing="5" />
+            <VBox alignment="CENTER" spacing="5.0" />
 
-            <!-- PRESENTAR -->
-            <VBox alignment="CENTER" spacing="5">
+            <VBox alignment="CENTER" spacing="5.0">
    
                 <Button fx:id="btnRegistrarse" text="▶"> 
    
@@ -49,11 +43,10 @@
 
             </VBox>
 
-            <!-- CREA -->
-            <VBox alignment="CENTER" spacing="5" />
-            <VBox alignment="CENTER" spacing="5">
+            <VBox alignment="CENTER" spacing="5.0" />
+            <VBox alignment="CENTER" spacing="5.0">
                 <children>
-                    <Button fx:id="btnPresentarJuego" onAction="#presentarSala"  text="▶">
+                    <Button fx:id="btnPresentarJuego" onAction="#presentarSala" text="▶">
                         <styleClass>
                             <String fx:value="menuButton" />
                             <String fx:value="blue" />
@@ -65,10 +58,9 @@
 
         </HBox>
 
-        <!-- UNIRSE -->
-        <VBox alignment="CENTER" spacing="5" styleClass="joinContainer">
+        <VBox alignment="CENTER" spacing="5.0" styleClass="joinContainer">
 
-            <Button fx:id="btnCrearSala" onAction="#crearUnaSala"  text="🎲">
+            <Button fx:id="btnCrearSala" onAction="#crearUnaSala" text="🎲">
 
                 <styleClass>
                     <String fx:value="menuButton" />
@@ -83,20 +75,15 @@
 
     </HBox>
 
-    <!-- CENTRO -->
-    <VBox alignment="CENTER" layoutX="420" layoutY="180" spacing="35">
+    <VBox alignment="CENTER" spacing="35.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="90.0">
 
-        <!-- LOGO CENTRAL -->
         <Label styleClass="centerLogo" text="Kahoot!" />
 
-        <!-- PANEL LOGIN -->
-        <VBox alignment="CENTER" spacing="20" styleClass="loginPanel">
+        <VBox alignment="CENTER" maxWidth="400.0" spacing="20.0" styleClass="loginPanel">
 
-            <!-- INPUT -->
             <TextField promptText="PIN de juego" styleClass="pinInput" />
 
-            <!-- BOTON -->
-            <Button fx:id="btnIngresar" styleClass="enterButton" text="Ingresar" onAction="#ingresarPin"  />
+            <Button fx:id="btnIngresar" onAction="#ingresarPin" styleClass="enterButton" text="Ingresar" />
 
         </VBox>
 
