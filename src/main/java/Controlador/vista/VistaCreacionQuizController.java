@@ -37,8 +37,8 @@ public class VistaCreacionQuizController implements Initializable {
     private HBox boxRespuestaVerde;
     @FXML
     private ComboBox<Integer> cmbLimiteDeTiempo;
-    @FXML
-    private ComboBox<Integer> cmbPuntosParaPregunta;
+   /* @FXML
+    private ComboBox<Integer> cmbPuntosParaPregunta;*/
     @FXML
     private ToggleGroup grupoRespuestas;
     @FXML
@@ -89,10 +89,10 @@ public class VistaCreacionQuizController implements Initializable {
         }
         labelDeNombreUsuario.setText(App.usuarioActual.getNombreUsuario());
 
-        cmbPuntosParaPregunta.getItems().addAll(10, 20, 30, 40, 50);
+        //cmbPuntosParaPregunta.getItems().addAll(10, 20, 30, 40, 50);
         cmbLimiteDeTiempo.getItems().addAll(15, 20, 30);
         cmbLimiteDeTiempo.setValue(20);
-        cmbPuntosParaPregunta.setValue(10);
+      //  cmbPuntosParaPregunta.setValue(10);
 
         cmbTipoDePregunta.getItems().addAll("Quiz", "Verdadero O Falso");
         cmbTipoDePregunta.setValue("Quiz"); // Valor por defecto
@@ -206,7 +206,7 @@ public class VistaCreacionQuizController implements Initializable {
             String respuestaAmarillo = txtRespuestaAmarillo.getText().trim();
             String respuestaVerde = txtRespuestaVerde.getText().trim();
             int tiempoParaLasPreguntas = cmbLimiteDeTiempo.getValue();
-            int puntosParaPreguntas = cmbPuntosParaPregunta.getValue();
+            //int puntosParaPreguntas = cmbPuntosParaPregunta.getValue();
             String tipoPregunta = cmbTipoDePregunta.getValue();
 
             if (tituloPregunta.isEmpty()) {
@@ -221,7 +221,7 @@ public class VistaCreacionQuizController implements Initializable {
             Preguntas pregunta = sala.getListaPreguntas().get(numeroDePreguntaActual);
             pregunta.setEnunciado(tituloPregunta);
             pregunta.setTiempoParaLasPreguntas(tiempoParaLasPreguntas);
-            pregunta.setValorPuntosPreguntas(puntosParaPreguntas);
+          //  pregunta.setValorPuntosPreguntas(puntosParaPreguntas);
             pregunta.setTipoDePregunta(tipoPregunta);
             pregunta.setCodigoSala(sala.getCodigoSala());
 
@@ -254,7 +254,7 @@ public class VistaCreacionQuizController implements Initializable {
             String respuestaRojo = txtRespuestaRojo.getText().trim();
             String respuestaAzul = txtRespuestaAzul.getText().trim();
             int tiempoParaLasPreguntas = cmbLimiteDeTiempo.getValue();
-            int puntosParaPreguntas = cmbPuntosParaPregunta.getValue();
+           // int puntosParaPreguntas = cmbPuntosParaPregunta.getValue();
             String tipoPregunta = cmbTipoDePregunta.getValue();
 
             if (tituloPregunta.isEmpty()) {
@@ -270,7 +270,7 @@ public class VistaCreacionQuizController implements Initializable {
             Preguntas pregunta = sala.getListaPreguntas().get(numeroDePreguntaActual);
             pregunta.setEnunciado(tituloPregunta);
             pregunta.setTiempoParaLasPreguntas(tiempoParaLasPreguntas);
-            pregunta.setValorPuntosPreguntas(puntosParaPreguntas);
+           // pregunta.setValorPuntosPreguntas(puntosParaPreguntas);
             pregunta.setTipoDePregunta(tipoPregunta);
 
             if (pregunta.getArregloDeRespuestasParaPreguntas() == null) {
