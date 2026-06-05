@@ -1,34 +1,34 @@
-package servidor_cliente;
+    package servidor_cliente;
 
-import java.net.ServerSocket;
-import java.net.Socket;
+    import java.net.ServerSocket;
+    import java.net.Socket;
 
-public class Servidor {
+    public class Servidor {
 
-    private static final int PUERTO = 5000;//TOMO EL PUERTO
+        private static final int PUERTO = 5000;//TOMO EL PUERTO
 
-    public static void main(String[] args) {
+        public static void main(String[] args) {
 
-        try {
+            try {
 
-            ServerSocket servidor = new ServerSocket(PUERTO);//CREO UN SERVER CON EL PUERTO
-            System.out.println("SERVIDOR INICIADO");
+                ServerSocket servidor = new ServerSocket(PUERTO);//CREO UN SERVER CON EL PUERTO
+                System.out.println("SERVIDOR INICIADO");
 
-            while (true) {
+                while (true) {
 
-                System.out.println("Esperando clientes...");
+                    System.out.println("Esperando clientes...");
 
-                Socket socketCliente = servidor.accept();
+                    Socket socketCliente = servidor.accept();
 
-                System.out.println("Cliente conectado");
+                    System.out.println("Cliente conectado");
 
-                ManejadorDeUsuarios cliente = new ManejadorDeUsuarios(socketCliente);
+                    ManejadorDeUsuarios cliente = new ManejadorDeUsuarios(socketCliente);
 
-                cliente.start();
+                    cliente.start();
+                }
+
+            } catch (Exception e) {
+                System.out.println("Error al iniciar servidor: " + e.getMessage());
             }
-
-        } catch (Exception e) {
-            System.out.println("Error al guardar en BD: " + e.getMessage());
         }
     }
-}
