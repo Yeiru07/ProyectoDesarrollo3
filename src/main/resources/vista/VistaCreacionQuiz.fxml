@@ -13,7 +13,6 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Circle?>
 
 <BorderPane prefHeight="768.0" prefWidth="1400" stylesheets="@css/CssDeCreacionDeQuiz.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.vista.VistaCreacionQuizController">
 
@@ -72,58 +71,40 @@
                     <RowConstraints percentHeight="50" />
                     <RowConstraints percentHeight="50" />
                 </rowConstraints>
-
-                <!-- RESPUESTA ROJA -->
+                
+                <!-- RESPUESTA roja -->
                 <HBox alignment="CENTER_LEFT" spacing="20" styleClass="answer-red" GridPane.columnIndex="0" GridPane.rowIndex="0">
 
-                    <!-- ICONO -->
-                    <Circle fill="white" radius="12" />
+                    <RadioButton fx:id="rbRespuestaRojo" styleClass="radioGrande" />
 
-                    <!-- TEXTO RESPUESTA -->
-                    <TextField fx:id="txtRespuestaRojo" styleClass="answer-field" text="Pregunta Ejemplo 1" HBox.hgrow="ALWAYS" />
-
-                    <!-- RADIO BUTTON RESPUESTA CORRECTA -->
-                    <RadioButton fx:id="rbRespuestaRojo" />
+                    <TextField fx:id="txtRespuestaRojo" prefHeight="61.0" prefWidth="320.0" styleClass="answer-field" text="Pregunta Ejemplo 1" HBox.hgrow="ALWAYS" />
 
                 </HBox>
 
                 <!-- RESPUESTA AZUL -->
                 <HBox alignment="CENTER_LEFT" spacing="20" styleClass="answer-blue" GridPane.columnIndex="1" GridPane.rowIndex="0">
 
-                    <!-- ICONO -->
-                    <Circle fill="white" radius="12" />
+                    <RadioButton fx:id="rbRespuestaAzul" styleClass="radioGrande" />
 
-                    <!-- TEXTO RESPUESTA -->
-                    <TextField fx:id="txtRespuestaAzul" styleClass="answer-field" text="Pregunta Ejemplo 1" HBox.hgrow="ALWAYS" />
-
-                    <!-- RADIO BUTTON RESPUESTA CORRECTA -->
-                    <RadioButton fx:id="rbRespuestaAzul" />
+                    <TextField fx:id="txtRespuestaAzul" prefHeight="60.0" prefWidth="280.0" styleClass="answer-field" text="Pregunta Ejemplo 1" HBox.hgrow="ALWAYS" />
 
                 </HBox>
 
                 <!-- RESPUESTA AMARILLA -->
                 <HBox fx:id="boxRespuestaAmarilla" alignment="CENTER_LEFT" spacing="20" styleClass="answer-yellow" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                    <!-- ICONO -->
-                    <Circle fill="white" radius="12" />
 
-                    <!-- TEXTO RESPUESTA -->
-                    <TextField fx:id="txtRespuestaAmarillo" styleClass="answer-field" text="Pregunta Ejemplo 1" HBox.hgrow="ALWAYS" />
+                    <RadioButton fx:id="rbRespuestaAmarillo" styleClass="radioGrande" />
 
-                    <!-- RADIO BUTTON RESPUESTA CORRECTA -->
-                    <RadioButton fx:id="rbRespuestaAmarillo" />
+                    <TextField fx:id="txtRespuestaAmarillo" prefHeight="52.0" prefWidth="293.0" styleClass="answer-field" text="Pregunta Ejemplo 1" HBox.hgrow="ALWAYS" />
 
                 </HBox>
 
                 <!-- RESPUESTA VERDE -->
                 <HBox fx:id="boxRespuestaVerde" alignment="CENTER_LEFT" spacing="20" styleClass="answer-green" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                    <!-- ICONO -->
-                    <Circle fill="white" radius="12" />
 
-                    <!-- TEXTO RESPUESTA -->
-                    <TextField fx:id="txtRespuestaVerde" styleClass="answer-field" text="Pregunta Ejemplo 1" HBox.hgrow="ALWAYS" />
+                    <RadioButton fx:id="rbRespuestaVerde" styleClass="radioGrande" />
 
-                    <!-- RADIO BUTTON RESPUESTA CORRECTA -->
-                    <RadioButton fx:id="rbRespuestaVerde" />
+                    <TextField fx:id="txtRespuestaVerde" prefHeight="61.0" prefWidth="303.0" styleClass="answer-field" text="Pregunta Ejemplo 1" HBox.hgrow="ALWAYS" />
 
                 </HBox>
 
@@ -148,8 +129,8 @@
 
                 <Label text="Límite de tiempo" />
                 <ComboBox fx:id="cmbLimiteDeTiempo" promptText="20 segundos" />
-            <Label text="Puntos por pregunta" />
-            <ComboBox fx:id="cmbPuntosParaPregunta" promptText="10" />
+                <Label text="Puntos por pregunta" />
+                <ComboBox fx:id="cmbPuntosParaPregunta" promptText="10" />
             </VBox>
 
             <VBox spacing="10" />
