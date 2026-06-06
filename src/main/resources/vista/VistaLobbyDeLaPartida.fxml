@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
@@ -13,62 +11,86 @@
 
 <AnchorPane prefHeight="720.0" prefWidth="1080.0" styleClass="rootPane" stylesheets="@css/CssDeLobbyDePartida.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.vista.VistaLobbyDeLaPartidaController">
 
-    <HBox alignment="CENTER_LEFT" prefHeight="60.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <!-- HEADER -->
+    <HBox alignment="CENTER_LEFT" prefHeight="80.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+
         <padding>
             <Insets left="25.0" right="25.0" />
         </padding>
+
         <children>
+
             <Label styleClass="logo" text="Kahoot!" />
-            
+
             <Pane HBox.hgrow="ALWAYS" />
-            
+
             <Button styleClass="sound-button" text="🔇" />
+
         </children>
+
     </HBox>
 
-    <VBox AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="80.0" styleClass="main-panel">
+    <!-- CONTENIDO -->
+    <VBox alignment="TOP_CENTER" spacing="25" styleClass="main-panel" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="90.0">
 
-        <HBox alignment="CENTER_LEFT" prefHeight="70.0" styleClass="top-bar">
-            <padding>
-                <Insets left="20.0" right="20.0" />
-            </padding>
-            <children>
-                <Label styleClass="title-label" text="Actividad de Usuario" />
-                <Pane HBox.hgrow="ALWAYS" />
-                <Label styleClass="days-label" text="Abierto por 3 días" />
-            </children>
-        </HBox>
+        <padding>
+            <Insets bottom="25" top="25" />
+        </padding>
 
-        <VBox alignment="TOP_CENTER" spacing="25.0" style="-fx-padding: 25;" VBox.vgrow="ALWAYS">
-            <children>
+        <children>
 
-                <Label styleClass="participants-label" text="👤 0 participantes" />
+            <!-- PIN -->
+            <VBox alignment="CENTER" spacing="5">
 
-                <FlowPane alignment="CENTER" hgap="15.0" prefWrapLength="700.0" vgap="15.0">
-                    <children>
-                        <Label styleClass="player-tag" text="1" />
-                        <Label styleClass="player-tag" text="2" />
-                        <Label styleClass="player-tag" text="4" />
-                        <Label styleClass="player-tag" text="3" />
-                        <Label styleClass="player-tag" text="5" />
-                        <Label styleClass="player-tag" text="6" />
-                        <Label styleClass="player-tag" text="7" />
-                        <Label styleClass="player-tag" text="8" />
-                        <Label styleClass="player-tag" text="9" />
-                        <Label styleClass="player-tag" text="10" />
-                    </children>
-                </FlowPane>
+                <children>
 
-                <Pane VBox.vgrow="ALWAYS" />
+                    <Label fx:id="lblPinSala" styleClass="pin-label" text="PIN:" />
 
-                <TextField maxWidth="350.0" promptText="Ingresar nombre" styleClass="name-input" />
+                    <Label styleClass="waiting-label" text="Esperando a los jugadores..." />
 
-                <Button onAction="#ListoVamos" styleClass="start-button" text="¡Listo, vamos!" />
+                </children>
 
-                <Label styleClass="info-label" text="No uses tu verdadero nombre" />
-                
-            </children>
-        </VBox>
+            </VBox>
+
+            <!-- PARTICIPANTES -->
+            <Label fx:id="lblTotalJugadores" styleClass="participants-label" text="👤 0 participantes" />
+
+            <!-- JUGADORES -->
+            <FlowPane alignment="CENTER" hgap="15" prefWrapLength="800" vgap="15">
+
+                <children>
+
+                    <Label styleClass="player-tag" text="1" />
+                    <Label styleClass="player-tag" text="2" />
+                    <Label styleClass="player-tag" text="3" />
+                    <Label styleClass="player-tag" text="4" />
+                    <Label styleClass="player-tag" text="5" />
+                    <Label styleClass="player-tag" text="6" />
+                    <Label styleClass="player-tag" text="7" />
+                    <Label styleClass="player-tag" text="8" />
+                    <Label styleClass="player-tag" text="9" />
+                    <Label styleClass="player-tag" text="10" />
+
+                </children>
+
+            </FlowPane>
+
+            <Pane VBox.vgrow="ALWAYS" />
+
+            <!-- BOTONES -->
+            <HBox alignment="CENTER" spacing="25">
+
+                <children>
+
+                    <Button fx:id="btnRegresar" styleClass="back-button" text="⬅ Regresar" onAction="#regresar" />
+
+                    <Button fx:id="btnIniciarJuego" onAction="#ListoVamos" styleClass="start-button" text="¡Iniciar Juego!" />
+
+                </children>
+
+            </HBox>
+
+        </children>
 
     </VBox>
 

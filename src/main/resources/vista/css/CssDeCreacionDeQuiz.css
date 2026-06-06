@@ -179,60 +179,57 @@
     -fx-background-color: #e0e0e0;
     -fx-background-radius: 8;
 }
-/* Contenedor de botones */
+/* =========================
+   BOTONES PANEL DERECHO
+   ========================= */
+
 .action-delete-button,
 .action-generate-button,
 .action-back-button {
 
-    -fx-background-radius: 14;
-    -fx-border-radius: 14;
+    -fx-background-color: white;
 
-    -fx-font-size: 15px;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-width: 2;
+
+    -fx-pref-width: 220px;
+    -fx-pref-height: 50px;
+
+    -fx-font-size: 16px;
     -fx-font-weight: bold;
-
-    -fx-min-width: 110px;
-    -fx-min-height: 50px;
 
     -fx-cursor: hand;
 }
 
-/* GENERAR */
-.action-generate-button {
-
-    -fx-background-color: white;
-    -fx-border-color: #7B3FF2;
-    -fx-border-width: 2;
-
-    -fx-text-fill: #7B3FF2;
-}
-
 /* ELIMINAR */
 .action-delete-button {
-
-    -fx-background-color: white;
     -fx-border-color: #FF4D4D;
-    -fx-border-width: 2;
-
     -fx-text-fill: #FF4D4D;
 }
 
-/* VOLVER */
+/* CREAR SALA */
+.action-generate-button {
+    -fx-border-color: #7B3FF2;
+    -fx-text-fill: #7B3FF2;
+}
+
+/* REGRESAR */
 .action-back-button {
-
-    -fx-background-color: white;
     -fx-border-color: #4A90E2;
-    -fx-border-width: 2;
-
     -fx-text-fill: #4A90E2;
+
+    -fx-pref-height: 55px;
+    -fx-font-size: 18px;
 }
 
-/* Hover */
-.action-generate-button:hover {
-    -fx-background-color: #F5F0FF;
-}
-
+/* HOVER */
 .action-delete-button:hover {
     -fx-background-color: #FFF1F1;
+}
+
+.action-generate-button:hover {
+    -fx-background-color: #F5F0FF;
 }
 
 .action-back-button:hover {

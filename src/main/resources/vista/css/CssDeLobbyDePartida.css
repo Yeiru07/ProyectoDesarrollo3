@@ -1,106 +1,130 @@
 .rootPane {
-    -fx-background-color: linear-gradient(to bottom right, #5d2ea8, #8c5ae6);
+    -fx-background-color: linear-gradient(to bottom, #30006b, #4f0099);
     -fx-font-family: "Segoe UI";
 }
 
-/* LOGO */
+/* HEADER */
+
 .logo {
-    -fx-text-fill: white;
-    -fx-font-size: 52px;
+    -fx-font-size: 42px;
     -fx-font-weight: bold;
+    -fx-text-fill: white;
 }
 
-/* BOTON SONIDO */
 .sound-button {
-    -fx-background-color: #4b1fa3;
+    -fx-background-color: rgba(255,255,255,0.15);
     -fx-text-fill: white;
-    -fx-font-size: 28px;
-    -fx-background-radius: 15;
-    -fx-pref-width: 70;
-    -fx-pref-height: 70;
+    -fx-font-size: 18px;
+    -fx-background-radius: 12;
     -fx-cursor: hand;
 }
 
-/* PANEL CENTRAL */
+.sound-button:hover {
+    -fx-background-color: rgba(255,255,255,0.25);
+}
+
+/* PANEL */
+
 .main-panel {
-    -fx-background-color: rgba(255,255,255,0.15);
-    -fx-background-radius: 25;
-    -fx-border-color: rgba(255,255,255,0.25);
-    -fx-border-radius: 25;
+    -fx-background-color: rgba(255,255,255,0.08);
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-border-color: rgba(255,255,255,0.15);
 }
 
-/* HEADER */
-.top-bar {
-    -fx-background-color: #4b169b;
-    -fx-background-radius: 25 25 0 0;
-    -fx-padding: 0 25 0 25;
-}
+/* PIN */
 
-.title-label {
-    -fx-text-fill: white;
-    -fx-font-size: 24px;
+.pin-label {
+    -fx-font-size: 64px;
     -fx-font-weight: bold;
+    -fx-text-fill: white;
 }
 
-.days-label {
-    -fx-text-fill: white;
+.waiting-label {
     -fx-font-size: 22px;
     -fx-font-weight: bold;
+    -fx-text-fill: #e0e0e0;
 }
 
 /* PARTICIPANTES */
+
 .participants-label {
-    -fx-background-color: #5b22ba;
+    -fx-background-color: #6521d8;
+    -fx-background-radius: 15;
+
+    -fx-padding: 12 25 12 25;
+
     -fx-text-fill: white;
-    -fx-padding: 12 25;
-    -fx-background-radius: 12;
     -fx-font-size: 22px;
     -fx-font-weight: bold;
 }
 
-/* TAGS */
-.player-tag {
-    -fx-background-color: #4b169b;
-    -fx-text-fill: white;
-    -fx-padding: 12 24;
-    -fx-background-radius: 12;
-    -fx-font-size: 20px;
-    -fx-font-weight: bold;
-}
+/* JUGADORES */
 
-/* INPUT */
-.name-input {
-    -fx-pref-width: 520;
-    -fx-pref-height: 80;
-    -fx-font-size: 28px;
-    -fx-background-radius: 15;
-    -fx-background-color: white;
-    -fx-prompt-text-fill: #777;
+.player-tag {
+    -fx-background-color: #5a18c4;
+
+    -fx-background-radius: 12;
+
+    -fx-padding: 15 25 15 25;
+
+    -fx-text-fill: white;
+
+    -fx-font-size: 20px;
+
     -fx-font-weight: bold;
+
+    -fx-min-width: 80;
+
     -fx-alignment: center;
 }
 
-/* BOTON */
+.player-tag:hover {
+    -fx-background-color: #6d2ae3;
+}
+
+/* BOTÓN INICIAR */
+
 .start-button {
-    -fx-pref-width: 520;
-    -fx-pref-height: 80;
-    -fx-background-color: #222;
+
+    -fx-background-color: #2ca000;
+
     -fx-text-fill: white;
-    -fx-font-size: 32px;
+
+    -fx-font-size: 24px;
+
     -fx-font-weight: bold;
+
     -fx-background-radius: 15;
+
+    -fx-padding: 15 40 15 40;
+
     -fx-cursor: hand;
 }
 
 .start-button:hover {
-    -fx-background-color: #111;
+    -fx-background-color: #248500;
 }
 
-/* INFO */
-.info-label {
-    -fx-background-color: rgba(255,255,255,0.7);
-    -fx-padding: 10 20;
-    -fx-background-radius: 10;
-    -fx-font-size: 18px;
-    -fx-text-fill: #444;
+/* BOTÓN REGRESAR */
+
+.back-button {
+
+    -fx-background-color: #64748b;
+
+    -fx-text-fill: white;
+
+    -fx-font-size: 22px;
+
+    -fx-font-weight: bold;
+
+    -fx-background-radius: 15;
+
+    -fx-padding: 15 40 15 40;
+
+    -fx-cursor: hand;
+}
+
+.back-button:hover {
+    -fx-background-color: #4f6078;
 }

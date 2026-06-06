@@ -65,7 +65,7 @@ public class VistaGestorSalasController implements Initializable {
 
     @FXML
     public void presentarYa() throws IOException {
-        App.setRoot("VistaPresentarSalas");
+        App.setRoot("VistaLobbyDeLaPartida");
 
     }
 
@@ -111,7 +111,7 @@ public class VistaGestorSalasController implements Initializable {
                 System.out.println("Enviado: " + trama);
 
                 try {
-                    App.setRoot("VistaPresentarSalas");
+                    App.setRoot("VistaLobbyDeLaPartida");
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -128,7 +128,4 @@ public class VistaGestorSalasController implements Initializable {
         return card;
     }
 
-    public void irAVistaDeCodigo() throws IOException {
-        App.setRoot("VistaPresentarSalas");
-    }
 }

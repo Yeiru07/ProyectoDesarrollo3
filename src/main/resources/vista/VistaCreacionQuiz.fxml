@@ -115,39 +115,53 @@
 
     <!-- PANEL DERECHO -->
     <right>
-        <VBox spacing="20" styleClass="properties-panel">
+        <VBox spacing="20"
+              prefWidth="280"
+              maxWidth="280"
+              minWidth="280"
+              styleClass="properties-panel">
 
             <Label styleClass="properties-title" text="Configuraciones" />
 
             <VBox spacing="10">
-
                 <Label text="Tipo de pregunta" />
-                <ComboBox fx:id="cmbTipoDePregunta" onAction="#cambiarTipoPregunta" promptText="Quiz" />
+                <ComboBox fx:id="cmbTipoDePregunta"
+                          onAction="#cambiarTipoPregunta"
+                          promptText="Quiz" />
             </VBox>
 
             <VBox spacing="10">
-
                 <Label text="Límite de tiempo" />
-                <ComboBox fx:id="cmbLimiteDeTiempo" promptText="20 segundos" />
+                <ComboBox fx:id="cmbLimiteDeTiempo"
+                          promptText="20 segundos" />
+
                 <Label text="Puntos por pregunta" />
-                <ComboBox fx:id="cmbPuntosParaPregunta" promptText="10" />
+                <ComboBox fx:id="cmbPuntosParaPregunta"
+                          promptText="10" />
             </VBox>
 
-            <VBox spacing="10" />
 
-            <VBox spacing="10" />
+            <VBox alignment="CENTER" spacing="14">
 
-            <HBox alignment="CENTER" spacing="12">
+                <Button
+                    fx:id="btnEliminar"
+                    onAction="#eliminarPregunta"
+                    styleClass="action-delete-button"
+                    text="🗑  Eliminar" />
 
-                <Button fx:id="btnEliminar" onAction="#eliminarPregunta" styleClass="action-delete-button" text="Eliminar" />
+                <Button
+                    fx:id="btnCrearSala"
+                    onAction="#guardarPregunta"
+                    styleClass="action-generate-button"
+                    text="👥  Crear Sala" />
 
-                <Button fx:id="btnCrearSala" onAction="#guardarPregunta" styleClass="action-generate-button" text="Crear Sala" />
+                <Button
+                    fx:id="btnVolver"
+                    onAction="#regresar"
+                    styleClass="action-back-button"
+                    text="←  Regresar" />
 
-                <Button fx:id="btnVolver" onAction="#regresar" styleClass="action-back-button" text="Volver" />
-
-            </HBox>
-
+            </VBox>
         </VBox>
     </right>
-
 </BorderPane>

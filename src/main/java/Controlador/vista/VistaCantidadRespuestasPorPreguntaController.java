@@ -8,6 +8,6 @@ package Controlador.vista;
  *
  * @author sronn
  */
-public class VistaControllJuegoCreadorController {
+public class VistaCantidadRespuestasPorPreguntaController {
     
 }
