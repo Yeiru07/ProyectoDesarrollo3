@@ -1,15 +1,29 @@
-/* Fondo institucional morado con un degradado elegante */
+/* =======================================================
+   FONDO GENERAL
+   ======================================================= */
+
 .root {
     -fx-background-color: linear-gradient(to bottom right, #25004d, #4b008f);
     -fx-font-family: "Segoe UI", Arial, sans-serif;
 }
 
-/* Barra superior blanca para que resalte fuertemente sobre el fondo morado */
+/* =======================================================
+   ENCABEZADO
+   ======================================================= */
+
 .headerBar {
-    -fx-background-color: #ffffff;
+    -fx-background-color: white;
     -fx-padding: 20 25 20 25;
     -fx-background-radius: 12;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 15, 0, 0, 5);
+
+    -fx-effect: dropshadow(
+        gaussian,
+        rgba(0,0,0,0.30),
+        15,
+        0,
+        0,
+        5
+    );
 }
 
 .mainTitle {
@@ -23,92 +37,176 @@
     -fx-font-size: 14px;
 }
 
-/* Estilo común de botones superiores */
+/* =======================================================
+   BOTONES SUPERIORES
+   ======================================================= */
+
 .adminButton {
     -fx-text-fill: white;
     -fx-font-size: 15px;
     -fx-font-weight: bold;
+
     -fx-padding: 10 22 10 22;
-    -fx-background-radius: 6;
+
+    -fx-background-radius: 8;
+
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 0, 0, 0, 3);
+
+    -fx-effect: dropshadow(
+        gaussian,
+        rgba(0,0,0,0.15),
+        0,
+        0,
+        0,
+        3
+    );
 }
+
 .adminButton:hover {
     -fx-scale-x: 1.03;
     -fx-scale-y: 1.03;
 }
 
-/* Color para el botón de Presentar (Azul corporativo) */
-.btnPresent {
-    -fx-background-color: #1368ce;
-}
-.btnPresent:hover {
-    -fx-background-color: #0f52a5;
-}
-.btnPresent:disabled {
-    -fx-background-color: #cbd5e1;
-    -fx-text-fill: #94a3b8;
-    -fx-cursor: default;
-    -fx-scale-x: 1.0;
-    -fx-scale-y: 1.0;
-    -fx-effect: none;
-}
-
-/* NUEVO: Color para el botón de Regresar (Gris pizarra neutro) */
 .btnBack {
     -fx-background-color: #475569;
 }
+
 .btnBack:hover {
     -fx-background-color: #334155;
 }
 
-/* Eliminación de bordes y fondos del ScrollPane por defecto */
+.btnPresent {
+    -fx-background-color: #1368ce;
+}
+
+.btnPresent:hover {
+    -fx-background-color: #0f52a5;
+}
+
+.btnPresent:disabled {
+    -fx-background-color: #cbd5e1;
+    -fx-text-fill: #94a3b8;
+}
+
+/* =======================================================
+   SCROLLPANE
+   ======================================================= */
+
 .customScrollPane {
     -fx-background-color: transparent;
     -fx-background-insets: 0;
     -fx-padding: 0;
 }
+
 .customScrollPane .viewport {
     -fx-background-color: transparent;
 }
 
 .gridSalas {
     -fx-background-color: transparent;
-    -fx-padding: 10 5 10 5;
+    -fx-padding: 10;
 }
 
-/* Texto de aviso cambiado a color claro para alta legibilidad sobre el fondo morado */
+/* =======================================================
+   MENSAJE DE NO HAY SALAS
+   ======================================================= */
+
 .noRoomsLabel {
     -fx-text-fill: #e1d5f5;
     -fx-font-size: 16px;
     -fx-font-style: italic;
+
     -fx-alignment: center;
+
     -fx-max-width: 500px;
+
     -fx-padding: 60 0 0 150;
 }
 
-/* ESTILO DE LAS TARJETAS DE SALAS (Para cuando las agregues dinámicamente) */
-.salaCard {
-    -fx-background-color: #ffffff;
-    -fx-min-width: 260px;
-    -fx-max-width: 260px;
-    -fx-pref-height: 160px;
-    -fx-padding: 20;
-    -fx-background-radius: 12;
-    -fx-border-color: #e2e8f0;
+/* =======================================================
+   TARJETAS DE SALAS
+   ======================================================= */
+
+.cardSala {
+
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+
+    -fx-border-color: #dcdcdc;
+    -fx-border-radius: 15;
     -fx-border-width: 1;
+
+    -fx-padding: 20;
+    -fx-spacing: 10;
+
+    -fx-effect: dropshadow(
+        gaussian,
+        rgba(0,0,0,0.15),
+        12,
+        0,
+        0,
+        4
+    );
+
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 10, 0, 0, 4);
-}
-.salaCard:hover {
-    -fx-border-color: #8b2cff;
-    -fx-scale-x: 1.02;
-    -fx-scale-y: 1.02;
-    -fx-effect: dropshadow(gaussian, rgba(139, 44, 255, 0.2), 12, 0, 0, 4);
 }
 
-.salaCardSelected {
+.cardSala:hover {
+
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+
     -fx-border-color: #1368ce;
-    -fx-border-width: 3;
-    -fx-background-color: #f0f7ff;
+
+    -fx-effect: dropshadow(
+        gaussian,
+        rgba(19,104,206,0.30),
+        16,
+        0,
+        0,
+        4
+    );
+}
+
+/* =======================================================
+   TEXTO DE LA TARJETA
+   ======================================================= */
+
+.tituloSala {
+
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+
+    -fx-text-fill: #1e3a5f;
+}
+
+.infoSala {
+
+    -fx-font-size: 14px;
+
+    -fx-text-fill: #555555;
+}
+
+/* =======================================================
+   BOTÓN PRESENTAR DENTRO DE LA TARJETA
+   ======================================================= */
+
+.cardSala .btnPresent {
+
+    -fx-background-color: #1976d2;
+
+    -fx-text-fill: white;
+
+    -fx-font-weight: bold;
+
+    -fx-background-radius: 8;
+
+    -fx-padding: 8 16 8 16;
+
+    -fx-cursor: hand;
+}
+
+.cardSala .btnPresent:hover {
+
+    -fx-background-color: #1565c0;
 }

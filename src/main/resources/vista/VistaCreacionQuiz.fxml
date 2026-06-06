@@ -148,6 +148,8 @@
 
                 <Label text="Límite de tiempo" />
                 <ComboBox fx:id="cmbLimiteDeTiempo" promptText="20 segundos" />
+            <Label text="Puntos por pregunta" />
+            <ComboBox fx:id="cmbPuntosParaPregunta" promptText="10" />
             </VBox>
 
             <VBox spacing="10" />
@@ -160,7 +162,7 @@
 
                 <Button fx:id="btnCrearSala" onAction="#guardarPregunta" styleClass="action-generate-button" text="Crear Sala" />
 
-                <Button fx:id="btnVolver" styleClass="action-back-button" text="Volver" onAction="#regresar" />
+                <Button fx:id="btnVolver" onAction="#regresar" styleClass="action-back-button" text="Volver" />
 
             </HBox>
 

@@ -11,15 +11,17 @@ public class Sala {
     private ArrayList<Usuario> arrayDeUsuarios;
     private ArrayList<Preguntas> listaPreguntas;
     private ArrayList<Integer> listaDeCodigos;
+    Usuario propietario;
 
-    public Sala(int codigoSala, String nombreSala, boolean estado, int cantidadJugadores) {
+    public Sala(int codigoSala, String nombreSala, boolean estado, int cantidadJugadores, Usuario propietario) {
         this.codigoSala = codigoSala;
         this.nombreSala = nombreSala;
         this.estado = estado;
         this.cantidadJugadores = cantidadJugadores;
+        this.propietario = propietario;
         this.arrayDeUsuarios = new ArrayList<>();//AGREGACION DE USUARIO A LA SALA
         this.listaPreguntas = new ArrayList<>();
-        this.listaDeCodigos= new ArrayList<>();
+        this.listaDeCodigos = new ArrayList<>();
     }
 
     public int getCodigoSala() {
@@ -82,5 +84,12 @@ public class Sala {
         this.listaDeCodigos = listaDeCodigos;
     }
 
+    public Usuario getPropietario() {
+        return propietario;
+    }
+
+    public void setPropietario(Usuario propietario) {
+        this.propietario = propietario;
+    }
 
 }
