@@ -34,7 +34,7 @@
       
       <HBox alignment="CENTER" spacing="25.0" styleClass="bottomActionArea">
          <children>
-            <Button fx:id="btnRegresar" mnemonicParsing="false" text="⬅ Regresar">
+            <Button fx:id="btnRegresar" mnemonicParsing="false" text="⬅ Regresar" onAction="#regresarSalaas" >
                <styleClass>
                   <String fx:value="adminButton" />
                   <String fx:value="btnBackLive" />

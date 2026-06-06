@@ -352,7 +352,7 @@ public class VistaCreacionQuizController implements Initializable {
     }
 
     @FXML
-    public void guardarPregunta(ActionEvent event) {
+    public void guardarPregunta(ActionEvent event) throws IOException {
 
         // 1. Validar nombre de la sala antes de hacer nada
         String titulo = txtTituloSala.getText().trim();
@@ -376,6 +376,8 @@ public class VistaCreacionQuizController implements Initializable {
             enviarPreguntaPorSocket(pregunta);
         }
         AlertaParaUsar.mostrar("Éxito", "El Quiz ha sido creado y enviado al servidor.", Alert.AlertType.INFORMATION);
+        regresar();
+
     }
 
     @FXML

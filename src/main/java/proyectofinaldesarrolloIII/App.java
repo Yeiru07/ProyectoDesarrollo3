@@ -1,6 +1,7 @@
 package proyectofinaldesarrolloIII;
 
 import Modelo.Juego;
+import Modelo.Sala;
 import Modelo.Usuario;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -17,15 +18,16 @@ import java.io.IOException;
  * JavaFX App
  */
 public class App extends Application {
-    
+
     // Estas variables ahora se inicializarán en el método conectarServidor()
-    public static PrintWriter escritor; 
+    public static PrintWriter escritor;
     public static BufferedReader lector;
     private static Socket socket;
 
     private static Scene scene;
     public static Juego partida = new Juego();
     public static Usuario usuarioActual;
+    public static Sala salaActual;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -42,15 +44,15 @@ public class App extends Application {
         try {
             // "localhost" si corres el servidor en la misma compu, o la IP si es externa.
             // El puerto debe ser el mismo 5000 que pusiste en tu clase Servidor.
-            socket = new Socket("100.112.172.27", 5000); 
-            
+            //socket = new Socket("100.112.172.27", 5000); 
+            socket = new Socket("localhost", 5000);
+
             // Inicializamos los flujos apuntando al socket
             escritor = new PrintWriter(socket.getOutputStream(), true);
             lector = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            
+
             System.out.println("¡Cliente conectado al servidor exitosamente!");
-                
-            
+
         } catch (IOException e) {
             System.err.println("ERROR: No se pudo conectar al servidor. ¿Está encendido?");
             e.printStackTrace();
@@ -70,14 +72,20 @@ public class App extends Application {
     public static void main(String[] args) {
         launch();
     }
-    
+
     // Es una buena práctica cerrar los flujos cuando se cierra la aplicación JavaFX
     @Override
     public void stop() {
         try {
-            if (escritor != null) escritor.close();
-            if (lector != null) lector.close();
-            if (socket != null) socket.close();
+            if (escritor != null) {
+                escritor.close();
+            }
+            if (lector != null) {
+                lector.close();
+            }
+            if (socket != null) {
+                socket.close();
+            }
             System.out.println("Conexiones cerradas correctamente al salir.");
         } catch (IOException e) {
             e.printStackTrace();

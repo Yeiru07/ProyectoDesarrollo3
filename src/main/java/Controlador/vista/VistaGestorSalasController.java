@@ -102,11 +102,19 @@ public class VistaGestorSalasController implements Initializable {
 
                 sala.setEstado(true);
 
+                App.salaActual = sala; // GUARDAR LA SALA SELECCIONADA
+
                 String trama = "PRESENTAR|" + sala.getCodigoSala();
 
                 App.escritor.println(trama);
 
                 System.out.println("Enviado: " + trama);
+
+                try {
+                    App.setRoot("VistaPresentarSalas");
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
         });
 
@@ -118,5 +126,9 @@ public class VistaGestorSalasController implements Initializable {
         );
 
         return card;
+    }
+
+    public void irAVistaDeCodigo() throws IOException {
+        App.setRoot("VistaPresentarSalas");
     }
 }
