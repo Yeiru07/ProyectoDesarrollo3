@@ -24,6 +24,18 @@ public class Sala {
         this.listaDeCodigos = new ArrayList<>();
     }
 
+    // OPTION B: Constructor Reducido (¡El que ocupamos para JDBC/Consultas SQL!)
+    public Sala(int codigoSala, String nombreSala, boolean estado, int cantidadJugadores) {
+        this.codigoSala = codigoSala;
+        this.nombreSala = nombreSala;
+        this.estado = estado;
+        this.cantidadJugadores = cantidadJugadores;
+        this.arrayDeUsuarios = new ArrayList<>();
+        this.listaPreguntas = new ArrayList<>();
+        this.listaDeCodigos = new ArrayList<>();
+        this.propietario = null; // Queda vacío inicialmente hasta que se requiera
+    }
+
     public int getCodigoSala() {
         return codigoSala;
     }

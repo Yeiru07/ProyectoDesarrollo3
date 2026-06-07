@@ -75,7 +75,7 @@ public class ManejadorDeUsuarios extends Thread {
                             }
 
                             guardarPreguntaNuevobd(partes);
-                            escritor.println("OK: Pregunta guardada");
+                            escritor.println("GUARDADO_OK");
                         } catch (Exception e) {
                             System.out.println("Error al guardar en BD: " + e.getMessage());
                             escritor.println("Error: No se pudo guardar la pregunta");
@@ -87,6 +87,8 @@ public class ManejadorDeUsuarios extends Thread {
                             int codigoSala = Integer.parseInt(partes[2]);
                             int cantidadJugadores = Integer.parseInt(partes[3]);
                             guardarSalaNuevobd(partes);
+                            escritor.println("GUARDADO_OK");
+
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -98,8 +100,7 @@ public class ManejadorDeUsuarios extends Thread {
 
                             presentarSala(codigoSala);
 
-                            escritor.println("OK|Sala presentada");
-
+                            //  escritor.println("OK|Sala presentada");
                         } catch (Exception e) {
 
                             escritor.println("ERROR|No se pudo presentar la sala");
@@ -109,6 +110,41 @@ public class ManejadorDeUsuarios extends Thread {
                         break;
                     default:
                         escritor.println("ERROR|Comando no reconocido por el servidor");
+                        break;
+                    // AGREGAR ESTO DENTRO DEL SWITCH EN ManejadorDeUsuarios.java
+                    case "CONSULTAR_SALAS":
+                        try {
+                            String nombreUsuario = partes[1];
+                            System.out.println("Servidor consultando salas para: " + nombreUsuario);
+
+                            // 1. Usamos el método que ya creaste en tu GestorUsuarios para llamar al Procedure de MySQL
+                            java.util.ArrayList<Modelo.Sala> lista = gestor.consultarSalasDeUsuario(nombreUsuario);
+
+                            // 2. Construimos la respuesta en texto plano para el cliente
+                            StringBuilder respuesta = new StringBuilder("RESPUESTA_SALAS|");
+                            if (lista.isEmpty()) {
+                                respuesta.append("VACIO");
+                            } else {
+                                for (int i = 0; i < lista.size(); i++) {
+                                    Modelo.Sala s = lista.get(i);
+                                    respuesta.append(s.getCodigoSala()).append(",")
+                                            .append(s.getNombreSala()).append(",")
+                                            .append(s.getCantidadJugadores());
+
+                                    if (i < lista.size() - 1) {
+                                        respuesta.append(";"); // Separador entre salas
+                                    }
+                                }
+                            }
+
+                            // 3. Enviamos de vuelta al cliente
+                            escritor.println(respuesta.toString());
+                            System.out.println("Servidor envió: " + respuesta.toString());
+
+                        } catch (Exception e) {
+                            System.out.println("Error al consultar salas en el servidor: " + e.getMessage());
+                            escritor.println("RESPUESTA_SALAS|VACIO");
+                        }
                         break;
                 }
             }
@@ -147,15 +183,24 @@ public class ManejadorDeUsuarios extends Thread {
 
     private void guardarSalaNuevobd(String[] partes) throws Exception {
         java.sql.Connection conexion = ConexionBaseDeDatos.conectar();
-        String sql = "INSERT INTO sala (codigoSala, nombreSala, cantidadJugadore) VALUES (?, ?, ?)";
+
+        // Modificamos el SQL para que incluya la columna de la llave foránea 'fk_idUsuario'
+        // El SELECT interno busca dinámicamente el id del usuario basándose en su nombre
+        String sql = "INSERT INTO sala (codigoSala, nombreSala, cantidadJugadore, fk_idUsuario) "
+                + "VALUES (?, ?, ?, (SELECT idusuarios FROM usuarios WHERE nombreUsuario = ? LIMIT 1))";
+
         try (PreparedStatement ps = conexion.prepareStatement(sql)) {
 
-            ps.setString(1, partes[2]);
-            ps.setString(2, partes[1]);
-            ps.setInt(3, Integer.parseInt(partes[3]));
+            ps.setString(1, partes[2]); // codigoSala
+            ps.setString(2, partes[1]); // nombreSala
+            ps.setInt(3, Integer.parseInt(partes[3])); // cantidadJugadores
+
+            // Pasamos el nombre del usuario actual que está creando la sala (asegúrate de enviarlo en la trama)
+            // Por ejemplo, si tu trama al crear la sala es: Sala|nombreSala|codigo|cantidad|nombreUsuario
+            ps.setString(4, partes[4]);
 
             int filas = ps.executeUpdate();
-            System.out.println("SALA guardada correctamente");
+            System.out.println("SALA guardada correctamente con su llave foránea vinculada.");
         } finally {
             conexion.close();
         }

@@ -84,7 +84,7 @@ public class VistaCreacionQuizController implements Initializable {
         sala.getListaDeCodigos().add(codigoSala);
         partida.getArrayDeSalas().add(sala);
 
-///////////////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////
         labelDeNombreUsuario.setText(App.usuarioActual.getNombreUsuario());
 
         cmbPuntosParaPregunta.getItems().addAll(10, 20, 30, 40, 50);
@@ -320,7 +320,7 @@ public class VistaCreacionQuizController implements Initializable {
 
     private void enviarPreguntaPorSocket(Preguntas p) {
         if (p.getEnunciado().isEmpty() || p.getArregloDeRespuestasParaPreguntas().isEmpty()) {
-            return; // Ya no imprime error, simplemente ignora las vacías
+            return;
         }
 
         try {
@@ -329,8 +329,14 @@ public class VistaCreacionQuizController implements Initializable {
                 trama += "|" + r.getRespuestas();
             }
             trama += "|" + p.getCodigoSala();
+
+            // 1. Enviamos la pregunta
             App.escritor.println(trama);
             System.out.println("Enviado exitosamente: " + trama);
+
+            // 2. NUEVO: Leemos la respuesta del servidor ("OK: Pregunta guardada") para limpiar el tubo
+//            String respuestaServidor = App.lector.readLine();
+//            System.out.println("Servidor dice: " + respuestaServidor);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -344,40 +350,41 @@ public class VistaCreacionQuizController implements Initializable {
         }
 
         try {
-            String trama = "Sala|" + s.getNombreSala() + "|" + s.getCodigoSala() + "|" + s.getCantidadJugadores();
+            // 1. Obtenemos el nombre del usuario logueado actualmente
+            String nombreUsuario = App.usuarioActual.getNombreUsuario();
+
+            // 2. Agregamos el nombreUsuario al final de la trama, separado por "|"
+            String trama = "Sala|" + s.getNombreSala() + "|" + s.getCodigoSala() + "|" + s.getCantidadJugadores() + "|" + nombreUsuario;
+
             proyectofinaldesarrolloIII.App.escritor.println(trama);
+            System.out.println("Trama de sala enviada: " + trama); // Opcional, para que lo veas en consola
+
         } catch (Exception e) {
             AlertaParaUsar.mostrar("Error", "No se pudo conectar al servidor: " + e.getMessage(), Alert.AlertType.WARNING);
         }
     }
 
-    @FXML
+ @FXML
     public void guardarPregunta(ActionEvent event) throws IOException {
-
-        // 1. Validar nombre de la sala antes de hacer nada
         String titulo = txtTituloSala.getText().trim();
-        if (titulo.isEmpty()) {
-            AlertaParaUsar.mostrar("Atención", "Debe ingresar un título para la Sala en la parte superior.", Alert.AlertType.WARNING);
-            return;
-        }
         sala.setNombreSala(titulo);
 
-        // 2. Validar que la pregunta actual esté completa
         boolean seGuardo = guardarPreguntaSegunTipo();
-        if (!seGuardo) {
-            return; // Se detiene TODO si falta información
-        }
-        // 3. Enviar todo por el Socket
+        if (!seGuardo) return;
+
+        // 1. Enviamos la sala
         enviarSalaPorSocket(sala);
-        if (!App.usuarioActual.getSalasAdministradas().contains(sala)) {
-            App.usuarioActual.getSalasAdministradas().add(sala);
-        }
+        App.lector.readLine(); // Esperamos confirmación de Sala
+
+        // 2. Enviamos las preguntas
         for (Preguntas pregunta : sala.getListaPreguntas()) {
             enviarPreguntaPorSocket(pregunta);
+            App.lector.readLine(); // Esperamos confirmación de Pregunta
         }
-        AlertaParaUsar.mostrar("Éxito", "El Quiz ha sido creado y enviado al servidor.", Alert.AlertType.INFORMATION);
-        regresar();
 
+        // 3. Solo cuando el servidor nos confirmó todo, cambiamos de pantalla
+        AlertaParaUsar.mostrar("Éxito", "Guardado correctamente.", Alert.AlertType.INFORMATION);
+        regresar(); 
     }
 
     @FXML

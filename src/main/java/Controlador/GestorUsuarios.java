@@ -9,9 +9,11 @@ package Controlador;
  * @author sronn
  */
 import Modelo.Usuario;
+import Modelo.Sala; // IMPORTANTE: Asegúrate de importar tu modelo Sala
 import MySQL.ConexionBaseDeDatos;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.CallableStatement; // Agregado para el procedimiento almacenado
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
@@ -58,7 +60,42 @@ public class GestorUsuarios {
         }
     }
 
-    // 3. MÉTODOS PARA CONTROLAR LOGUEADOS EN VIVO (Para las salas del juego)
+    // =========================================================================
+    // 🗄️ NUEVO: MÉTODO PARA LLAMAR AL PROCEDIMIENTO ALMACENADO CON INNER JOIN
+    // =========================================================================
+    public ArrayList<Sala> consultarSalasDeUsuario(String nombreUsuario) {
+        ArrayList<Sala> listaSalas = new ArrayList<>();
+
+        // Sintaxis nativa JDBC para invocar procedimientos de la BD: {call Nombre(?)}
+        String sql = "{call ObtenerSalasDeUsuario(?)}";
+
+        try (Connection conexion = ConexionBaseDeDatos.conectar(); CallableStatement cs = conexion.prepareCall(sql)) {
+
+            // Asignamos el parámetro de entrada (IN) con el nombre que viene de JavaFX
+            cs.setString(1, nombreUsuario);
+
+            try (ResultSet rs = cs.executeQuery()) {
+                while (rs.next()) {
+                    int codigo = rs.getInt("codigoSala");
+                    String nombre = rs.getString("nombreSala");
+                    // Usamos 'cantidadJugadore' en singular para coincidir con tu esquema
+                    int jugadores = rs.getInt("cantidadJugadore");
+
+                    // Reconstruimos la instancia del modelo Sala en memoria.
+                    // Ajusta el constructor si tu clase Sala pide parámetros diferentes.
+                    Sala sala = new Sala(codigo, nombre, true, jugadores);
+                    listaSalas.add(sala);
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error SQL al ejecutar el procedimiento ObtenerSalasDeUsuario: " + e.getMessage());
+        }
+
+        return listaSalas;
+    }
+
+    // 4. MÉTODOS PARA CONTROLAR LOGUEADOS EN VIVO (Para las salas del juego)
     public void agregarUsuarioActivo(Usuario usuario) {
         usuariosConectados.add(usuario);
     }
@@ -66,14 +103,4 @@ public class GestorUsuarios {
     public void removerUsuarioActivo(Usuario usuario) {
         usuariosConectados.remove(usuario);
     }
-
-//    @FXML
-//    private void onVolver() throws IOException {
-//        App.setRoot("VistaPantallaDeIngreso");
-//    }
-//
-//    @FXML
-//    private void onRegistrar() throws IOException {
-//        App.setRoot("RegistroCreador");
-//    }
 }
