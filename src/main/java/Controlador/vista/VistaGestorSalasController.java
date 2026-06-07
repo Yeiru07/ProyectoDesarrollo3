@@ -136,7 +136,7 @@ public class VistaGestorSalasController implements Initializable {
                 System.out.println("Enviado al servidor: " + trama);
 
                 try {
-                    App.setRoot("VistaPresentarSalas");
+                    App.setRoot("VistaLobbyDeLaPartida");
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }

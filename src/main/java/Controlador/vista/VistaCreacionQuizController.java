@@ -84,8 +84,9 @@ public class VistaCreacionQuizController implements Initializable {
         sala.getListaDeCodigos().add(codigoSala);
         partida.getArrayDeSalas().add(sala);
 
-        ///////////////////////////////////////////////////////////////////////////////////
-        labelDeNombreUsuario.setText(App.usuarioActual.getNombreUsuario());
+
+        labelDeNombreUsuario.setText("✔ Bienvenido "+ App.usuarioActual.getNombreUsuario());
+
 
         cmbPuntosParaPregunta.getItems().addAll(10, 20, 30, 40, 50);
         cmbLimiteDeTiempo.getItems().addAll(15, 20, 30);

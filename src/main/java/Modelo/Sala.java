@@ -104,4 +104,8 @@ public class Sala {
         this.propietario = propietario;
     }
 
+    public void agregarJugador(Usuario jugador) {
+        arrayDeUsuarios.add(jugador);
+    }
+
 }

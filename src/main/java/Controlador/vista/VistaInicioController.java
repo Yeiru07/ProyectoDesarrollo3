@@ -84,7 +84,7 @@ public class VistaInicioController {
                 
                 
                 // Si el login es correcto, cambia de pantalla al Lobby de Salas
-                App.setRoot("VIstaPantallaDeIngreso");
+                App.setRoot("VistaPantallaDeIngreso");
             } else {
                 String[] partesRepuesta = respuesta.split("\\|");
                 String mensajeError = partesRepuesta.length > 1 ? partesRepuesta[1] : "Credenciales incorrectas";

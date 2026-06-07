@@ -34,7 +34,7 @@ public class App extends Application {
         // Intentamos conectar con el servidor antes de mostrar la ventana
         conectarServidor();
 
-        scene = new Scene(loadFXML("VistaInicio"), 1080, 720);
+        scene = new Scene(loadFXML("VistaLogging"), 1080, 720);
         stage.setScene(scene);
         stage.show();
     }

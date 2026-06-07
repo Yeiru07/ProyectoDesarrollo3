@@ -45,4 +45,12 @@ public class Juego {//singleton
         return 0;
     }
 
+    public Sala buscarSala(int codigo) {
+        for (Sala sala : arrayDeSalas) {
+            if (sala.getCodigoSala() == codigo) {
+                return sala;
+            }
+        }
+        return null;
+    }
 }
