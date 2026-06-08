@@ -12,7 +12,7 @@
 
 <AnchorPane prefHeight="720.0" prefWidth="1080.0" styleClass="rootPane" stylesheets="@css/CssPantallaDeIngreso.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.vista.VistaPantallaDeIngresoController">
 
-    <HBox alignment="CENTER_LEFT" prefHeight="90.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" styleClass="topBar">
+    <HBox alignment="CENTER_LEFT" prefHeight="90.0" styleClass="topBar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
         <padding>
             <Insets bottom="15.0" left="25.0" right="25.0" top="15.0" />
@@ -81,7 +81,7 @@
 
         <VBox alignment="CENTER" maxWidth="400.0" spacing="20.0" styleClass="loginPanel">
 
-            <TextField promptText="PIN de juego" styleClass="pinInput" />
+            <TextField fx:id="txtPinDelJuego" promptText="PIN de juego" styleClass="pinInput" />
 
             <Button fx:id="btnIngresar" onAction="#confirmacionDeCodigo" styleClass="enterButton" text="Ingresar" />
 
