@@ -83,7 +83,7 @@
 
             <TextField promptText="PIN de juego" styleClass="pinInput" />
 
-            <Button fx:id="btnIngresar" onAction="#ingresarPin" styleClass="enterButton" text="Ingresar" />
+            <Button fx:id="btnIngresar" onAction="#confirmacionDeCodigo" styleClass="enterButton" text="Ingresar" />
 
         </VBox>
 
