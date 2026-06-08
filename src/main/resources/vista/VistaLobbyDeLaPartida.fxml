@@ -56,8 +56,11 @@
             <Label fx:id="lblTotalJugadores" styleClass="participants-label" text="👤 0 participantes" />
 
             <!-- JUGADORES -->
-            <FlowPane alignment="CENTER" hgap="15" prefWrapLength="800" vgap="15">
-
+            <FlowPane fx:id="flowJugadores"
+                      alignment="CENTER"
+                      hgap="15"
+                      prefWrapLength="800"
+                      vgap="15">
                 <children>
 
                     <Label styleClass="player-tag" text="1" />

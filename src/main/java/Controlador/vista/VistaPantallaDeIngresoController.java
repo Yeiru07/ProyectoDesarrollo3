@@ -52,7 +52,7 @@ public class VistaPantallaDeIngresoController {
         App.setRoot("VistaGestorSalas");
     }
 
-    public void confirmacionDeCodigo() throws IOException {
+    /* public void confirmacionDeCodigo() throws IOException {
         try {
             int codigoIngresado = Integer.parseInt(txtPinDelJuego.getText().trim());
             Sala sala = juego.buscarSala(codigoIngresado);
@@ -74,6 +74,26 @@ public class VistaPantallaDeIngresoController {
             AlertaParaUsar.mostrar("Error", e.getMessage(), Alert.AlertType.WARNING);
         }
 
+    }*/
+    @FXML
+    public void confirmacionDeCodigo() {
+
+        try {
+            int codigoIngresado = Integer.parseInt(txtPinDelJuego.getText().trim());
+
+            App.escritor.println("UNIR_SALA|" + codigoIngresado + "|" + App.usuarioActual.getNombreUsuario());
+
+            String respuesta = App.lector.readLine();
+
+            if (respuesta.equals("OK")) {
+                ingresarPin();
+            } else {
+                AlertaParaUsar.mostrar("Error", "La sala no existe", Alert.AlertType.WARNING);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
