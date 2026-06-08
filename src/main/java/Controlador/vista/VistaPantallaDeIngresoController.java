@@ -81,9 +81,17 @@ public class VistaPantallaDeIngresoController {
         try {
             int codigoIngresado = Integer.parseInt(txtPinDelJuego.getText().trim());
 
-            App.escritor.println("UNIR_SALA|" + codigoIngresado + "|" + App.usuarioActual.getNombreUsuario());
+            System.out.println("ENVIANDO: UNIR_SALA|"
+                    + codigoIngresado + "|"
+                    + App.usuarioActual.getNombreUsuario());
+
+            App.escritor.println("UNIR_SALA|"
+                    + codigoIngresado + "|"
+                    + App.usuarioActual.getNombreUsuario());
 
             String respuesta = App.lector.readLine();
+
+            System.out.println("RESPUESTA SERVIDOR: " + respuesta);
 
             if (respuesta.equals("OK")) {
                 ingresarPin();
