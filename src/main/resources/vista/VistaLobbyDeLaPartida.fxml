@@ -61,20 +61,7 @@
                       hgap="15"
                       prefWrapLength="800"
                       vgap="15">
-                <children>
-
-                    <Label styleClass="player-tag" text="1" />
-                    <Label styleClass="player-tag" text="2" />
-                    <Label styleClass="player-tag" text="3" />
-                    <Label styleClass="player-tag" text="4" />
-                    <Label styleClass="player-tag" text="5" />
-                    <Label styleClass="player-tag" text="6" />
-                    <Label styleClass="player-tag" text="7" />
-                    <Label styleClass="player-tag" text="8" />
-                    <Label styleClass="player-tag" text="9" />
-                    <Label styleClass="player-tag" text="10" />
-
-                </children>
+              
 
             </FlowPane>
 

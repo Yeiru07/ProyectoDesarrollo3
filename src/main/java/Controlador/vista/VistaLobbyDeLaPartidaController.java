@@ -7,8 +7,10 @@ package Controlador.vista;
 import Modelo.Sala;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -85,8 +87,16 @@ public class VistaLobbyDeLaPartidaController implements Initializable {
 
                     if (mensaje.startsWith("JUGADORES")) {
 
-                        System.out.println(mensaje);
+                        String[] partes = mensaje.split("\\|");
 
+                        if (partes.length > 1) {
+
+                            String[] nombres = partes[1].split(",");
+
+                            Platform.runLater(() -> {
+                                actualizarJugadores(Arrays.asList(nombres));
+                            });
+                        }
                     }
                 }
 
