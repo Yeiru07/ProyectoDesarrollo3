@@ -93,10 +93,18 @@ public class VistaPantallaDeIngresoController {
 
             System.out.println("RESPUESTA SERVIDOR: " + respuesta);
 
-            if (respuesta.equals("OK")) {
+            if (respuesta.startsWith("JUGADORES|")) {
+
+                // App.setJugadoresLobby(respuesta); // opcional para después
                 ingresarPin();
-            } else {
-                AlertaParaUsar.mostrar("Error", "La sala no existe", Alert.AlertType.WARNING);
+
+            } else if (respuesta.equals("ERROR")) {
+
+                AlertaParaUsar.mostrar(
+                        "Error",
+                        "La sala no existe",
+                        Alert.AlertType.WARNING
+                );
             }
 
         } catch (Exception e) {

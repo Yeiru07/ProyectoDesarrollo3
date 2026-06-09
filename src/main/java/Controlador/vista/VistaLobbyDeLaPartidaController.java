@@ -54,6 +54,17 @@ public class VistaLobbyDeLaPartidaController implements Initializable {
         }
 
         escucharServidor();
+        if (App.jugadoresLobby != null) {
+
+            String datos = App.jugadoresLobby.replace("JUGADORES|", "");
+
+            String[] jugadores = datos.split(",");
+
+            for (String nombre : jugadores) {
+                System.out.println(nombre);
+            }
+        }
+
     }
 
     public void actualizarJugadores(List<String> nombres) {

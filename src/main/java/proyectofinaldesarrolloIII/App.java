@@ -28,6 +28,7 @@ public class App extends Application {
     public static Juego partida = new Juego();
     public static Usuario usuarioActual;
     public static Sala salaActual;
+    public static String jugadoresLobby;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -44,7 +45,7 @@ public class App extends Application {
         try {
             // "localhost" si corres el servidor en la misma compu, o la IP si es externa.
             // El puerto debe ser el mismo 5000 que pusiste en tu clase Servidor.
-            socket = new Socket("100.112.89.47", 5000); 
+            socket = new Socket("100.112.89.47", 5000);
             //socket = new Socket("localhost", 5000);
 
             // Inicializamos los flujos apuntando al socket
