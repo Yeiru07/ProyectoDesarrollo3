@@ -95,7 +95,7 @@ public class VistaPantallaDeIngresoController {
 
             if (respuesta.startsWith("JUGADORES|")) {
 
-                // App.setJugadoresLobby(respuesta); // opcional para después
+                App.jugadoresLobby = respuesta; // opcional para después
                 ingresarPin();
 
             } else if (respuesta.equals("ERROR")) {
