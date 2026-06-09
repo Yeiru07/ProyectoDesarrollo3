@@ -86,11 +86,11 @@ public class VistaLobbyDeLaPartidaController implements Initializable {
         new Thread(() -> {
 
             try {
+                System.out.println("ESCUCHANDO SERVIDOR...");
 
                 while (true) {
-
                     String mensaje = App.lector.readLine();
-
+                    System.out.println("MENSAJE RECIBIDO: " + mensaje);
                     if (mensaje == null) {
                         break;
                     }
