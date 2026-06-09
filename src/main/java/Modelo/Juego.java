@@ -1,12 +1,10 @@
 package Modelo;
 
-import Controlador.GestorUsuarios;
 import java.util.ArrayList;
 
 public class Juego {//singleton
 
     private ArrayList<Sala> arrayDeSalas;
-    GestorUsuarios gestor;
 
     public Juego() {
         this.arrayDeSalas = new ArrayList<>();
@@ -18,14 +16,6 @@ public class Juego {//singleton
 
     public void setArrayDeSalas(ArrayList<Sala> arrayDeSalas) {
         this.arrayDeSalas = arrayDeSalas;
-    }
-
-    public GestorUsuarios getGestor() {
-        return gestor;
-    }
-
-    public void setGestor(GestorUsuarios gestor) {
-        this.gestor = gestor;
     }
 
     public int obtenerCantidadUsuariosSala(int codigoSala) {

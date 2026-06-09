@@ -1,6 +1,5 @@
 package Controlador.vista;
 
-import Controlador.GestorUsuarios; // 1. IMPORTAMOS TU GESTOR
 import Modelo.Juego;
 import Modelo.Sala;
 import java.io.IOException;
