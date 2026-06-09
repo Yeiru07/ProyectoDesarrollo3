@@ -19,7 +19,7 @@ import java.io.IOException;
  */
 public class App extends Application {
 
-    // Estas variables ahora se inicializarán en el método conectarServidor()
+    // Estas variables ahora se inicializarán en el metodo conectarServidor()
     public static PrintWriter escritor;
     public static BufferedReader lector;
     private static Socket socket;
@@ -44,7 +44,6 @@ public class App extends Application {
     private void conectarServidor() {
         try {
             // "localhost" si corres el servidor en la misma compu, o la IP si es externa.
-            // El puerto debe ser el mismo 5000 que pusiste en tu clase Servidor.
             socket = new Socket("100.112.89.47", 5000);
             //socket = new Socket("localhost", 5000);
 
@@ -57,7 +56,6 @@ public class App extends Application {
         } catch (IOException e) {
             System.err.println("ERROR: No se pudo conectar al servidor. ¿Está encendido?");
             e.printStackTrace();
-            // Nota: Podrías levantar una alerta aquí si el servidor está apagado
         }
     }
 

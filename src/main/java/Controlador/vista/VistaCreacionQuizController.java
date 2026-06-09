@@ -24,11 +24,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import proyectofinaldesarrolloIII.App;
 
-/**
- * @author sronn
- */
 public class VistaCreacionQuizController implements Initializable {
 
+    /*ESTA ES LA SECCION DE CONEXION CON EL SCENEBUILDER*/
     @FXML
     private Button btnAgregarPregunta;
     @FXML
@@ -65,29 +63,29 @@ public class VistaCreacionQuizController implements Initializable {
     private TextField txtRespuestaVerde;
     @FXML
     private TextField txtTituloSala;
-
     @FXML
     private Label labelDeNombreUsuario;
 
     private int numeroDePreguntaActual = -1;
 
-    Juego partida;
-    Sala sala;
+    Juego partida;//INSTANCIA DEL JUEGO
+    Sala sala;//INSTANCIA DE LA CLASE
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        /*Se coloca la instancia del juego global del app*/
         this.partida = App.partida;
 
-        //Hay que refactorizar
+        /*En esta seccion se crea el codigo para la sala, se crea la sala, se le pone el codigo a la sala, y 
+        finalmente se agrega la sala a partida, que partida es = a juego*/
         int codigoSala = (int) (Math.random() * 900000) + 100000;
         sala = new Sala(codigoSala, "", false, 0, App.usuarioActual);
-        sala.getListaDeCodigos().add(codigoSala);
+        sala.getListaDeCodigos().add(codigoSala);//tengo que revisar si esto funciona
         partida.getArrayDeSalas().add(sala);
 
+        labelDeNombreUsuario.setText("✔ Bienvenido " + App.usuarioActual.getNombreUsuario());
 
-        labelDeNombreUsuario.setText("✔ Bienvenido "+ App.usuarioActual.getNombreUsuario());
-
-
+        /*Seccion de los combo box y el radiobuttom*/
         cmbPuntosParaPregunta.getItems().addAll(10, 20, 30, 40, 50);
         cmbLimiteDeTiempo.getItems().addAll(15, 20, 30);
         cmbLimiteDeTiempo.setValue(20);
@@ -123,7 +121,6 @@ public class VistaCreacionQuizController implements Initializable {
     }
 
     public void seleccionarPregunta(ActionEvent event) {
-
         Button boton = (Button) event.getSource();
         int indice = (Integer) boton.getUserData();
         cargarPregunta(indice);
@@ -131,6 +128,7 @@ public class VistaCreacionQuizController implements Initializable {
 
     @FXML
     public void crearNuevaPregunta() {
+        /*Con esto cambiamo el tipo de pregunta, normal o verdadero o false*/
         String tipoDeQuiz = cmbTipoDePregunta.getValue();
 
         if (tipoDeQuiz == null) {
@@ -145,11 +143,12 @@ public class VistaCreacionQuizController implements Initializable {
                 return; // Si faltan datos en la actual, no te deja crear una nueva
             }
         }
-
+        /*Se crea la pregunta, se le coloca el tipo de pregunta, se agregan las preguntas a la sala*/
         Preguntas pregunta = new Preguntas();
         pregunta.setTipoDePregunta(tipoDeQuiz);
         sala.getListaPreguntas().add(pregunta);
 
+        /*Esto es para cuando se le de al boton añadir, se coloque el numero y no haya salia de datos*/
         int indice = sala.getListaPreguntas().size() - 1;
         crearBotonPregunta(indice);
         numeroDePreguntaActual = indice;
@@ -157,6 +156,7 @@ public class VistaCreacionQuizController implements Initializable {
         limpiarCampos();
     }
 
+    /*Este metodo es el que cambia la vista para que segun el tipo se cambie la visualizacion*/
     private boolean guardarPreguntaSegunTipo() {
         String tipo = cmbTipoDePregunta.getValue();
 
@@ -192,7 +192,7 @@ public class VistaCreacionQuizController implements Initializable {
         }
     }
 
-    // AHORA RETORNA BOOLEAN
+    /*En este metodo se crean las preguntas por aparte con sus respuestas*/
     public boolean guardarPreguntaActual() {
         if (numeroDePreguntaActual < 0) {
             return true;
@@ -217,7 +217,9 @@ public class VistaCreacionQuizController implements Initializable {
             if (grupoRespuestas.getSelectedToggle() == null) {
                 throw new IllegalArgumentException("Debe seleccionar una respuesta correcta (Radio Button)");
             }
-            Preguntas pregunta = sala.getListaPreguntas().get(numeroDePreguntaActual);
+
+            Preguntas pregunta = sala.getListaPreguntas().get(numeroDePreguntaActual);//Busca la pregunta actual
+            /*Le setea todos los valores*/
             pregunta.setEnunciado(tituloPregunta);
             pregunta.setTiempoParaLasPreguntas(tiempoParaLasPreguntas);
             pregunta.setValorPuntosPreguntas(puntosParaPreguntas);
@@ -234,7 +236,7 @@ public class VistaCreacionQuizController implements Initializable {
             pregunta.getArregloDeRespuestasParaPreguntas().add(new Respuestas(3, respuestaAmarillo, rbRespuestaAmarillo.isSelected()));
             pregunta.getArregloDeRespuestasParaPreguntas().add(new Respuestas(4, respuestaVerde, rbRespuestaVerde.isSelected()));
 
-            return true; // Éxito
+            return true;
 
         } catch (Exception e) {
             AlertaParaUsar.mostrar("Faltan datos", e.getMessage(), Alert.AlertType.WARNING);
@@ -242,7 +244,7 @@ public class VistaCreacionQuizController implements Initializable {
         }
     }
 
-    // AHORA RETORNA BOOLEAN
+    /*Metodo para guardar vistas por si es verdadero o falso*/
     public boolean guardarPreguntaActualVerdaderoOFalso() {
         if (numeroDePreguntaActual < 0) {
             return true;
@@ -280,14 +282,15 @@ public class VistaCreacionQuizController implements Initializable {
             pregunta.getArregloDeRespuestasParaPreguntas().add(new Respuestas(1, respuestaRojo, rbRespuestaRojo.isSelected()));
             pregunta.getArregloDeRespuestasParaPreguntas().add(new Respuestas(2, respuestaAzul, rbRespuestaAzul.isSelected()));
 
-            return true; // Éxito
+            return true;
 
         } catch (Exception e) {
             AlertaParaUsar.mostrar("Faltan datos", e.getMessage(), Alert.AlertType.WARNING);
-            return false; // Fallo
+            return false;
         }
     }
 
+    /*Con este metodo podemos tocar el boton y devolvernos a la pregunta ya creada*/
     public void cargarPregunta(int indice) {
         Preguntas pregunta = sala.getListaPreguntas().get(indice);
         numeroDePreguntaActual = indice;
@@ -319,25 +322,22 @@ public class VistaCreacionQuizController implements Initializable {
         }
     }
 
+    /*Enviamos la pregunta por socket*/
     private void enviarPreguntaPorSocket(Preguntas p) {
         if (p.getEnunciado().isEmpty() || p.getArregloDeRespuestasParaPreguntas().isEmpty()) {
             return;
         }
-
         try {
+            /*Se crea una trama con toda la informacion de la pregunta*/
             String trama = "Pregunta|" + p.getEnunciado();
             for (Respuestas r : p.getArregloDeRespuestasParaPreguntas()) {
                 trama += "|" + r.getRespuestas();
             }
             trama += "|" + p.getCodigoSala();
 
-            // 1. Enviamos la pregunta
+            //Se envia esa trama(info de la pregunta) al app y directo al escritor
             App.escritor.println(trama);
             System.out.println("Enviado exitosamente: " + trama);
-
-            // 2. NUEVO: Leemos la respuesta del servidor ("OK: Pregunta guardada") para limpiar el tubo
-//            String respuestaServidor = App.lector.readLine();
-//            System.out.println("Servidor dice: " + respuestaServidor);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -345,19 +345,19 @@ public class VistaCreacionQuizController implements Initializable {
         }
     }
 
+    /*Enviamos la sala por socket tambien*/
     private void enviarSalaPorSocket(Sala s) {
         if (s.getNombreSala().isEmpty() || s.getCodigoSala() == 0) {
             return;
         }
-
         try {
-            // 1. Obtenemos el nombre del usuario logueado actualmente
+            //Obtenemos el nombre del usuario logueado actualmente
             String nombreUsuario = App.usuarioActual.getNombreUsuario();
 
-            // 2. Agregamos el nombreUsuario al final de la trama, separado por "|"
+            //Agregamos el nombreUsuario al final de la trama, separado por "|"
             String trama = "Sala|" + s.getNombreSala() + "|" + s.getCodigoSala() + "|" + s.getCantidadJugadores() + "|" + nombreUsuario;
 
-            proyectofinaldesarrolloIII.App.escritor.println(trama);
+            App.escritor.println(trama);
             System.out.println("Trama de sala enviada: " + trama); // Opcional, para que lo veas en consola
 
         } catch (Exception e) {
@@ -365,29 +365,33 @@ public class VistaCreacionQuizController implements Initializable {
         }
     }
 
- @FXML
+    /*Con esto enviamos las pregunta por socket*/
+    @FXML
     public void guardarPregunta(ActionEvent event) throws IOException {
         String titulo = txtTituloSala.getText().trim();
         sala.setNombreSala(titulo);
 
         boolean seGuardo = guardarPreguntaSegunTipo();
-        if (!seGuardo) return;
+        if (!seGuardo) {
+            return;
+        }
 
-        // 1. Enviamos la sala
+        //Enviamos la sala
         enviarSalaPorSocket(sala);
         App.lector.readLine(); // Esperamos confirmación de Sala
 
-        // 2. Enviamos las preguntas
+        //Enviamos las preguntas
         for (Preguntas pregunta : sala.getListaPreguntas()) {
             enviarPreguntaPorSocket(pregunta);
             App.lector.readLine(); // Esperamos confirmación de Pregunta
         }
 
-        // 3. Solo cuando el servidor nos confirmó todo, cambiamos de pantalla
+        //Solo cuando el servidor nos confirmo todo, cambiamos de pantalla
         AlertaParaUsar.mostrar("Éxito", "Guardado correctamente.", Alert.AlertType.INFORMATION);
-        regresar(); 
+        regresar();
     }
 
+    /*Con esto eliminamos la pregunta creada*/
     @FXML
     private void eliminarPregunta(ActionEvent event) {
 

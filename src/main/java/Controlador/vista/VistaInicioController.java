@@ -20,39 +20,32 @@ import proyectofinaldesarrolloIII.App;
  */
 public class VistaInicioController {
 
-    // SE REMOVIÓ LA VARIABLE CONEXIÓN (El controlador ya no sabe qué es una BD)
-    Juego partida;
+    Juego partida;//Instancia del juego
 
+    /*Esta es la seccion del sceneBuilder*/
     @FXML
     private Button btnIniciarSesion;
-
     @FXML
     private Button btnRegistrarUsuario;
-
     @FXML
     private PasswordField txtConfirmarContrasena;
-
     @FXML
     private PasswordField txtContrasenaIniciarSesion;
-
     @FXML
     private TextField txtRegistarUsuario;
-
     @FXML
     private PasswordField txtRegistrarContrasena;
-
     @FXML
     private TextField txtRegistrarCorreo;
-
     @FXML
     private TextField txtUsuarioIniciarSesion;
 
     @FXML
     public void initialize() {
-        this.partida = App.partida;
-        // SE REMOVIÓ: ConexionBaseDeDatos.conectar();
+        this.partida = App.partida;//Se iguala la instancia
     }
 
+    /*Metodo para iniciar sesion*/
     @FXML
     void btnIniciarSesion(ActionEvent event) {
         String usuarioInicioSesion = txtUsuarioIniciarSesion.getText().trim();
@@ -64,25 +57,21 @@ public class VistaInicioController {
         }
 
         try {
-            // 1. Crear la trama para el Login
+            //Crear la trama para el Login
             String trama = "LOGIN|" + usuarioInicioSesion + "|" + contraInicioSesion;
 
-            // 2. Enviar la trama al servidor usando los flujos de comunicación globales
+            //Enviar la trama al servidor usando los flujos de comunicación globales
             App.escritor.println(trama);
 
-            // 3. Esperar la respuesta inmediata del servidor
+            //Esperar la respuesta inmediata del servidor
             String respuesta = App.lector.readLine();
 
             if (respuesta != null && respuesta.startsWith("OK")) {
                 AlertaParaUsar.mostrar("Éxito", "Sesión iniciada correctamente", Alert.AlertType.INFORMATION);
-                
+
                 //AGREGADO
                 App.usuarioActual = new Usuario(0, usuarioInicioSesion, "", contraInicioSesion, 0);
-                
-                
-                
-                
-                
+
                 // Si el login es correcto, cambia de pantalla al Lobby de Salas
                 App.setRoot("VistaPantallaDeIngreso");
             } else {
@@ -97,6 +86,7 @@ public class VistaInicioController {
         }
     }
 
+    /*Metodo para registar los usuarios en caso de no tener credenciales*/
     @FXML
     void btnRegistrarUsuario(ActionEvent event) {
         String nombre = txtRegistarUsuario.getText().trim();
@@ -104,7 +94,7 @@ public class VistaInicioController {
         String contra = txtRegistrarContrasena.getText().trim();
         String contraConfirmacion = txtConfirmarContrasena.getText().trim();
 
-        // 1. Validaciones puras de Interfaz Gráfica
+        //Validaciones de Interfaz Grafica
         if (nombre.isEmpty() || contra.isEmpty() || contraConfirmacion.isEmpty() || correo.isEmpty()) {
             AlertaParaUsar.mostrar("Error", "Complete todos los campos de registro", Alert.AlertType.WARNING);
             return;
@@ -116,25 +106,21 @@ public class VistaInicioController {
         }
 
         try {
-            // 2. Armar la trama de datos formateada con pipes
+            //Armar la trama de datos formateada con pipes
             String trama = "REGISTRO|" + nombre + "|" + correo + "|" + contra;
 
-            // 3. Enviar la trama por el Socket de forma síncrona
+            //Enviar la trama por el Socket de forma sincrona
             App.escritor.println(trama);
 
-            // 4. Quedarse esperando el veredicto que calcule el Gestor en el Servidor
+            //Quedarse esperando el veredicto que calcule el Gestor en el Servidor
             String respuesta = App.lector.readLine();
 
-            // 5. Analizar la respuesta del Servidor y mostrársela al usuario en la pantalla
+            //Analizar la respuesta del Servidor y mostrársela al usuario en la pantalla
             if (respuesta != null && respuesta.startsWith("OK")) {
-
                 AlertaParaUsar.mostrar("Éxito", "Usuario registrado correctamente en el sistema", Alert.AlertType.INFORMATION);
 
                 // Limpiar campos tras un registro exitoso
-                txtRegistarUsuario.clear();
-                txtRegistrarCorreo.clear();
-                txtRegistrarContrasena.clear();
-                txtConfirmarContrasena.clear();
+                limpiarEspacios();
             } else {
                 // Si el servidor mandó "ERROR|El usuario ya existe", extraemos el mensaje informativo
                 String[] partesRepuesta = respuesta.split("\\|");
@@ -146,5 +132,12 @@ public class VistaInicioController {
             AlertaParaUsar.mostrar("Error de Red", "Hubo un problema al enviar los datos al servidor", Alert.AlertType.ERROR);
             e.printStackTrace();
         }
+    }
+
+    public void limpiarEspacios() {
+        txtRegistarUsuario.clear();
+        txtRegistrarCorreo.clear();
+        txtRegistrarContrasena.clear();
+        txtConfirmarContrasena.clear();
     }
 }

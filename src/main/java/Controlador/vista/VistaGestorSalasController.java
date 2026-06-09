@@ -18,50 +18,51 @@ import proyectofinaldesarrolloIII.App;
 
 public class VistaGestorSalasController implements Initializable {
 
+    /*El flowPaneSalas es el encargado de colocar el nombre de cada una de las salas que se registraron*/
     @FXML
     private FlowPane flowPaneSalas;
-
+    /*Con esto llevamos un numero de salas creadas*/
     @FXML
     private Label lblNoSalas;
 
-    Juego partida;
+    Juego partida;//instancia del juego
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.partida = App.partida;
-
-        // Llamamos al método para pintar las salas apenas se abre la pantalla
+        // Llamamos al metodo para pintar las salas apenas se abre la pantalla
         verSalas();
     }
 
+    /*Con esto mandamos a llamar las salas creadas por el usuario en la base de datos*/
     public void verSalas() {
-        // Limpiamos el catálogo visual antes de cargar
+        // Limpiamos el catalogo visual antes de cargar
         flowPaneSalas.getChildren().clear();
 
         if (App.usuarioActual != null) {
             try {
-                // 1. Le pedimos las salas al SERVIDOR en lugar de usar la Base de Datos directo
+                //Le pedimos las salas al SERVIDOR en lugar de usar la Base de Datos directo
                 String nombreDeUsuario = App.usuarioActual.getNombreUsuario();
                 String tramaEnvio = "CONSULTAR_SALAS|" + nombreDeUsuario;
 
                 App.escritor.println(tramaEnvio);
                 System.out.println("Solicitando salas al servidor: " + tramaEnvio);
 
-                // 2. Esperamos y leemos la respuesta del SERVIDOR
+                //Esperamos y leemos la respuesta del SERVIDOR
                 String respuesta = App.lector.readLine();
                 System.out.println("Respuesta del servidor: " + respuesta);
 
-                // 3. Verificamos que la respuesta sea la correcta
+                //Verificamos que la respuesta sea la correcta
                 if (respuesta != null && respuesta.startsWith("RESPUESTA_SALAS|")) {
 
-                    // Extraemos lo que viene después de la barra "|"
+                    // Extraemos lo que viene despues de la barra "|"
                     String[] partesRespuesta = respuesta.split("\\|");
                     String contenido = partesRespuesta[1];
 
                     if (contenido.equals("VACIO")) {
                         flowPaneSalas.getChildren().add(lblNoSalas);
                     } else {
-                        // Separamos cada sala (el servidor las envía separadas por ';')
+                        // Separamos cada sala (el servidor las envia separadas por ';')
                         String[] arregloSalas = contenido.split(";");
 
                         // Ciclo for tradicional, sin lambdas
@@ -74,10 +75,10 @@ public class VistaGestorSalasController implements Initializable {
                             String nombre = datosSala[1];
                             int jugadores = Integer.parseInt(datosSala[2]);
 
-                            // Creamos el objeto Sala en memoria
+                            //Creamos el objeto Sala en memoria
                             Sala sala = new Sala(codigo, nombre, true, jugadores);
 
-                            // Creamos la tarjeta visual y la agregamos a la pantalla
+                            //Creamos la tarjeta visual y la agregamos a la pantalla
                             VBox tarjeta = crearTarjetaSala(sala);
                             flowPaneSalas.getChildren().add(tarjeta);
                         }
@@ -123,7 +124,7 @@ public class VistaGestorSalasController implements Initializable {
         Button btnPresentar = new Button("▶ Presentar");
         btnPresentar.getStyleClass().add("btnPresent");
 
-        // Evento clásico para el botón de presentar
+        // Evento para el boton de presentar
         btnPresentar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
