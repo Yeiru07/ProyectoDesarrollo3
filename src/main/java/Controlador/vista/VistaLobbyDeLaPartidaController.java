@@ -43,14 +43,11 @@ public class VistaLobbyDeLaPartidaController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
         Sala sala = App.salaActual;
-
+        System.out.println("JUGADORES LOBBY = " + App.jugadoresLobby);
         if (sala != null) {
 
             lblPinSala.setText("PIN: " + sala.getCodigoSala());
 
-            lblTotalJugadores.setText(
-                    "👤 " + sala.getCantidadUsuarios() + " participantes"
-            );
         }
 
         escucharServidor();
@@ -60,9 +57,11 @@ public class VistaLobbyDeLaPartidaController implements Initializable {
 
             String[] jugadores = datos.split(",");
 
-            for (String nombre : jugadores) {
-                System.out.println(nombre);
-            }
+            actualizarJugadores(Arrays.asList(jugadores));
+
+            lblTotalJugadores.setText(
+                    "👤 " + jugadores.length + " participantes"
+            );
         }
 
     }
