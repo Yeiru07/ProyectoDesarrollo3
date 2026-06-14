@@ -4,9 +4,12 @@
  */
 package Controlador.vista;
 
+import Modelo.Preguntas;
+import Modelo.Respuestas;
 import Modelo.Sala;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -71,6 +74,7 @@ public class VistaLobbyDeLaPartidaController implements Initializable {
 
             try {
                 System.out.println("ESCUCHANDO SERVIDOR...");
+
                 while (true) {
                     String mensaje = App.lector.readLine();
                     System.out.println("MENSAJE RECIBIDO: " + mensaje);
@@ -90,10 +94,71 @@ public class VistaLobbyDeLaPartidaController implements Initializable {
                                 actualizarJugadores(Arrays.asList(nombres));
                                 lblTotalJugadores.setText("👤 " + nombres.length + " participantes");
                             });
+
                         }
+                    } // PREGUNTAS
+                    else if (mensaje.startsWith("PREGUNTAS")) {
+
+                        System.out.println("RECIBI PREGUNTAS");
+
+                        App.preguntasActuales.clear();
+
+                        String contenido
+                                = mensaje.replace("PREGUNTAS|", "");
+
+                        String[] preguntas
+                                = contenido.split(";");
+
+                        for (String bloque : preguntas) {
+
+                            if (bloque.trim().isEmpty()) {
+                                continue;
+                            }
+
+                            String[] datos
+                                    = bloque.split(",");
+
+                            Preguntas p
+                                    = new Preguntas();
+
+                            p.setEnunciado(datos[0]);
+
+                            ArrayList<Respuestas> respuestas
+                                    = new ArrayList<>();
+
+                            for (int i = 1; i < datos.length; i++) {
+
+                                respuestas.add(
+                                        new Respuestas(
+                                                i,
+                                                datos[i],
+                                                false
+                                        )
+                                );
+                            }
+
+                            p.setArregloDeRespuestasParaPreguntas(
+                                    respuestas
+                            );
+
+                            App.preguntasActuales.add(p);
+                        }
+
+                        Platform.runLater(() -> {
+
+                            try {
+
+                                App.setRoot(
+                                        "VistaPreguntaMultiple"
+                                );
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                        });
                     }
                 }
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -102,17 +167,14 @@ public class VistaLobbyDeLaPartidaController implements Initializable {
     }
 
     @FXML
-    public void ListoVamos() throws IOException {
+    public void ListoVamos() {
 
-        String trama = "OBTENER_PREGUNTAS|" + sala.getCodigoSala();
+        String trama
+                = "OBTENER_PREGUNTAS|"
+                + sala.getCodigoSala();
 
         App.escritor.println(trama);
 
-        String respuesta = App.lector.readLine();
-
-        System.out.println(respuesta);
-
-        App.setRoot("VistaPreguntaMultiple");
     }
 
     @FXML
