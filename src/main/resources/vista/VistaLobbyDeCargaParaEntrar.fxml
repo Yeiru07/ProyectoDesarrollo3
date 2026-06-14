@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane prefHeight="720.0" prefWidth="1080.0" styleClass="root" stylesheets="@css/LobbyJugador.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafxl.com/fxml/1" fx:controller="Controlador.vista.VistaLobbyJugadorController">
+<StackPane prefHeight="720.0" prefWidth="1080.0" styleClass="root" stylesheets="@css/LobbyJugador.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.vista.VistaLobbyJugadorController">
     <children>
         
         <VBox alignment="CENTER" spacing="40.0">
