@@ -1,6 +1,7 @@
 package proyectofinaldesarrolloIII;
 
 import Modelo.Juego;
+import Modelo.Preguntas;
 import Modelo.Sala;
 import Modelo.Usuario;
 import java.io.BufferedReader;
@@ -13,6 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * JavaFX App
@@ -23,6 +25,7 @@ public class App extends Application {
     public static PrintWriter escritor;
     public static BufferedReader lector;
     private static Socket socket;
+    public static ArrayList<Preguntas> preguntasActuales = new ArrayList<>();
 
     private static Scene scene;
     public static Juego partida = new Juego();

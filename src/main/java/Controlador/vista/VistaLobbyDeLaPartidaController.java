@@ -103,7 +103,16 @@ public class VistaLobbyDeLaPartidaController implements Initializable {
 
     @FXML
     public void ListoVamos() throws IOException {
-        App.setRoot("VistaLobbyJugador");
+
+        String trama = "OBTENER_PREGUNTAS|" + sala.getCodigoSala();
+
+        App.escritor.println(trama);
+
+        String respuesta = App.lector.readLine();
+
+        System.out.println(respuesta);
+
+        App.setRoot("VistaPreguntaMultiple");
     }
 
     @FXML

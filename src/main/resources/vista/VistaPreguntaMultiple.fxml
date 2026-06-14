@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane styleClass="root" stylesheets="@css/PreguntaMultipleJugador.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://fxml.com/fxml/1" fx:controller="controlador.PreguntaJugadorController">
+<StackPane styleClass="root" stylesheets="@css/PreguntaMultipleJugador.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.vista.VistaPreguntaMultipleController">
     <children>
         <VBox alignment="CENTER" spacing="35.0" StackPane.alignment="CENTER">
             <children>
