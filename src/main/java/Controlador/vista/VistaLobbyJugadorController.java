@@ -13,8 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import proyectofinaldesarrolloIII.App;
 
-public class VistaLobbyJugadorController
-        implements Initializable {
+public class VistaLobbyJugadorController implements Initializable {
 
     @FXML
     private Label lblEstadoSala;
@@ -26,36 +25,21 @@ public class VistaLobbyJugadorController
     private ProgressIndicator progressLobby;
 
     @Override
-    public void initialize(URL url,
-            ResourceBundle rb) {
-
-        lblNombreJugador.setText(
-                "Jugador: "
-                + App.usuarioActual.getNombreUsuario()
-        );
-
+    public void initialize(URL url, ResourceBundle rb) {
+        lblNombreJugador.setText("Jugador: " + App.usuarioActual.getNombreUsuario());
         escucharServidor();
     }
 
     private void escucharServidor() {
-
         new Thread(() -> {
-
             try {
-
                 while (true) {
-
-                    String mensaje
-                            = App.lector.readLine();
+                    String mensaje = App.lector.readLine();
 
                     if (mensaje == null) {
                         break;
                     }
-
-                    System.out.println(
-                            "RECIBIDO="
-                            + mensaje
-                    );
+                    System.out.println("RECIBIDO=" + mensaje);
 
                     // SI EL SERVIDOR ENVÍA LAS PREGUNTAS
                     if (mensaje.startsWith("PREGUNTAS")) {
@@ -64,14 +48,9 @@ public class VistaLobbyJugadorController
 
                         App.preguntasActuales.clear();
 
-                        String contenido
-                                = mensaje.replace(
-                                        "PREGUNTAS|",
-                                        ""
-                                );
+                        String contenido = mensaje.replace("PREGUNTAS|", "");
 
-                        String[] preguntas
-                                = contenido.split(";");
+                        String[] preguntas = contenido.split(";");
 
                         for (String bloque : preguntas) {
 
@@ -79,61 +58,34 @@ public class VistaLobbyJugadorController
                                 continue;
                             }
 
-                            String[] datos
-                                    = bloque.split(",");
+                            String[] datos = bloque.split(",");
 
-                            Preguntas p
-                                    = new Preguntas();
-
+                            Preguntas p = new Preguntas();
                             p.setEnunciado(datos[0]);
+                            ArrayList<Respuestas> respuestas = new ArrayList<>();
 
-                            ArrayList<Respuestas> respuestas
-                                    = new ArrayList<>();
-
-                            for (int i = 1;
-                                    i < datos.length;
-                                    i++) {
-
-                                respuestas.add(
-                                        new Respuestas(
-                                                i,
-                                                datos[i],
-                                                false
-                                        )
-                                );
+                            for (int i = 1; i < datos.length; i++) {
+                                respuestas.add(new Respuestas(i, datos[i], false));
                             }
 
-                            p.setArregloDeRespuestasParaPreguntas(
-                                    respuestas
-                            );
-
+                            p.setArregloDeRespuestasParaPreguntas(respuestas);
                             App.preguntasActuales.add(p);
                         }
-
                         Platform.runLater(() -> {
-
                             try {
-
-                                App.setRoot(
-                                        "VistaPreguntaMultiple"
-                                );
+                                App.setRoot("VistaPreguntaMultiple");
 
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
 
                         });
-                    } // SI EL SERVIDOR ENVÍA INICIO_PARTIDA
-                    else if (mensaje.equals(
-                            "INICIO_PARTIDA")) {
-
+                    } // SI EL SERVIDOR ENVIA INICIO_PARTIDA
+                    else if (mensaje.equals("INICIO_PARTIDA")) {
                         Platform.runLater(() -> {
 
                             try {
-
-                                App.setRoot(
-                                        "VistaPreguntaMultiple"
-                                );
+                                App.setRoot("VistaPreguntaMultiple");
 
                             } catch (IOException e) {
                                 e.printStackTrace();
