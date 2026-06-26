@@ -375,17 +375,31 @@ public class VistaCreacionQuizController implements Initializable {
         if (!seGuardo) {
             return;
         }
+        //En esta parte limpio las variables estatitcas
+        App.preguntasActuales.clear();
+        App.jugadoresLobby = null;
+        App.salaActual = sala; // Actualizar la sala actual
 
         //Enviamos la sala
         enviarSalaPorSocket(sala);
-        App.lector.readLine(); // Esperamos confirmación de Sala
+        String confirmacionSala = App.lector.readLine(); // Esperamos confirmación
 
-        //Enviamos las preguntas
-        for (Preguntas pregunta : sala.getListaPreguntas()) {
-            enviarPreguntaPorSocket(pregunta);
-            App.lector.readLine(); // Esperamos confirmación de Pregunta
+        // Verificar que la confirmación es correcta
+        if (confirmacionSala == null || !confirmacionSala.startsWith("OK")) {
+            AlertaParaUsar.mostrar("Error", "Error al crear la sala en el servidor", Alert.AlertType.ERROR);
+            return;
         }
 
+        // Enviamos las preguntas UNA POR UNA con sus confirmaciones
+        for (Preguntas pregunta : sala.getListaPreguntas()) {
+            enviarPreguntaPorSocket(pregunta);
+            String confirmacionPregunta = App.lector.readLine();
+
+            if (confirmacionPregunta == null || !confirmacionPregunta.startsWith("OK")) {
+                AlertaParaUsar.mostrar("Error", "Error al guardar pregunta", Alert.AlertType.ERROR);
+                return;
+            }
+        }
         //Solo cuando el servidor nos confirmo todo, cambiamos de pantalla
         AlertaParaUsar.mostrar("Éxito", "Guardado correctamente.", Alert.AlertType.INFORMATION);
         regresar();
