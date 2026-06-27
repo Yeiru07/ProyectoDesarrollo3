@@ -237,7 +237,7 @@ public class GestorJuegoVivoCliente {
 
             Preguntas pregunta = preguntasActuales.get(preguntaActualIndex);
 
-            // 🔴 OBTENER CÓDIGO DE SALA CORRECTAMENTE
+            // OBTENER CÓDIGO DE SALA CORRECTAMENTE
             String codigoSala = "";
 
             // Primero intentar con la salaActual del gestor

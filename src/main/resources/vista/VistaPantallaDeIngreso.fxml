@@ -28,20 +28,7 @@
 
             <VBox alignment="CENTER" spacing="5.0" />
 
-            <VBox alignment="CENTER" spacing="5.0">
-   
-                <Button fx:id="btnRegistrarse" text="▶"> 
-   
-                    <styleClass>
-                        <String fx:value="menuButton" />
-                        <String fx:value="green" />
-                    </styleClass>
-   
-                </Button>
-   
-                <Label styleClass="menuLabel" text="Registrate!" />
-
-            </VBox>
+            <VBox alignment="CENTER" spacing="5.0" />
 
             <VBox alignment="CENTER" spacing="5.0" />
             <VBox alignment="CENTER" spacing="5.0">

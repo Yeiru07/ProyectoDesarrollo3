@@ -10,7 +10,7 @@ public class ClienteSocket {
     private Socket socket;
     private PrintWriter escritor;
     private BufferedReader lector;
-    private static final String SERVER_HOST = System.getProperty("server.host", "127.0.0.1");
+    private static final String SERVER_HOST = System.getProperty("server.host", "100.112.89.47");
     private static final int SERVER_PORT = 5000;
 
     public void conectar() {
