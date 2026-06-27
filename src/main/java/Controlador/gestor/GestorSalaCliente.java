@@ -10,7 +10,8 @@ import java.util.ArrayList;
 public class GestorSalaCliente {
 
     private Sala salaActual;
-    private final ArrayList<Sala> salasTemporales = new ArrayList<>();
+    private final ArrayList<Sala> salasTemporales;
+
     private final ClienteSocket cliente;
     private final PrintWriter escritor;
     private final BufferedReader lector;
@@ -19,15 +20,30 @@ public class GestorSalaCliente {
         this.cliente = cliente;
         this.escritor = cliente.getEscritor();
         this.lector = cliente.getLector();
+        this.salasTemporales = new ArrayList<>();
     }
 
-    // ==================== METODOS LOCALES ====================
+    // =====================================================
+    // CREACION Y MANEJO LOCAL DE SALAS
+    // =====================================================
     public Sala crearSala(Usuario propietario) {
+
         int codigoSala = generarCodigoSala();
-        Sala sala = new Sala(codigoSala, "", false, 0, propietario);
+
+        Sala sala = new Sala(
+                codigoSala,
+                "",
+                false,
+                0,
+                propietario
+        );
+
         sala.getListaDeCodigos().add(codigoSala);
+
         salasTemporales.add(sala);
-        this.salaActual = sala;
+
+        salaActual = sala;
+
         return sala;
     }
 
@@ -36,9 +52,19 @@ public class GestorSalaCliente {
     }
 
     public void setNombreSala(String nombre) {
+
         if (salaActual != null) {
             salaActual.setNombreSala(nombre);
         }
+
+    }
+
+    public boolean salaTieneNombre() {
+
+        return salaActual != null
+                && salaActual.getNombreSala() != null
+                && !salaActual.getNombreSala().trim().isEmpty();
+
     }
 
     public Sala getSalaActual() {
@@ -49,216 +75,356 @@ public class GestorSalaCliente {
         this.salaActual = sala;
     }
 
+    public void limpiarSalaActual() {
+        salaActual = null;
+    }
+
+    public ArrayList<Sala> getSalasTemporales() {
+        return salasTemporales;
+    }
+
     public boolean tienePreguntas() {
-        return salaActual != null && !salaActual.getListaPreguntas().isEmpty();
+
+        return salaActual != null
+                && !salaActual.getListaPreguntas().isEmpty();
+
     }
 
-    public void eliminarPregunta(int indice) {
-        if (salaActual != null && indice >= 0 && indice < salaActual.getListaPreguntas().size()) {
-            salaActual.getListaPreguntas().remove(indice);
+    // =====================================================
+    // ELIMINAR PREGUNTA
+    // =====================================================
+    public boolean eliminarPregunta(int indice) {
+
+        if (salaActual == null) {
+            return false;
         }
+
+        if (indice < 0
+                || indice >= salaActual.getListaPreguntas().size()) {
+            return false;
+        }
+
+        salaActual.getListaPreguntas().remove(indice);
+
+        return true;
     }
 
-    // ==================== METODOS DE COMUNICACION CON SERVIDOR ====================
-    /**
-     * PREPARA LA TRAMA PARA ENVIAR UNA SALA AL SERVIDOR
-     */
+    // =====================================================
+    // TRAMA SALA
+    // =====================================================
     public String prepararTramaSala() {
-        if (salaActual == null || salaActual.getNombreSala().isEmpty()) {
+
+        if (salaActual == null) {
             return null;
         }
-        return "Sala|" + salaActual.getNombreSala() + "|"
+
+        if (salaActual.getNombreSala() == null
+                || salaActual.getNombreSala().trim().isEmpty()) {
+            return null;
+        }
+
+        String propietario = "";
+
+        if (salaActual.getPropietario() != null) {
+            propietario = salaActual
+                    .getPropietario()
+                    .getNombreUsuario();
+        }
+
+        return "Sala|"
+                + salaActual.getNombreSala() + "|"
                 + salaActual.getCodigoSala() + "|"
                 + salaActual.isEstado() + "|"
                 + salaActual.getCantidadJugadores() + "|"
-                + salaActual.getPropietario().getIdUsuario();
+                + propietario;
     }
 
-    /**
-     * ENVIA LA SALA ACTUAL AL SERVIDOR (METODO QUE NECESITAS)
-     */
+    // =====================================================
+    // ENVIAR SALA ACTUAL
+    // =====================================================
     public boolean enviarSalaAlServidor() {
+
         String trama = prepararTramaSala();
+
         if (trama == null) {
             return false;
         }
 
         try {
+
             escritor.println(trama);
-            System.out.println("Trama de sala enviada: " + trama);
 
-            String confirmacion = lector.readLine();
-            if (confirmacion != null && confirmacion.equals("GUARDADO_OK")) {
-                return true;
-            } else {
-                System.err.println("Error al enviar sala: " + confirmacion);
-                return false;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    /**
-     * GUARDA UNA SALA ESPECIFICA EN EL SERVIDOR
-     */
-    public boolean guardarSalaEnServidor(Sala sala, String nombreUsuario) {
-        String trama = "Sala|" + sala.getNombreSala() + "|"
-                + sala.getCodigoSala() + "|"
-                + sala.isEstado() + "|"
-                + sala.getCantidadJugadores() + "|"
-                + nombreUsuario;
-
-        try {
-            escritor.println(trama);
-            System.out.println("Trama de sala enviada: " + trama);
-
-            String confirmacion = lector.readLine();
-            if (confirmacion != null && confirmacion.equals("GUARDADO_OK")) {
-                return true;
-            } else {
-                System.err.println("Error al enviar sala: " + confirmacion);
-                return false;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    /**
-     * CONSULTA LAS SALAS DE UN USUARIO
-     */
-    public ArrayList<Sala> consultarSalasDeUsuario(String nombreUsuario) {
-        ArrayList<Sala> salas = new ArrayList<>();
-        String tramaEnvio = "CONSULTAR_SALAS|" + nombreUsuario;
-
-        try {
-            escritor.println(tramaEnvio);
-            System.out.println("Solicitando salas al servidor: " + tramaEnvio);
+            System.out.println("Sala enviada:");
+            System.out.println(trama);
 
             String respuesta = lector.readLine();
-            System.out.println("Respuesta del servidor: " + respuesta);
 
-            if (respuesta != null && respuesta.startsWith("RESPUESTA_SALAS|")) {
-                String[] partesRespuesta = respuesta.split("\\|");
-                String contenido = partesRespuesta[1];
+            return respuesta != null
+                    && respuesta.contains("GUARDADO_OK");
 
-                if (!contenido.equals("VACIO")) {
-                    String[] arregloSalas = contenido.split(";");
-
-                    for (int i = 0; i < arregloSalas.length; i++) {
-                        String[] datosSala = arregloSalas[i].split(",");
-                        int codigo = Integer.parseInt(datosSala[0]);
-                        String nombre = datosSala[1];
-                        int jugadores = Integer.parseInt(datosSala[2]);
-
-                        Sala sala = new Sala(codigo, nombre, true, jugadores);
-                        salas.add(sala);
-                    }
-                }
-            }
         } catch (Exception e) {
-            System.out.println("Error de conexión al obtener salas: " + e.getMessage());
+
+            e.printStackTrace();
+            return false;
+
+        }
+
+    }
+
+    // =====================================================
+    // GUARDAR SALA ESPECIFICA
+    // =====================================================
+    public boolean guardarSalaEnServidor(
+            Sala sala,
+            String nombreUsuario) {
+
+        try {
+
+            String trama = "Sala|"
+                    + sala.getNombreSala() + "|"
+                    + sala.getCodigoSala() + "|"
+                    + sala.isEstado() + "|"
+                    + sala.getCantidadJugadores() + "|"
+                    + nombreUsuario;
+
+            escritor.println(trama);
+
+            System.out.println("Sala enviada:");
+            System.out.println(trama);
+
+            String respuesta = lector.readLine();
+
+            return respuesta != null
+                    && respuesta.contains("GUARDADO_OK");
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+            return false;
+
+        }
+
+    }
+
+    // =====================================================
+    // GUARDAR SALA COMPLETA
+    // =====================================================
+    public boolean guardarSalaCompleta() {
+
+        if (salaActual == null) {
+            return false;
+        }
+
+        if (salaActual.getPropietario() == null) {
+            return false;
+        }
+
+        return guardarSalaEnServidor(
+                salaActual,
+                salaActual
+                        .getPropietario()
+                        .getNombreUsuario()
+        );
+
+    }
+
+    // =====================================================
+    // CONSULTAR SALAS
+    // =====================================================
+    public ArrayList<Sala> consultarSalasDeUsuario(
+            String nombreUsuario) {
+
+        ArrayList<Sala> salas = new ArrayList<>();
+
+        try {
+
+            String trama
+                    = "CONSULTAR_SALAS|" + nombreUsuario;
+
+            escritor.println(trama);
+
+            String respuesta = lector.readLine();
+
+            if (respuesta == null) {
+                return salas;
+            }
+
+            if (!respuesta.startsWith("RESPUESTA_SALAS|")) {
+                return salas;
+            }
+
+            String[] partes = respuesta.split("\\|");
+
+            if (partes.length < 2) {
+                return salas;
+            }
+
+            String contenido = partes[1];
+
+            if (contenido.equals("VACIO")) {
+                return salas;
+            }
+
+            String[] arregloSalas
+                    = contenido.split(";");
+
+            for (String s : arregloSalas) {
+
+                String[] datos = s.split(",");
+
+                int codigo
+                        = Integer.parseInt(datos[0]);
+
+                String nombre
+                        = datos[1];
+
+                int jugadores
+                        = Integer.parseInt(datos[2]);
+
+                Sala sala
+                        = new Sala(
+                                codigo,
+                                nombre,
+                                true,
+                                jugadores
+                        );
+
+                salas.add(sala);
+            }
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
         }
 
         return salas;
     }
 
-    /**
-     * PRESENTA UNA SALA (LA MARCA COMO ACTIVA)
-     */
+    // =====================================================
+    // PRESENTAR SALA
+    // =====================================================
     public boolean presentarSala(int codigoSala) {
-        String trama = "PRESENTAR|" + codigoSala;
 
         try {
+
+            String trama
+                    = "PRESENTAR|" + codigoSala;
+
             escritor.println(trama);
-            System.out.println("Enviado al servidor: " + trama);
 
             String respuesta = lector.readLine();
-            System.out.println("Respuesta del servidor: " + respuesta);
 
-            if (respuesta != null && respuesta.startsWith("OK|Sala presentada")) {
-                return true;
-            } else {
-                return false;
-            }
+            return respuesta != null
+                    && respuesta.startsWith("OK");
+
         } catch (Exception e) {
+
             e.printStackTrace();
             return false;
+
         }
+
     }
 
-    /**
-     * UNE UN JUGADOR A UNA SALA
-     */
-    public boolean unirASala(int codigoSala, String nombreJugador) {
-        String trama = "UNIR_SALA|" + codigoSala + "|" + nombreJugador;
+    // =====================================================
+    // UNIRSE A SALA
+    // =====================================================
+    public boolean unirASala(
+            int codigoSala,
+            String nombreJugador) {
 
         try {
+
+            String trama
+                    = "UNIR_SALA|"
+                    + codigoSala
+                    + "|"
+                    + nombreJugador;
+
             escritor.println(trama);
-            System.out.println("Uniendo a sala: " + trama);
 
             String respuesta = lector.readLine();
-            System.out.println("Respuesta del servidor: " + respuesta);
 
-            if (respuesta != null && !respuesta.startsWith("ERROR")) {
-                return true;
-            } else {
-                return false;
-            }
+            return respuesta != null
+                    && !respuesta.startsWith("ERROR");
+
         } catch (Exception e) {
+
             e.printStackTrace();
             return false;
+
         }
+
     }
 
-    /**
-     * CIERRA UNA SALA
-     */
+    // =====================================================
+    // CERRAR SALA
+    // =====================================================
     public boolean cerrarSala(int codigoSala) {
-        String trama = "CERRAR_SALA|" + codigoSala;
 
         try {
-            escritor.println(trama);
-            System.out.println("Cerrando sala: " + trama);
+
+            escritor.println(
+                    "CERRAR_SALA|" + codigoSala
+            );
+
             return true;
+
         } catch (Exception e) {
+
             e.printStackTrace();
             return false;
+
         }
+
     }
 
-    /**
-     * OBTIENE LAS PREGUNTAS DE UNA SALA
-     */
-    public boolean obtenerPreguntasDeSala(int codigoSala) {
-        String trama = "OBTENER_PREGUNTAS|" + codigoSala;
+    // =====================================================
+    // OBTENER PREGUNTAS
+    // =====================================================
+    public boolean obtenerPreguntasDeSala(
+            int codigoSala) {
 
         try {
-            escritor.println(trama);
-            System.out.println("Solicitando preguntas: " + trama);
+
+            escritor.println(
+                    "OBTENER_PREGUNTAS|"
+                    + codigoSala
+            );
+
             return true;
+
         } catch (Exception e) {
+
             e.printStackTrace();
             return false;
+
         }
+
     }
 
-    /**
-     * INICIA EL JUEGO EN UNA SALA
-     */
-    public boolean iniciarJuegoEnSala(int codigoSala) {
-        String trama = "INICIAR_JUEGO|" + codigoSala;
+    // =====================================================
+    // INICIAR JUEGO
+    // =====================================================
+    public boolean iniciarJuegoEnSala(
+            int codigoSala) {
 
         try {
-            escritor.println(trama);
-            System.out.println("Iniciando juego: " + trama);
+
+            escritor.println(
+                    "INICIAR_JUEGO|"
+                    + codigoSala
+            );
+
             return true;
+
         } catch (Exception e) {
+
             e.printStackTrace();
             return false;
+
         }
+
     }
 }
