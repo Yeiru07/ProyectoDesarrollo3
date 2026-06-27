@@ -17,6 +17,13 @@
         <VBox alignment="CENTER" spacing="35.0" StackPane.alignment="CENTER">
             <children>
                 
+                <!-- BOTON SALIR (esquina superior derecha) -->
+                <HBox alignment="TOP_RIGHT" maxWidth="850.0">
+                    <children>
+                        <Button fx:id="btnSalir" mnemonicParsing="false" onAction="#onSalir" text="✕ Salir" styleClass="btnSalirStyle" />
+                    </children>
+                </HBox>
+                
                 <VBox alignment="CENTER" spacing="12.0" styleClass="timerContainer">
                     <children>
                         <Label fx:id="lblCronometro" styleClass="timerLabel" text="Tiempo restante: 60s" />

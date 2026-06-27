@@ -42,6 +42,8 @@ public class VistaPreguntaMultipleController implements Initializable {
     private HBox boxBotonSiguiente;
     @FXML
     private Button btnSiguiente;
+    @FXML
+    private Button btnSalir;
 
     private Timeline temporizador;
     private int tiempoRestante;
@@ -102,14 +104,14 @@ public class VistaPreguntaMultipleController implements Initializable {
                         if (mensaje == null) {
                             break;
                         }
-                        
+
                         System.out.println("Jugador recibio del servidor: " + mensaje);
-                        
+
                         if (mensaje.startsWith("CAMBIAR_PREGUNTA")) {
                             String[] partes = mensaje.split("\\|");
                             if (partes.length >= 2) {
                                 final int nuevoIndice = Integer.parseInt(partes[1]);
-                                
+
                                 Platform.runLater(new Runnable() {
                                     @Override
                                     public void run() {
@@ -183,7 +185,7 @@ public class VistaPreguntaMultipleController implements Initializable {
         if (respuestas != null) {
             for (int i = 0; i < respuestas.size(); i++) {
                 Respuestas r = respuestas.get(i);
-                System.out.println("  R" + (i+1) + ": " + r.getRespuestas() + " | Correcta: " + r.isCorrecta());
+                System.out.println("  R" + (i + 1) + ": " + r.getRespuestas() + " | Correcta: " + r.isCorrecta());
             }
         }
     }
@@ -197,7 +199,7 @@ public class VistaPreguntaMultipleController implements Initializable {
         if (respuestas != null) {
             for (int i = 0; i < respuestas.size(); i++) {
                 Respuestas r = respuestas.get(i);
-                System.out.println("  R" + (i+1) + ": " + r.getRespuestas() + " | Correcta: " + r.isCorrecta());
+                System.out.println("  R" + (i + 1) + ": " + r.getRespuestas() + " | Correcta: " + r.isCorrecta());
             }
         }
 
@@ -292,7 +294,9 @@ public class VistaPreguntaMultipleController implements Initializable {
     }
 
     private void tiempoAgotado() {
-        if (preguntaRespondida) return;
+        if (preguntaRespondida) {
+            return;
+        }
         preguntaRespondida = true;
 
         if (!esPresentador) {
@@ -314,18 +318,43 @@ public class VistaPreguntaMultipleController implements Initializable {
     }
 
     @FXML
-    private void onResponderOpcion1() { if (!esPresentador) procesarRespuesta(0); }
+    private void onResponderOpcion1() {
+        if (!esPresentador) {
+            procesarRespuesta(0);
+        }
+    }
+
     @FXML
-    private void onResponderOpcion2() { if (!esPresentador) procesarRespuesta(1); }
+    private void onResponderOpcion2() {
+        if (!esPresentador) {
+            procesarRespuesta(1);
+        }
+    }
+
     @FXML
-    private void onResponderOpcion3() { if (!esPresentador) procesarRespuesta(2); }
+    private void onResponderOpcion3() {
+        if (!esPresentador) {
+            procesarRespuesta(2);
+        }
+    }
+
     @FXML
-    private void onResponderOpcion4() { if (!esPresentador) procesarRespuesta(3); }
+    private void onResponderOpcion4() {
+        if (!esPresentador) {
+            procesarRespuesta(3);
+        }
+    }
 
     private void procesarRespuesta(int indiceRespuesta) {
-        if (esPresentador || preguntaRespondida) return;
-        if (App.preguntasActuales.isEmpty()) return;
-        if (temporizador != null) temporizador.stop();
+        if (esPresentador || preguntaRespondida) {
+            return;
+        }
+        if (App.preguntasActuales.isEmpty()) {
+            return;
+        }
+        if (temporizador != null) {
+            temporizador.stop();
+        }
 
         preguntaRespondida = true;
         deshabilitarBotones();
@@ -417,11 +446,16 @@ public class VistaPreguntaMultipleController implements Initializable {
 
     private Button obtenerBotonPorIndice(int indice) {
         switch (indice) {
-            case 0: return btnOpcion1;
-            case 1: return btnOpcion2;
-            case 2: return btnOpcion3;
-            case 3: return btnOpcion4;
-            default: return null;
+            case 0:
+                return btnOpcion1;
+            case 1:
+                return btnOpcion2;
+            case 2:
+                return btnOpcion3;
+            case 3:
+                return btnOpcion4;
+            default:
+                return null;
         }
     }
 
@@ -434,7 +468,9 @@ public class VistaPreguntaMultipleController implements Initializable {
 
     private void enviarRespuestaAlServidor(String respuesta) {
         try {
-            if (App.preguntasActuales.isEmpty()) return;
+            if (App.preguntasActuales.isEmpty()) {
+                return;
+            }
             Preguntas pregunta = App.preguntasActuales.get(preguntaActualIndex);
             String trama = "RESPUESTA|" + pregunta.getCodigoSala() + "|"
                     + App.usuarioActual.getNombreUsuario() + "|" + respuesta + "|" + tiempoRestante;
@@ -473,6 +509,30 @@ public class VistaPreguntaMultipleController implements Initializable {
     public void detenerTemporizador() {
         if (temporizador != null) {
             temporizador.stop();
+        }
+    }
+
+    @FXML
+    private void onSalir() {
+        // Detenemos el temporizador
+        detenerTemporizador();
+
+        // Detenemos la escucha del servidor
+        escuchandoServidor = false;
+
+        // Notificamos al servidor que el jugador abandona
+        try {
+            String trama = "ABANDONAR|" + App.usuarioActual.getNombreUsuario();
+            App.escritor.println(trama);
+        } catch (Exception e) {
+            System.out.println("Error al notificar abandono: " + e.getMessage());
+        }
+
+        // Volvemos a la pantalla de ingreso
+        try {
+            App.setRoot("VistaPantallaDeIngreso");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
