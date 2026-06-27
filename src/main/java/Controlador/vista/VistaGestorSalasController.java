@@ -30,6 +30,10 @@ public class VistaGestorSalasController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        if (App.cliente == null || !App.cliente.estaConectado()) {
+            App.cliente = new ClienteSocket();
+            App.cliente.conectar();
+        }
         this.partida = App.partida;
         this.gestorSala = new GestorSalaCliente(App.cliente);
         verSalas();
@@ -92,8 +96,13 @@ public class VistaGestorSalasController implements Initializable {
                 boolean exito = gestorSala.presentarSala(sala.getCodigoSala());
                 if (exito) {
                     sala.setPropietario(App.usuarioActual);
+                    sala.getArrayDeUsuarios().clear();
                     App.salaActual = sala;
                     App.esPresentador = true;
+                    App.jugadoresLobby = null;
+                    App.respuestaLobby = null;
+                    App.rankingActual = "";
+                    App.preguntasActuales.clear();
                     try {
                         App.setRoot("VistaLobbyDeLaPartida");
                     } catch (IOException e) {

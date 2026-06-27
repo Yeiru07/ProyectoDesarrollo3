@@ -15,6 +15,9 @@ public class ClienteSocket {
 
     public void conectar() {
         try {
+            if (estaConectado()) {
+                return;
+            }
             socket = new Socket("100.112.89.47", SERVER_PORT);
             escritor = new PrintWriter(socket.getOutputStream(), true);
             lector = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -35,9 +38,20 @@ public class ClienteSocket {
             if (socket != null) {
                 socket.close();
             }
+            escritor = null;
+            lector = null;
+            socket = null;
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean estaConectado() {
+        return socket != null
+                && socket.isConnected()
+                && !socket.isClosed()
+                && escritor != null
+                && lector != null;
     }
 
     public PrintWriter getEscritor() {

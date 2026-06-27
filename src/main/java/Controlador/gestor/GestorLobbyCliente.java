@@ -40,8 +40,10 @@ public class GestorLobbyCliente {
 
     public void iniciarLobby() {
         // Conectar al servidor si no está conectado
-        if (clienteSocket.getLector() == null) {
-            //esta en el main clienteSocket.conectar();
+        if (clienteSocket == null || !clienteSocket.estaConectado()) {
+            App.cliente = new ClienteSocket();
+            App.cliente.conectar();
+            clienteSocket = App.cliente;
         }
 
         if (sala != null) {
@@ -49,11 +51,18 @@ public class GestorLobbyCliente {
             App.salaActual = sala;
         }
 
-        if (App.respuestaLobby != null) {
+        flowJugadores.getChildren().clear();
+        jugadoresLobby = new ArrayList<>();
+        lblTotalJugadores.setText("0 participantes");
+
+        if (!App.esPresentador && App.respuestaLobby != null) {
 
             procesarMensaje(App.respuestaLobby);
 
             App.respuestaLobby = null;
+        } else if (App.esPresentador) {
+            App.respuestaLobby = null;
+            App.jugadoresLobby = null;
         }
         // Actualizar jugadores iniciales si existen
         if (!jugadoresLobby.isEmpty()) {
@@ -86,7 +95,7 @@ public class GestorLobbyCliente {
 
                     if (mensaje == null) {
                         System.out.println("Servidor desconectado, cerrando escucha...");
-                        if (onErrorConexion != null) {
+                        if (escuchandoServidor && onErrorConexion != null) {
                             Platform.runLater(onErrorConexion);
                         }
                         break;
@@ -97,7 +106,7 @@ public class GestorLobbyCliente {
                 }
             } catch (IOException e) {
                 System.out.println("Conexión con servidor cerrada: " + e.getMessage());
-                if (onErrorConexion != null) {
+                if (escuchandoServidor && onErrorConexion != null) {
                     Platform.runLater(onErrorConexion);
                 }
             }
@@ -240,9 +249,11 @@ public class GestorLobbyCliente {
     }
 
     public void cerrarConexion() {
-        //clienteSocket.cerrarConexion();
         escuchandoServidor = false;
-        System.out.println("Cambio de vista, se mantiene la conexión.");
+        if (clienteSocket != null) {
+            clienteSocket.cerrarConexion();
+        }
+        System.out.println("Cambio de vista, conexion reiniciada para evitar lecturas pendientes.");
 
     }
 
