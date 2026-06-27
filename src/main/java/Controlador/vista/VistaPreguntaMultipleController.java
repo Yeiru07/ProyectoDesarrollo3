@@ -512,27 +512,27 @@ public class VistaPreguntaMultipleController implements Initializable {
         }
     }
 
-    @FXML
-    private void onSalir() {
-        // Detenemos el temporizador
-        detenerTemporizador();
+        @FXML
+        private void onSalir() {
+            // Detenemos el temporizador
+            detenerTemporizador();
 
-        // Detenemos la escucha del servidor
-        escuchandoServidor = false;
+            // Detenemos la escucha del servidor
+            escuchandoServidor = false;
 
-        // Notificamos al servidor que el jugador abandona
-        try {
-            String trama = "ABANDONAR|" + App.usuarioActual.getNombreUsuario();
-            App.escritor.println(trama);
-        } catch (Exception e) {
-            System.out.println("Error al notificar abandono: " + e.getMessage());
-        }
+            // Notificamos al servidor que el jugador abandona
+            try {
+                String trama = "ABANDONAR|" + App.usuarioActual.getNombreUsuario();
+                App.escritor.println(trama);
+            } catch (Exception e) {
+                System.out.println("Error al notificar abandono: " + e.getMessage());
+            }
 
-        // Volvemos a la pantalla de ingreso
-        try {
-            App.setRoot("VistaPantallaDeIngreso");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            // Volvemos a la pantalla de ingreso
+            try {
+                App.setRoot("VistaPantallaDeIngreso");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
     }
 }

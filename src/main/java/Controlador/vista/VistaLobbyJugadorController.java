@@ -39,14 +39,13 @@ public class VistaLobbyJugadorController implements Initializable {
                         String mensaje = App.lector.readLine();
 
                         if (mensaje == null) {
+                            System.out.println("Servidor desconectado...");
                             break;
                         }
                         System.out.println("RECIBIDO=" + mensaje);
 
-                        // SI EL SERVIDOR ENVIA LAS PREGUNTAS
                         if (mensaje.startsWith("PREGUNTAS")) {
                             System.out.println("RECIBI PREGUNTAS");
-
                             App.preguntasActuales.clear();
 
                             String contenido = mensaje.replace("PREGUNTAS|", "");
@@ -63,7 +62,6 @@ public class VistaLobbyJugadorController implements Initializable {
                                 Preguntas p = new Preguntas();
                                 p.setEnunciado(datos[0]);
 
-                                // El ultimo dato es el indice de la respuesta correcta
                                 int indiceCorrecta = 0;
                                 try {
                                     indiceCorrecta = Integer.parseInt(datos[datos.length - 1]);
@@ -72,9 +70,8 @@ public class VistaLobbyJugadorController implements Initializable {
                                 }
 
                                 ArrayList<Respuestas> respuestas = new ArrayList<>();
-                                // Las respuestas son datos[1] hasta datos[datos.length - 2]
                                 for (int i = 1; i < datos.length - 1; i++) {
-                                    boolean esCorrecta = (indiceCorrecta == i); // i es 1-based
+                                    boolean esCorrecta = (indiceCorrecta == i);
                                     respuestas.add(new Respuestas(i, datos[i], esCorrecta));
                                 }
 
@@ -106,7 +103,7 @@ public class VistaLobbyJugadorController implements Initializable {
                         }
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    System.out.println("Conexion con servidor cerrada: " + e.getMessage());
                 }
             }
         }).start();
