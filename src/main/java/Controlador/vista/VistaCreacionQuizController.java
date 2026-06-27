@@ -245,6 +245,7 @@ public class VistaCreacionQuizController implements Initializable {
     }
 
     /*Metodo para guardar vistas por si es verdadero o falso*/
+ /*Metodo para guardar vistas por si es verdadero o falso*/
     public boolean guardarPreguntaActualVerdaderoOFalso() {
         if (numeroDePreguntaActual < 0) {
             return true;
@@ -265,7 +266,7 @@ public class VistaCreacionQuizController implements Initializable {
                 throw new IllegalArgumentException("Debe de ingresar las 2 respuestas");
             }
             if (grupoRespuestas.getSelectedToggle() == null) {
-                throw new IllegalArgumentException("Debe seleccionar la opción correcta");
+                throw new IllegalArgumentException("Debe seleccionar la opcion correcta");
             }
 
             Preguntas pregunta = sala.getListaPreguntas().get(numeroDePreguntaActual);
@@ -273,6 +274,7 @@ public class VistaCreacionQuizController implements Initializable {
             pregunta.setTiempoParaLasPreguntas(tiempoParaLasPreguntas);
             pregunta.setValorPuntosPreguntas(puntosParaPreguntas);
             pregunta.setTipoDePregunta(tipoPregunta);
+            pregunta.setCodigoSala(sala.getCodigoSala());  // <-- AGREGAR ESTA LINEA
 
             if (pregunta.getArregloDeRespuestasParaPreguntas() == null) {
                 pregunta.setArregloDeRespuestasParaPreguntas(new ArrayList<>());
