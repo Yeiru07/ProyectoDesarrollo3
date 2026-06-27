@@ -1,12 +1,9 @@
 package Controlador.vista;
 
+import Controlador.gestor.GestorSesionCliente;
 import Modelo.Juego;
-import Modelo.Usuario;
 import Utilidades.AlertaParaUsar;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -19,6 +16,8 @@ import proyectofinaldesarrolloIII.App;
  * @author sronn
  */
 public class VistaInicioController {
+
+    public static final GestorSesionCliente gestorSesion = new GestorSesionCliente(App.cliente);
 
     Juego partida;//Instancia del juego
 
@@ -57,22 +56,20 @@ public class VistaInicioController {
         }
 
         try {
-            //Crear la trama para el Login
-            String trama = "LOGIN|" + usuarioInicioSesion + "|" + contraInicioSesion;
 
-            //Enviar la trama al servidor usando los flujos de comunicación globales
-            App.escritor.println(trama);
-
-            //Esperar la respuesta inmediata del servidor
-            String respuesta = App.lector.readLine();
-
+            String respuesta = gestorSesion.iniciarSesion(usuarioInicioSesion, contraInicioSesion);
+            if (respuesta == null) {
+                AlertaParaUsar.mostrar(
+                        "Error",
+                        "El servidor no respondió",
+                        Alert.AlertType.ERROR
+                );
+                return;
+            }
             if (respuesta != null && respuesta.startsWith("OK")) {
                 AlertaParaUsar.mostrar("Éxito", "Sesión iniciada correctamente", Alert.AlertType.INFORMATION);
 
-                //AGREGADO
-                App.usuarioActual = new Usuario(0, usuarioInicioSesion, "", contraInicioSesion, 0);
-
-                // Si el login es correcto, cambia de pantalla al Lobby de Salas
+                //   App.usuarioActual = new Usuario(0, usuarioInicioSesion, "", contraInicioSesion, 0);
                 App.setRoot("VistaPantallaDeIngreso");
             } else {
                 String[] partesRepuesta = respuesta.split("\\|");
@@ -86,15 +83,13 @@ public class VistaInicioController {
         }
     }
 
-    /*Metodo para registar los usuarios en caso de no tener credenciales*/
     @FXML
-    void btnRegistrarUsuario(ActionEvent event) {
+    private void btnRegistrarUsuario(ActionEvent event) {
         String nombre = txtRegistarUsuario.getText().trim();
         String correo = txtRegistrarCorreo.getText().trim();
         String contra = txtRegistrarContrasena.getText().trim();
         String contraConfirmacion = txtConfirmarContrasena.getText().trim();
 
-        //Validaciones de Interfaz Grafica
         if (nombre.isEmpty() || contra.isEmpty() || contraConfirmacion.isEmpty() || correo.isEmpty()) {
             AlertaParaUsar.mostrar("Error", "Complete todos los campos de registro", Alert.AlertType.WARNING);
             return;
@@ -106,23 +101,14 @@ public class VistaInicioController {
         }
 
         try {
-            //Armar la trama de datos formateada con pipes
-            String trama = "REGISTRO|" + nombre + "|" + correo + "|" + contra;
 
-            //Enviar la trama por el Socket de forma sincrona
-            App.escritor.println(trama);
+            String respuesta = gestorSesion.registrar(nombre, correo, contra);// se envia  a la trama lo que se obtuvo de los txt
 
-            //Quedarse esperando el veredicto que calcule el Gestor en el Servidor
-            String respuesta = App.lector.readLine();
-
-            //Analizar la respuesta del Servidor y mostrársela al usuario en la pantalla
             if (respuesta != null && respuesta.startsWith("OK")) {
+                limpiarRegistro();
                 AlertaParaUsar.mostrar("Éxito", "Usuario registrado correctamente en el sistema", Alert.AlertType.INFORMATION);
 
-                // Limpiar campos tras un registro exitoso
-                limpiarEspacios();
             } else {
-                // Si el servidor mandó "ERROR|El usuario ya existe", extraemos el mensaje informativo
                 String[] partesRepuesta = respuesta.split("\\|");
                 String mensajeError = partesRepuesta.length > 1 ? partesRepuesta[1] : "No se pudo completar el registro";
                 AlertaParaUsar.mostrar("Error de Registro", mensajeError, Alert.AlertType.ERROR);
@@ -134,7 +120,8 @@ public class VistaInicioController {
         }
     }
 
-    public void limpiarEspacios() {
+    public void limpiarRegistro() {
+
         txtRegistarUsuario.clear();
         txtRegistrarCorreo.clear();
         txtRegistrarContrasena.clear();

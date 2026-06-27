@@ -2,6 +2,8 @@ package Controlador.vista;
 
 import Modelo.Juego;
 import Modelo.Sala;
+import Controlador.gestor.GestorSalaCliente;
+import red.ClienteSocket;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -18,77 +20,41 @@ import proyectofinaldesarrolloIII.App;
 
 public class VistaGestorSalasController implements Initializable {
 
-    /*El flowPaneSalas es el encargado de colocar el nombre de cada una de las salas que se registraron*/
     @FXML
     private FlowPane flowPaneSalas;
-    /*Con esto llevamos un numero de salas creadas*/
     @FXML
     private Label lblNoSalas;
 
-    Juego partida;//instancia del juego
+    private Juego partida;
+    private GestorSalaCliente gestorSala;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.partida = App.partida;
-        // Llamamos al metodo para pintar las salas apenas se abre la pantalla
+        this.gestorSala = new GestorSalaCliente(App.cliente);
         verSalas();
     }
 
-    /*Con esto mandamos a llamar las salas creadas por el usuario en la base de datos*/
     public void verSalas() {
-        // Limpiamos el catalogo visual antes de cargar
         flowPaneSalas.getChildren().clear();
 
         if (App.usuarioActual != null) {
             try {
-                //Le pedimos las salas al SERVIDOR en lugar de usar la Base de Datos directo
-                String nombreDeUsuario = App.usuarioActual.getNombreUsuario();
-                String tramaEnvio = "CONSULTAR_SALAS|" + nombreDeUsuario;
+                ArrayList<Sala> salas = gestorSala.consultarSalasDeUsuario(
+                    App.usuarioActual.getNombreUsuario()
+                );
 
-                App.escritor.println(tramaEnvio);
-                System.out.println("Solicitando salas al servidor: " + tramaEnvio);
-
-                //Esperamos y leemos la respuesta del SERVIDOR
-                String respuesta = App.lector.readLine();
-                System.out.println("Respuesta del servidor: " + respuesta);
-
-                //Verificamos que la respuesta sea la correcta
-                if (respuesta != null && respuesta.startsWith("RESPUESTA_SALAS|")) {
-
-                    // Extraemos lo que viene despues de la barra "|"
-                    String[] partesRespuesta = respuesta.split("\\|");
-                    String contenido = partesRespuesta[1];
-
-                    if (contenido.equals("VACIO")) {
-                        flowPaneSalas.getChildren().add(lblNoSalas);
-                    } else {
-                        // Separamos cada sala (el servidor las envia separadas por ';')
-                        String[] arregloSalas = contenido.split(";");
-
-                        // Ciclo for tradicional, sin lambdas
-                        for (int i = 0; i < arregloSalas.length; i++) {
-
-                            // Separamos los atributos de esta sala específica (separados por ',')
-                            String[] datosSala = arregloSalas[i].split(",");
-
-                            int codigo = Integer.parseInt(datosSala[0]);
-                            String nombre = datosSala[1];
-                            int jugadores = Integer.parseInt(datosSala[2]);
-
-                            //Creamos el objeto Sala en memoria
-                            Sala sala = new Sala(codigo, nombre, true, jugadores);
-
-                            //Creamos la tarjeta visual y la agregamos a la pantalla
-                            VBox tarjeta = crearTarjetaSala(sala);
-                            flowPaneSalas.getChildren().add(tarjeta);
-                        }
-                    }
-                } else {
+                if (salas.isEmpty()) {
                     flowPaneSalas.getChildren().add(lblNoSalas);
+                } else {
+                    for (int i = 0; i < salas.size(); i++) {
+                        Sala sala = salas.get(i);
+                        VBox tarjeta = crearTarjetaSala(sala);
+                        flowPaneSalas.getChildren().add(tarjeta);
+                    }
                 }
-
             } catch (Exception e) {
-                System.out.println("Error de conexión al obtener salas: " + e.getMessage());
+                System.out.println("Error al obtener salas: " + e.getMessage());
                 flowPaneSalas.getChildren().add(lblNoSalas);
             }
         } else {
@@ -124,21 +90,18 @@ public class VistaGestorSalasController implements Initializable {
         Button btnPresentar = new Button("▶ Presentar");
         btnPresentar.getStyleClass().add("btnPresent");
 
-        // Evento para el boton de presentar
+        // Usamos clase interna anonima en lugar de lambda
         btnPresentar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                sala.setEstado(true);
-                App.salaActual = sala;
-
-                String trama = "PRESENTAR|" + sala.getCodigoSala();
-                App.escritor.println(trama);
-                System.out.println("Enviado al servidor: " + trama);
-
-                try {
-                    App.setRoot("VistaLobbyDeLaPartida");
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+                boolean exito = gestorSala.presentarSala(sala.getCodigoSala());
+                if (exito) {
+                    App.salaActual = sala;
+                    try {
+                        App.setRoot("VistaLobbyDeLaPartida");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
