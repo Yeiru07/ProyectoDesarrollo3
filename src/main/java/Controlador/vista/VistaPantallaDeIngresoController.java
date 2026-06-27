@@ -134,6 +134,7 @@ public class VistaPantallaDeIngresoController {
                 false,
                 0
         );
+        App.esPresentador = false;
 
         // Deshabilitar el botón mientras se procesa la solicitud
         btnIngresar.setDisable(true);

@@ -139,27 +139,10 @@ public class GestorLobbyCliente {
                 continue;
             }
 
-            String[] datos = bloque.split(",");
-
-            Preguntas p = new Preguntas();
-            p.setEnunciado(datos[0]);
-
-            int indiceCorrecta = 0;
-            try {
-                indiceCorrecta = Integer.parseInt(datos[datos.length - 1]);
-            } catch (NumberFormatException e) {
-                indiceCorrecta = 0;
+            Preguntas p = parsearPregunta(bloque);
+            if (p != null) {
+                preguntasActuales.add(p);
             }
-
-            ArrayList<Respuestas> respuestas = new ArrayList<>();
-
-            for (int i = 1; i < datos.length - 1; i++) {
-                boolean esCorrecta = (indiceCorrecta == i);
-                respuestas.add(new Respuestas(i, datos[i], esCorrecta));
-            }
-
-            p.setArregloDeRespuestasParaPreguntas(respuestas);
-            preguntasActuales.add(p);
         }
 
         // Guardar todas las preguntas recibidas
@@ -179,6 +162,66 @@ public class GestorLobbyCliente {
         PrintWriter escritor = clienteSocket.getEscritor();
         if (escritor != null) {
             escritor.println(trama);
+        }
+    }
+
+    private Preguntas parsearPregunta(String bloque) {
+        String[] datos = bloque.split(",", -1);
+
+        if (datos.length < 2) {
+            return null;
+        }
+
+        Preguntas p = new Preguntas();
+        p.setEnunciado(datos[0]);
+
+        if (datos.length >= 6 && esTipoPregunta(datos[1])) {
+            p.setTipoDePregunta(datos[1]);
+            p.setTiempoParaLasPreguntas(parseEntero(datos[2], 20));
+            p.setValorPuntosPreguntas(parseEntero(datos[3], 10));
+
+            int indiceCorrecta = parseEntero(datos[4], 0);
+            ArrayList<Respuestas> respuestas = new ArrayList<>();
+
+            for (int i = 5; i < datos.length; i++) {
+                if (datos[i] == null || datos[i].trim().isEmpty()) {
+                    continue;
+                }
+                int numeroRespuesta = respuestas.size() + 1;
+                respuestas.add(new Respuestas(numeroRespuesta, datos[i], indiceCorrecta == numeroRespuesta));
+            }
+
+            p.setArregloDeRespuestasParaPreguntas(respuestas);
+            return p;
+        }
+
+        int indiceCorrecta = parseEntero(datos[datos.length - 1], 0);
+        ArrayList<Respuestas> respuestas = new ArrayList<>();
+
+        for (int i = 1; i < datos.length - 1; i++) {
+            if (datos[i] == null || datos[i].trim().isEmpty()) {
+                continue;
+            }
+            int numeroRespuesta = respuestas.size() + 1;
+            respuestas.add(new Respuestas(numeroRespuesta, datos[i], indiceCorrecta == i));
+        }
+
+        p.setTipoDePregunta(respuestas.size() <= 2 ? "Verdadero O Falso" : "Quiz");
+        p.setTiempoParaLasPreguntas(20);
+        p.setValorPuntosPreguntas(10);
+        p.setArregloDeRespuestasParaPreguntas(respuestas);
+        return p;
+    }
+
+    private boolean esTipoPregunta(String valor) {
+        return "Quiz".equals(valor) || "Verdadero O Falso".equals(valor);
+    }
+
+    private int parseEntero(String valor, int valorDefecto) {
+        try {
+            return Integer.parseInt(valor);
+        } catch (Exception e) {
+            return valorDefecto;
         }
     }
 

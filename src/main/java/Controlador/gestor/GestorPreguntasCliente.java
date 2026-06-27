@@ -288,7 +288,10 @@ public class GestorPreguntasCliente {
                 + resp3 + "|"
                 + resp4 + "|"
                 + pregunta.getCodigoSala() + "|"
-                + correcta;
+                + correcta + "|"
+                + pregunta.getTipoDePregunta() + "|"
+                + pregunta.getTiempoParaLasPreguntas() + "|"
+                + pregunta.getValorPuntosPreguntas();
 
     }
 

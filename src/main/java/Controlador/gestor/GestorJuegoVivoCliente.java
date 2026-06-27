@@ -50,7 +50,8 @@ public class GestorJuegoVivoCliente {
         this.clienteSocket = App.cliente;
 
         // Verificar si es presentador
-        if (salaActual != null && usuarioActual != null) {
+        this.esPresentador = App.esPresentador;
+        if (!this.esPresentador && salaActual != null && usuarioActual != null) {
             String nombrePropietario = salaActual.getPropietario() != null
                     ? salaActual.getPropietario().getNombreUsuario() : "";
             this.esPresentador = nombrePropietario.equals(usuarioActual.getNombreUsuario());
@@ -188,7 +189,7 @@ public class GestorJuegoVivoCliente {
                 : "Incorrecto. La respuesta correcta era otra.";
 
         // Enviar al servidor
-        enviarRespuestaAlServidor(String.valueOf(indiceRespuesta), tiempoRestante);
+        enviarRespuestaAlServidor(String.valueOf(indiceRespuesta), tiempoRestante, puntos);
 
         // Notificar a la vista (crear variables finales)
         final boolean finalEsCorrecta = esCorrecta;
@@ -210,7 +211,7 @@ public class GestorJuegoVivoCliente {
         });
     }
 
-    public void enviarRespuestaAlServidor(String respuesta, int tiempoRestante) {
+    public void enviarRespuestaAlServidor(String respuesta, int tiempoRestante, int puntos) {
         try {
             if (preguntaActualIndex >= preguntasActuales.size() || usuarioActual == null) {
                 return;
@@ -240,7 +241,7 @@ public class GestorJuegoVivoCliente {
 
             String trama = "RESPUESTA|" + codigoSala + "|"
                     + usuarioActual.getNombreUsuario() + "|"
-                    + respuesta + "|" + tiempoRestante;
+                    + respuesta + "|" + tiempoRestante + "|" + puntos;
 
             PrintWriter escritor = clienteSocket.getEscritor();
             if (escritor != null) {

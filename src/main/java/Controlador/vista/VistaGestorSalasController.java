@@ -96,7 +96,9 @@ public class VistaGestorSalasController implements Initializable {
             public void handle(ActionEvent event) {
                 boolean exito = gestorSala.presentarSala(sala.getCodigoSala());
                 if (exito) {
+                    sala.setPropietario(App.usuarioActual);
                     App.salaActual = sala;
+                    App.esPresentador = true;
                     try {
                         App.setRoot("VistaLobbyDeLaPartida");
                     } catch (IOException e) {

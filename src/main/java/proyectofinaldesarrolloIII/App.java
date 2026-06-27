@@ -28,6 +28,8 @@ public class App extends Application {
     public static Sala salaActual;
     public static String jugadoresLobby;
     public static String respuestaLobby;
+    public static boolean esPresentador;
+    public static String rankingActual = "";
 
     @Override
     public void start(Stage stage) throws IOException {
