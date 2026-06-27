@@ -2,7 +2,6 @@ package Controlador.vista;
 
 import Modelo.Preguntas;
 import Modelo.Respuestas;
-import Modelo.Sala;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -58,7 +57,7 @@ public class VistaPreguntaMultipleController implements Initializable {
     private int tiempoTotal;
     private boolean preguntaRespondida;
     private int preguntaActualIndex;
-    private boolean esPresentador;  // NUEVO: indica si este usuario es el presentador
+    private boolean esPresentador;
 
     private Respuestas respuestaSeleccionada;
 
@@ -75,9 +74,11 @@ public class VistaPreguntaMultipleController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         System.out.println("PREGUNTAS CARGADAS = " + App.preguntasActuales.size());
 
-        // Determinamos si este usuario es el presentador (dueño de la sala)
-        esPresentador = esUsuarioPresentador();
+        // Determinamos si este usuario es el presentador
+        // El presentador es el que PRESENTO la sala (App.salaActual fue seteada al presentar)
+        esPresentador = App.salaActual != null;
         System.out.println("Es presentador: " + esPresentador);
+        System.out.println("Usuario actual: " + App.usuarioActual.getNombreUsuario());
 
         preguntaRespondida = false;
         preguntaActualIndex = 0;
@@ -95,28 +96,8 @@ public class VistaPreguntaMultipleController implements Initializable {
     }
 
     /**
-     * Determina si el usuario actual es el presentador (dueño de la sala).
-     * Compara el nombre del usuario actual con el propietario de la sala.
-     */
-    private boolean esUsuarioPresentador() {
-        if (App.salaActual == null || App.usuarioActual == null) {
-            return false;
-        }
-
-        Sala sala = App.salaActual;
-
-        // Verificar si la sala tiene propietario
-        if (sala.getPropietario() != null) {
-            String nombrePropietario = sala.getPropietario().getNombreUsuario();
-            String nombreActual = App.usuarioActual.getNombreUsuario();
-            return nombrePropietario != null && nombrePropietario.equals(nombreActual);
-        }
-
-        return false;
-    }
-
-    /**
-     * Carga la pregunta actual y configura el temporizador.
+     * Carga la pregunta actual y configura el temporizador. Si es el
+     * presentador, solo muestra la pregunta sin permitir responder.
      */
     private void cargarPreguntaActual() {
         if (preguntaActualIndex >= App.preguntasActuales.size()) {
@@ -126,9 +107,8 @@ public class VistaPreguntaMultipleController implements Initializable {
 
         preguntaRespondida = false;
         respuestaSeleccionada = null;
-        lblEstadoSeleccion.setText("Selecciona una opcion antes de que se agote el tiempo...");
 
-        // Ocultamos el boton siguiente
+        // Ocultamos el boton siguiente al cargar nueva pregunta
         boxBotonSiguiente.setVisible(false);
         boxBotonSiguiente.setManaged(false);
 
@@ -149,11 +129,53 @@ public class VistaPreguntaMultipleController implements Initializable {
             tiempoRestante = 20;
         }
 
-        // Imprimir las respuestas para depurar
-        System.out.println("=== PREGUNTA " + (preguntaActualIndex + 1) + " ===");
+        // Configurar UI segun el rol
+        if (esPresentador) {
+            // El presentador NO responde, solo ve las preguntas
+            configurarVistaPresentador(pregunta);
+        } else {
+            // El jugador puede responder
+            configurarVistaJugador(pregunta);
+        }
+
+        iniciarTemporizador();
+    }
+
+    /**
+     * Configura la vista para el presentador (sin botones de respuesta)
+     */
+    private void configurarVistaPresentador(Preguntas pregunta) {
+        lblEstadoSeleccion.setText("Los jugadores estan respondiendo...");
+
+        // Ocultar todos los botones de respuesta
+        btnOpcion1.setVisible(false);
+        btnOpcion2.setVisible(false);
+        btnOpcion3.setVisible(false);
+        btnOpcion4.setVisible(false);
+
+        // Imprimir respuestas para depuracion
+        System.out.println("=== PREGUNTA " + (preguntaActualIndex + 1) + " (VISTA PRESENTADOR) ===");
         System.out.println("Enunciado: " + pregunta.getEnunciado());
-        System.out.println("Tipo: " + pregunta.getTipoDePregunta());
         ArrayList<Respuestas> respuestas = pregunta.getArregloDeRespuestasParaPreguntas();
+        if (respuestas != null) {
+            for (int i = 0; i < respuestas.size(); i++) {
+                Respuestas r = respuestas.get(i);
+                System.out.println("  Respuesta " + (i + 1) + ": " + r.getRespuestas() + " | Correcta: " + r.isCorrecta());
+            }
+        }
+    }
+
+    /**
+     * Configura la vista para el jugador (con botones de respuesta)
+     */
+    private void configurarVistaJugador(Preguntas pregunta) {
+        lblEstadoSeleccion.setText("Selecciona una opcion antes de que se agote el tiempo...");
+
+        ArrayList<Respuestas> respuestas = pregunta.getArregloDeRespuestasParaPreguntas();
+
+        // Imprimir respuestas para depuracion
+        System.out.println("=== PREGUNTA " + (preguntaActualIndex + 1) + " (VISTA JUGADOR) ===");
+        System.out.println("Enunciado: " + pregunta.getEnunciado());
         if (respuestas != null) {
             for (int i = 0; i < respuestas.size(); i++) {
                 Respuestas r = respuestas.get(i);
@@ -162,7 +184,6 @@ public class VistaPreguntaMultipleController implements Initializable {
         }
 
         configurarBotonesRespuesta(respuestas);
-        iniciarTemporizador();
     }
 
     private void configurarBotonesRespuesta(ArrayList<Respuestas> respuestas) {
@@ -257,26 +278,33 @@ public class VistaPreguntaMultipleController implements Initializable {
         }
     }
 
+    /**
+     * Cuando el tiempo se agota: - Presentador: muestra boton siguiente -
+     * Jugador: muestra resultado y espera
+     */
     private void tiempoAgotado() {
         if (preguntaRespondida) {
             return;
         }
 
         preguntaRespondida = true;
-        deshabilitarBotones();
 
-        lblEstadoSeleccion.getStyleClass().clear();
-        lblEstadoSeleccion.getStyleClass().add(CSS_STATUS_INCORRECTO);
-        lblEstadoSeleccion.setText("Se acabo el tiempo! Respuesta incorrecta");
+        if (!esPresentador) {
+            // Solo el jugador ve feedback de respuesta
+            deshabilitarBotones();
+            lblEstadoSeleccion.getStyleClass().clear();
+            lblEstadoSeleccion.getStyleClass().add(CSS_STATUS_INCORRECTO);
+            lblEstadoSeleccion.setText("Se acabo el tiempo! Respuesta incorrecta");
 
-        Preguntas pregunta = App.preguntasActuales.get(preguntaActualIndex);
-        if (pregunta.getArregloDeRespuestasParaPreguntas() != null) {
-            marcarRespuestaCorrecta(pregunta.getArregloDeRespuestasParaPreguntas());
+            Preguntas pregunta = App.preguntasActuales.get(preguntaActualIndex);
+            if (pregunta.getArregloDeRespuestasParaPreguntas() != null) {
+                marcarRespuestaCorrecta(pregunta.getArregloDeRespuestasParaPreguntas());
+            }
+
+            enviarRespuestaAlServidor("TIEMPO_AGOTADO");
         }
 
-        enviarRespuestaAlServidor("TIEMPO_AGOTADO");
-
-        // Solo mostrar boton siguiente al presentador
+        // El presentador SIEMPRE ve el boton siguiente al agotarse el tiempo
         if (esPresentador) {
             mostrarBotonSiguiente();
         }
@@ -284,26 +312,35 @@ public class VistaPreguntaMultipleController implements Initializable {
 
     @FXML
     private void onResponderOpcion1() {
-        procesarRespuesta(0);
+        if (!esPresentador) {
+            procesarRespuesta(0);
+        }
     }
 
     @FXML
     private void onResponderOpcion2() {
-        procesarRespuesta(1);
+        if (!esPresentador) {
+            procesarRespuesta(1);
+        }
     }
 
     @FXML
     private void onResponderOpcion3() {
-        procesarRespuesta(2);
+        if (!esPresentador) {
+            procesarRespuesta(2);
+        }
     }
 
     @FXML
     private void onResponderOpcion4() {
-        procesarRespuesta(3);
+        if (!esPresentador) {
+            procesarRespuesta(3);
+        }
     }
 
     private void procesarRespuesta(int indiceRespuesta) {
-        if (preguntaRespondida) {
+        // El presentador no puede responder
+        if (esPresentador || preguntaRespondida) {
             return;
         }
 
@@ -323,9 +360,6 @@ public class VistaPreguntaMultipleController implements Initializable {
 
         if (respuestas == null || indiceRespuesta >= respuestas.size()) {
             lblEstadoSeleccion.setText("Error: Respuesta no valida");
-            if (esPresentador) {
-                mostrarBotonSiguiente();
-            }
             return;
         }
 
@@ -349,19 +383,12 @@ public class VistaPreguntaMultipleController implements Initializable {
         }
 
         enviarRespuestaAlServidor(respuestaSeleccionada.getRespuestas());
-
-        // Solo mostrar boton siguiente al presentador
-        if (esPresentador) {
-            mostrarBotonSiguiente();
-        }
     }
 
+    /**
+     * Muestra el boton "Siguiente" SOLO al presentador
+     */
     private void mostrarBotonSiguiente() {
-        // Solo se muestra si es el presentador
-        if (!esPresentador) {
-            return;
-        }
-
         boxBotonSiguiente.setVisible(true);
         boxBotonSiguiente.setManaged(true);
 
@@ -370,6 +397,8 @@ public class VistaPreguntaMultipleController implements Initializable {
         } else {
             btnSiguiente.setText("Siguiente ▶");
         }
+
+        System.out.println("Boton siguiente mostrado al presentador");
     }
 
     @FXML
@@ -405,7 +434,7 @@ public class VistaPreguntaMultipleController implements Initializable {
             if (respuestas.get(i).isCorrecta()) {
                 System.out.println("Respuesta correcta encontrada en indice: " + i);
                 marcarBotonCorrecto(i);
-                return; // Solo hay una correcta
+                return;
             }
         }
         System.out.println("ADVERTENCIA: No se encontro ninguna respuesta marcada como correcta!");
