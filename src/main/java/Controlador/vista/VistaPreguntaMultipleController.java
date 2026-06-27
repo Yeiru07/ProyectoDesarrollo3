@@ -2,6 +2,7 @@ package Controlador.vista;
 
 import Modelo.Preguntas;
 import Modelo.Respuestas;
+import red.GestorJuegoVivoCliente;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -9,8 +10,6 @@ import java.util.ResourceBundle;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -45,14 +44,11 @@ public class VistaPreguntaMultipleController implements Initializable {
     @FXML
     private Button btnSalir;
 
+    private GestorJuegoVivoCliente gestorJuegoVivo;
     private Timeline temporizador;
     private int tiempoRestante;
     private int tiempoTotal;
     private boolean preguntaRespondida;
-    private int preguntaActualIndex;
-    private boolean esPresentador;
-    private Respuestas respuestaSeleccionada;
-    private boolean escuchandoServidor;
 
     private static final String CSS_TIMER_NORMAL = "timerLabel";
     private static final String CSS_TIMER_WARNING = "timerLabelWarning";
@@ -67,14 +63,17 @@ public class VistaPreguntaMultipleController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         System.out.println("PREGUNTAS CARGADAS = " + App.preguntasActuales.size());
 
-        esPresentador = App.salaActual != null;
-        System.out.println("Es presentador: " + esPresentador);
-        System.out.println("Usuario actual: " + App.usuarioActual.getNombreUsuario());
+        // Inicializar gestor de juego en vivo
+        gestorJuegoVivo = new GestorJuegoVivoCliente(
+            App.usuarioActual,
+            App.salaActual,
+            App.preguntasActuales
+        );
+
+        // Configurar callbacks
+        configurarCallbacks();
 
         preguntaRespondida = false;
-        preguntaActualIndex = 0;
-        escuchandoServidor = true;
-
         boxBotonSiguiente.setVisible(false);
         boxBotonSiguiente.setManaged(false);
 
@@ -83,76 +82,82 @@ public class VistaPreguntaMultipleController implements Initializable {
             return;
         }
 
-        // Los jugadores deben escuchar cambios de pregunta del servidor
-        if (!esPresentador) {
-            iniciarEscuchaServidor();
-        }
-
-        cargarPreguntaActual();
+        // Iniciar partida
+        gestorJuegoVivo.iniciarPartida();
     }
 
-    /**
-     * Hilo que escucha mensajes del servidor para cambiar de pregunta
-     */
-    private void iniciarEscuchaServidor() {
-        Thread hiloEscucha = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    while (escuchandoServidor) {
-                        String mensaje = App.lector.readLine();
-                        if (mensaje == null) {
-                            break;
-                        }
+    private void configurarCallbacks() {
+        gestorJuegoVivo.setOnPreguntaCargada(() -> {
+            resetearEstilosBotones();
+            cargarPreguntaActual();
+        });
 
-                        System.out.println("Jugador recibio del servidor: " + mensaje);
+        gestorJuegoVivo.setOnPreguntaCambiada(() -> {
+            detenerTemporizador();
+            resetearEstilosBotones();
+            cargarPreguntaActual();
+        });
 
-                        if (mensaje.startsWith("CAMBIAR_PREGUNTA")) {
-                            String[] partes = mensaje.split("\\|");
-                            if (partes.length >= 2) {
-                                final int nuevoIndice = Integer.parseInt(partes[1]);
-
-                                Platform.runLater(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        System.out.println("Jugador: cambiando a pregunta " + nuevoIndice);
-                                        preguntaActualIndex = nuevoIndice;
-                                        detenerTemporizador();
-                                        resetearEstilosBotones();
-                                        cargarPreguntaActual();
-                                    }
-                                });
-                            }
-                        }
-                    }
-                } catch (Exception e) {
-                    System.out.println("Error en escucha del jugador: " + e.getMessage());
-                }
+        gestorJuegoVivo.setOnTiempoAgotado(() -> {
+            if (!preguntaRespondida) {
+                tiempoAgotado();
             }
         });
-        hiloEscucha.setDaemon(true);
-        hiloEscucha.start();
+
+        gestorJuegoVivo.setOnFinalizarJuego(this::finalizarJuego);
+
+        gestorJuegoVivo.setOnErrorConexion(() -> {
+            try {
+                App.setRoot("VistaPantallaDeIngreso");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        gestorJuegoVivo.setOnRespuestaProcesada((esCorrecta, puntos, mensaje) -> {
+            preguntaRespondida = true;
+            lblEstadoSeleccion.getStyleClass().clear();
+            
+            if (esCorrecta) {
+                lblEstadoSeleccion.getStyleClass().add(CSS_STATUS_CORRECTO);
+            } else {
+                lblEstadoSeleccion.getStyleClass().add(CSS_STATUS_INCORRECTO);
+            }
+            lblEstadoSeleccion.setText(mensaje);
+            
+            if (gestorJuegoVivo.isEsPresentador()) {
+                mostrarBotonSiguiente();
+            }
+        });
+
+        gestorJuegoVivo.setOnAbandonoExitoso(() -> {
+            try {
+                App.setRoot("VistaPantallaDeIngreso");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void cargarPreguntaActual() {
-        if (preguntaActualIndex >= App.preguntasActuales.size()) {
+        Preguntas pregunta = gestorJuegoVivo.getPreguntaActual();
+        int totalPreguntas = gestorJuegoVivo.getTotalPreguntas();
+        int indiceActual = gestorJuegoVivo.getPreguntaActualIndex();
+
+        if (pregunta == null) {
             finalizarJuego();
             return;
         }
 
         preguntaRespondida = false;
-        respuestaSeleccionada = null;
-
         boxBotonSiguiente.setVisible(false);
         boxBotonSiguiente.setManaged(false);
 
         lblEstadoSeleccion.getStyleClass().clear();
         lblEstadoSeleccion.getStyleClass().add(CSS_STATUS_NORMAL);
 
-        Preguntas pregunta = App.preguntasActuales.get(preguntaActualIndex);
-
-        String textoEnunciado = "Pregunta " + (preguntaActualIndex + 1) + " de "
-                + App.preguntasActuales.size() + ":\n" + pregunta.getEnunciado();
+        String textoEnunciado = "Pregunta " + (indiceActual + 1) + " de " 
+                              + totalPreguntas + ":\n" + pregunta.getEnunciado();
         lblEnunciado.setText(textoEnunciado);
 
         tiempoTotal = pregunta.getTiempoParaLasPreguntas();
@@ -163,7 +168,7 @@ public class VistaPreguntaMultipleController implements Initializable {
             tiempoRestante = 20;
         }
 
-        if (esPresentador) {
+        if (gestorJuegoVivo.isEsPresentador()) {
             configurarVistaPresentador(pregunta);
         } else {
             configurarVistaJugador(pregunta);
@@ -173,13 +178,10 @@ public class VistaPreguntaMultipleController implements Initializable {
     }
 
     private void configurarVistaPresentador(Preguntas pregunta) {
-        lblEstadoSeleccion.setText("Los jugadores estan respondiendo...");
-        btnOpcion1.setVisible(false);
-        btnOpcion2.setVisible(false);
-        btnOpcion3.setVisible(false);
-        btnOpcion4.setVisible(false);
+        lblEstadoSeleccion.setText("Los jugadores están respondiendo...");
+        ocultarBotonesOpciones();
 
-        System.out.println("=== PREGUNTA " + (preguntaActualIndex + 1) + " (PRESENTADOR) ===");
+        System.out.println("=== PREGUNTA " + (gestorJuegoVivo.getPreguntaActualIndex() + 1) + " (PRESENTADOR) ===");
         System.out.println("Enunciado: " + pregunta.getEnunciado());
         ArrayList<Respuestas> respuestas = pregunta.getArregloDeRespuestasParaPreguntas();
         if (respuestas != null) {
@@ -191,10 +193,10 @@ public class VistaPreguntaMultipleController implements Initializable {
     }
 
     private void configurarVistaJugador(Preguntas pregunta) {
-        lblEstadoSeleccion.setText("Selecciona una opcion antes de que se agote el tiempo...");
+        lblEstadoSeleccion.setText("Selecciona una opción antes de que se agote el tiempo...");
         ArrayList<Respuestas> respuestas = pregunta.getArregloDeRespuestasParaPreguntas();
 
-        System.out.println("=== PREGUNTA " + (preguntaActualIndex + 1) + " (JUGADOR) ===");
+        System.out.println("=== PREGUNTA " + (gestorJuegoVivo.getPreguntaActualIndex() + 1) + " (JUGADOR) ===");
         System.out.println("Enunciado: " + pregunta.getEnunciado());
         if (respuestas != null) {
             for (int i = 0; i < respuestas.size(); i++) {
@@ -207,11 +209,7 @@ public class VistaPreguntaMultipleController implements Initializable {
     }
 
     private void configurarBotonesRespuesta(ArrayList<Respuestas> respuestas) {
-        btnOpcion1.setVisible(false);
-        btnOpcion2.setVisible(false);
-        btnOpcion3.setVisible(false);
-        btnOpcion4.setVisible(false);
-
+        ocultarBotonesOpciones();
         restaurarClaseBoton(btnOpcion1, "kahootRed");
         restaurarClaseBoton(btnOpcion2, "kahootBlue");
         restaurarClaseBoton(btnOpcion3, "kahootGold");
@@ -239,6 +237,13 @@ public class VistaPreguntaMultipleController implements Initializable {
         }
     }
 
+    private void ocultarBotonesOpciones() {
+        btnOpcion1.setVisible(false);
+        btnOpcion2.setVisible(false);
+        btnOpcion3.setVisible(false);
+        btnOpcion4.setVisible(false);
+    }
+
     private void restaurarClaseBoton(Button boton, String claseColor) {
         boton.getStyleClass().clear();
         boton.getStyleClass().add("optionButton");
@@ -252,27 +257,20 @@ public class VistaPreguntaMultipleController implements Initializable {
         actualizarCronometro();
 
         temporizador = new Timeline(
-                new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        tiempoRestante--;
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                actualizarCronometro();
-                            }
-                        });
-                        if (tiempoRestante <= 0) {
-                            temporizador.stop();
-                            Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    tiempoAgotado();
-                                }
-                            });
+            new KeyFrame(Duration.seconds(1), event -> {
+                tiempoRestante--;
+                Platform.runLater(this::actualizarCronometro);
+                
+                if (tiempoRestante <= 0) {
+                    temporizador.stop();
+                    Platform.runLater(() -> {
+                        if (!preguntaRespondida) {
+                            gestorJuegoVivo.procesarTiempoAgotado();
+                            tiempoAgotado();
                         }
-                    }
-                })
+                    });
+                }
+            })
         );
         temporizador.setCycleCount(tiempoTotal);
         temporizador.play();
@@ -299,122 +297,79 @@ public class VistaPreguntaMultipleController implements Initializable {
         }
         preguntaRespondida = true;
 
-        if (!esPresentador) {
+        if (!gestorJuegoVivo.isEsPresentador()) {
             deshabilitarBotones();
             lblEstadoSeleccion.getStyleClass().clear();
             lblEstadoSeleccion.getStyleClass().add(CSS_STATUS_INCORRECTO);
-            lblEstadoSeleccion.setText("Se acabo el tiempo! Respuesta incorrecta");
+            lblEstadoSeleccion.setText("Se acabó el tiempo! Respuesta incorrecta");
 
-            Preguntas pregunta = App.preguntasActuales.get(preguntaActualIndex);
-            if (pregunta.getArregloDeRespuestasParaPreguntas() != null) {
+            Preguntas pregunta = gestorJuegoVivo.getPreguntaActual();
+            if (pregunta != null && pregunta.getArregloDeRespuestasParaPreguntas() != null) {
                 marcarRespuestaCorrecta(pregunta.getArregloDeRespuestasParaPreguntas());
             }
-            enviarRespuestaAlServidor("TIEMPO_AGOTADO");
         }
 
-        if (esPresentador) {
+        if (gestorJuegoVivo.isEsPresentador()) {
             mostrarBotonSiguiente();
         }
     }
 
     @FXML
-    private void onResponderOpcion1() {
-        if (!esPresentador) {
-            procesarRespuesta(0);
-        }
-    }
-
+    private void onResponderOpcion1() { procesarRespuesta(0); }
+    
     @FXML
-    private void onResponderOpcion2() {
-        if (!esPresentador) {
-            procesarRespuesta(1);
-        }
-    }
-
+    private void onResponderOpcion2() { procesarRespuesta(1); }
+    
     @FXML
-    private void onResponderOpcion3() {
-        if (!esPresentador) {
-            procesarRespuesta(2);
-        }
-    }
-
+    private void onResponderOpcion3() { procesarRespuesta(2); }
+    
     @FXML
-    private void onResponderOpcion4() {
-        if (!esPresentador) {
-            procesarRespuesta(3);
-        }
-    }
+    private void onResponderOpcion4() { procesarRespuesta(3); }
 
     private void procesarRespuesta(int indiceRespuesta) {
-        if (esPresentador || preguntaRespondida) {
+        if (gestorJuegoVivo.isEsPresentador() || preguntaRespondida) {
             return;
-        }
-        if (App.preguntasActuales.isEmpty()) {
-            return;
-        }
-        if (temporizador != null) {
-            temporizador.stop();
         }
 
-        preguntaRespondida = true;
+        detenerTemporizador();
         deshabilitarBotones();
-
-        Preguntas pregunta = App.preguntasActuales.get(preguntaActualIndex);
-        ArrayList<Respuestas> respuestas = pregunta.getArregloDeRespuestasParaPreguntas();
-
-        if (respuestas == null || indiceRespuesta >= respuestas.size()) {
-            lblEstadoSeleccion.setText("Error: Respuesta no valida");
-            return;
+        
+        // Procesar respuesta a través del gestor
+        gestorJuegoVivo.procesarRespuesta(indiceRespuesta, tiempoRestante);
+        
+        // Marcar visualmente la respuesta seleccionada
+        Preguntas pregunta = gestorJuegoVivo.getPreguntaActual();
+        if (pregunta != null) {
+            ArrayList<Respuestas> respuestas = pregunta.getArregloDeRespuestasParaPreguntas();
+            if (respuestas != null && indiceRespuesta < respuestas.size()) {
+                if (!respuestas.get(indiceRespuesta).isCorrecta()) {
+                    marcarBotonIncorrecto(indiceRespuesta);
+                    marcarRespuestaCorrecta(respuestas);
+                } else {
+                    marcarBotonCorrecto(indiceRespuesta);
+                }
+            }
         }
-
-        respuestaSeleccionada = respuestas.get(indiceRespuesta);
-        boolean esCorrecta = respuestaSeleccionada.isCorrecta();
-
-        System.out.println("Respuesta seleccionada: " + respuestaSeleccionada.getRespuestas() + " | Correcta: " + esCorrecta);
-
-        if (esCorrecta) {
-            lblEstadoSeleccion.getStyleClass().clear();
-            lblEstadoSeleccion.getStyleClass().add(CSS_STATUS_CORRECTO);
-            lblEstadoSeleccion.setText("CORRECTO! +" + pregunta.getValorPuntosPreguntas() + " puntos");
-            marcarBotonCorrecto(indiceRespuesta);
-        } else {
-            lblEstadoSeleccion.getStyleClass().clear();
-            lblEstadoSeleccion.getStyleClass().add(CSS_STATUS_INCORRECTO);
-            lblEstadoSeleccion.setText("INCORRECTO!");
-            marcarBotonIncorrecto(indiceRespuesta);
-            marcarRespuestaCorrecta(respuestas);
-        }
-
-        enviarRespuestaAlServidor(respuestaSeleccionada.getRespuestas());
     }
 
     private void mostrarBotonSiguiente() {
         boxBotonSiguiente.setVisible(true);
         boxBotonSiguiente.setManaged(true);
-        if (preguntaActualIndex >= App.preguntasActuales.size() - 1) {
+        int totalPreguntas = gestorJuegoVivo.getTotalPreguntas();
+        int indiceActual = gestorJuegoVivo.getPreguntaActualIndex();
+        
+        if (indiceActual >= totalPreguntas - 1) {
             btnSiguiente.setText("Finalizar ▶");
         } else {
             btnSiguiente.setText("Siguiente ▶");
         }
-        System.out.println("Boton siguiente mostrado");
+        System.out.println("Botón siguiente mostrado");
     }
 
     @FXML
     private void onSiguientePregunta() {
-        preguntaActualIndex++;
-
-        if (preguntaActualIndex < App.preguntasActuales.size()) {
-            // NOTIFICAR AL SERVIDOR para que avise a los jugadores
-            if (App.salaActual != null) {
-                String trama = "SIGUIENTE_PREGUNTA|" + App.salaActual.getCodigoSala() + "|" + preguntaActualIndex;
-                App.escritor.println(trama);
-                System.out.println("Presentador notifica: " + trama);
-            }
-            resetearEstilosBotones();
-            cargarPreguntaActual();
-        } else {
-            finalizarJuego();
-        }
+        gestorJuegoVivo.siguientePregunta();
+        resetearEstilosBotones();
     }
 
     private void marcarBotonCorrecto(int indice) {
@@ -436,26 +391,21 @@ public class VistaPreguntaMultipleController implements Initializable {
     private void marcarRespuestaCorrecta(ArrayList<Respuestas> respuestas) {
         for (int i = 0; i < respuestas.size(); i++) {
             if (respuestas.get(i).isCorrecta()) {
-                System.out.println("Respuesta correcta en indice: " + i);
+                System.out.println("Respuesta correcta en índice: " + i);
                 marcarBotonCorrecto(i);
                 return;
             }
         }
-        System.out.println("ADVERTENCIA: No se encontro respuesta correcta!");
+        System.out.println("ADVERTENCIA: No se encontró respuesta correcta!");
     }
 
     private Button obtenerBotonPorIndice(int indice) {
         switch (indice) {
-            case 0:
-                return btnOpcion1;
-            case 1:
-                return btnOpcion2;
-            case 2:
-                return btnOpcion3;
-            case 3:
-                return btnOpcion4;
-            default:
-                return null;
+            case 0: return btnOpcion1;
+            case 1: return btnOpcion2;
+            case 2: return btnOpcion3;
+            case 3: return btnOpcion4;
+            default: return null;
         }
     }
 
@@ -466,30 +416,14 @@ public class VistaPreguntaMultipleController implements Initializable {
         restaurarClaseBoton(btnOpcion4, "kahootGreen");
     }
 
-    private void enviarRespuestaAlServidor(String respuesta) {
-        try {
-            if (App.preguntasActuales.isEmpty()) {
-                return;
-            }
-            Preguntas pregunta = App.preguntasActuales.get(preguntaActualIndex);
-            String trama = "RESPUESTA|" + pregunta.getCodigoSala() + "|"
-                    + App.usuarioActual.getNombreUsuario() + "|" + respuesta + "|" + tiempoRestante;
-            App.escritor.println(trama);
-            System.out.println("Respuesta enviada: " + trama);
-        } catch (Exception e) {
-            System.out.println("Error al enviar respuesta: " + e.getMessage());
-        }
-    }
-
     private void finalizarJuego() {
-        lblEnunciado.setText("Fin del juego!");
+        lblEnunciado.setText("¡Fin del juego!");
         lblCronometro.setText("Todas las preguntas han terminado");
         lblEstadoSeleccion.setText("Esperando resultados finales...");
         progressTiempo.setProgress(0);
         deshabilitarBotones();
         boxBotonSiguiente.setVisible(false);
         boxBotonSiguiente.setManaged(false);
-        escuchandoServidor = false;
     }
 
     private void deshabilitarBotones() {
@@ -512,27 +446,9 @@ public class VistaPreguntaMultipleController implements Initializable {
         }
     }
 
-        @FXML
-        private void onSalir() {
-            // Detenemos el temporizador
-            detenerTemporizador();
-
-            // Detenemos la escucha del servidor
-            escuchandoServidor = false;
-
-            // Notificamos al servidor que el jugador abandona
-            try {
-                String trama = "ABANDONAR|" + App.usuarioActual.getNombreUsuario();
-                App.escritor.println(trama);
-            } catch (Exception e) {
-                System.out.println("Error al notificar abandono: " + e.getMessage());
-            }
-
-            // Volvemos a la pantalla de ingreso
-            try {
-                App.setRoot("VistaPantallaDeIngreso");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    @FXML
+    private void onSalir() {
+        detenerTemporizador();
+        gestorJuegoVivo.abandonarPartida();
     }
 }

@@ -4,9 +4,7 @@ import Modelo.Juego;
 import Modelo.Preguntas;
 import Modelo.Sala;
 import Modelo.Usuario;
-import java.io.BufferedReader;
-import java.io.PrintWriter;
-import java.net.Socket;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

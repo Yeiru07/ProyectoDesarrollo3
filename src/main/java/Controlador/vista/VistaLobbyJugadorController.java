@@ -1,12 +1,9 @@
 package Controlador.vista;
 
-import Modelo.Preguntas;
-import Modelo.Respuestas;
+import Controlador.gestor.GestorLobbyJugadorCliente;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -24,88 +21,74 @@ public class VistaLobbyJugadorController implements Initializable {
     @FXML
     private ProgressIndicator progressLobby;
 
+    private GestorLobbyJugadorCliente gestorLobbyJugador;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        lblNombreJugador.setText("Jugador: " + App.usuarioActual.getNombreUsuario());
-        escucharServidor();
+        // Obtener el nombre del jugador desde App
+        String nombreJugador = App.usuarioActual != null
+                ? App.usuarioActual.getNombreUsuario() : "Jugador";
+
+        // Inicializar el gestor de lobby para jugador
+        gestorLobbyJugador = new GestorLobbyJugadorCliente(
+                nombreJugador,
+                lblEstadoSala,
+                lblNombreJugador,
+                progressLobby
+        );
+
+        // Configurar callbacks
+        gestorLobbyJugador.setOnPreguntasRecibidas(() -> {
+            try {
+                App.setRoot("VistaPreguntaMultiple");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        gestorLobbyJugador.setOnInicioPartida(() -> {
+            try {
+                App.setRoot("VistaPreguntaMultiple");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        gestorLobbyJugador.setOnErrorConexion(() -> {
+            // Manejar error de conexión - volver al menú principal o login
+            try {
+                App.setRoot("VistaInicioSesion");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        // Iniciar el lobby del jugador
+        gestorLobbyJugador.iniciarLobby();
     }
 
-    private void escucharServidor() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    while (true) {
-                        String mensaje = App.lector.readLine();
+    /**
+     * Método llamado cuando se cierra la ventana o se navega fuera Se puede
+     * llamar desde el método de cierre de la ventana
+     */
+    public void cerrarConexion() {
+        if (gestorLobbyJugador != null) {
+            gestorLobbyJugador.cerrarConexion();
+        }
+    }
 
-                        if (mensaje == null) {
-                            System.out.println("Servidor desconectado...");
-                            break;
-                        }
-                        System.out.println("RECIBIDO=" + mensaje);
+    /**
+     * Método para actualizar el estado de la sala desde la UI Por ejemplo,
+     * cuando el jugador ve que se une a una sala
+     */
+    public void actualizarEstadoSala(String estado) {
+        if (lblEstadoSala != null) {
+            lblEstadoSala.setText(estado);
+        }
+    }
 
-                        if (mensaje.startsWith("PREGUNTAS")) {
-                            System.out.println("RECIBI PREGUNTAS");
-                            App.preguntasActuales.clear();
-
-                            String contenido = mensaje.replace("PREGUNTAS|", "");
-                            String[] preguntas = contenido.split(";");
-
-                            for (int idx = 0; idx < preguntas.length; idx++) {
-                                String bloque = preguntas[idx];
-                                if (bloque.trim().isEmpty()) {
-                                    continue;
-                                }
-
-                                String[] datos = bloque.split(",");
-
-                                Preguntas p = new Preguntas();
-                                p.setEnunciado(datos[0]);
-
-                                int indiceCorrecta = 0;
-                                try {
-                                    indiceCorrecta = Integer.parseInt(datos[datos.length - 1]);
-                                } catch (NumberFormatException e) {
-                                    indiceCorrecta = 0;
-                                }
-
-                                ArrayList<Respuestas> respuestas = new ArrayList<>();
-                                for (int i = 1; i < datos.length - 1; i++) {
-                                    boolean esCorrecta = (indiceCorrecta == i);
-                                    respuestas.add(new Respuestas(i, datos[i], esCorrecta));
-                                }
-
-                                p.setArregloDeRespuestasParaPreguntas(respuestas);
-                                App.preguntasActuales.add(p);
-                            }
-
-                            Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    try {
-                                        App.setRoot("VistaPreguntaMultiple");
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            });
-                        } else if (mensaje.equals("INICIO_PARTIDA")) {
-                            Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    try {
-                                        App.setRoot("VistaPreguntaMultiple");
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            });
-                        }
-                    }
-                } catch (Exception e) {
-                    System.out.println("Conexion con servidor cerrada: " + e.getMessage());
-                }
-            }
-        }).start();
+    // Getters y setters opcionales
+    public GestorLobbyJugadorCliente getGestorLobbyJugador() {
+        return gestorLobbyJugador;
     }
 }

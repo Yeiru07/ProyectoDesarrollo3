@@ -1,9 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Controlador.vista;
 
+import Controlador.gestor.GestorIngresoSalaCliente;
 import Modelo.Juego;
 import Modelo.Sala;
 import Modelo.Usuario;
@@ -16,12 +13,12 @@ import javafx.scene.control.TextField;
 import proyectofinaldesarrolloIII.App;
 
 /**
- *
+ * Controlador para la pantalla de ingreso a una sala de juego
  * @author sronn
  */
 public class VistaPantallaDeIngresoController {
 
-    /*Seccion del SceneBuilder*/
+    /* Sección del SceneBuilder */
     @FXML
     private Button btnCrearSala;
     @FXML
@@ -33,46 +30,93 @@ public class VistaPantallaDeIngresoController {
     @FXML
     private TextField txtPinDelJuego;
 
-    Juego juego;//instancia del juego
+    private Juego juego;
+    private GestorIngresoSalaCliente gestorIngresoSala;
 
     @FXML
     public void initialize() {
-        this.juego = App.partida;//Se iguala a la global
+        this.juego = App.partida;
+        
+        // Inicializar el gestor de ingreso a sala
+        Usuario usuarioActual = App.usuarioActual;
+        if (usuarioActual != null) {
+            gestorIngresoSala = new GestorIngresoSalaCliente(usuarioActual);
+            
+            // Configurar callbacks
+            gestorIngresoSala.setOnIngresoExitoso(() -> {
+                try {
+                    // Guardar los jugadores del lobby en la App
+                    App.jugadoresLobby = gestorIngresoSala.getJugadoresLobby();
+                    ingresarPin();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    AlertaParaUsar.mostrar("Error", "No se pudo cargar el lobby: " + e.getMessage(), Alert.AlertType.ERROR);
+                }
+            });
+
+            gestorIngresoSala.setOnIngresoFallido(() -> {
+                // Limpiar el campo de texto para que el usuario pueda intentar nuevamente
+                txtPinDelJuego.clear();
+                txtPinDelJuego.requestFocus();
+            });
+
+            gestorIngresoSala.setOnErrorConexion(() -> {
+                try {
+                    // Volver a la pantalla anterior en caso de error de conexión
+                    App.setRoot("VistaInicioSesion");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        } else {
+            System.err.println("Usuario actual no disponible en VistaPantallaDeIngresoController");
+        }
     }
 
     @FXML
     private void crearUnaSala() throws IOException {
+        // Cerrar conexión anterior si existe
+        if (gestorIngresoSala != null) {
+            gestorIngresoSala.cerrarConexion();
+        }
         App.setRoot("VistaCreacionQuiz");
     }
 
     @FXML
     private void presentarSala() throws IOException {
+        // Cerrar conexión anterior si existe
+        if (gestorIngresoSala != null) {
+            gestorIngresoSala.cerrarConexion();
+        }
         App.setRoot("VistaGestorSalas");
     }
 
-    /*Se confirma el codigo de ingreso a la sala*/
+    /**
+     * Confirma el código de ingreso a la sala
+     */
     @FXML
     public void confirmacionDeCodigo() {
-
-        try {
-            int codigoIngresado = Integer.parseInt(txtPinDelJuego.getText().trim());
-
-            App.escritor.println("UNIR_SALA|" + codigoIngresado + "|" + App.usuarioActual.getNombreUsuario());
-
-            String respuesta = App.lector.readLine();
-
-            System.out.println("RESPUESTA SERVIDOR: " + respuesta);
-
-            if (respuesta.startsWith("JUGADORES|")) {
-                App.jugadoresLobby = respuesta;//Los jugadores actuales que se unieron
-                ingresarPin();
-
-            } else if (respuesta.equals("ERROR")) {
-                AlertaParaUsar.mostrar("Error", "La sala no existe", Alert.AlertType.WARNING);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        String codigoIngresado = txtPinDelJuego.getText().trim();
+        
+        if (codigoIngresado.isEmpty()) {
+            AlertaParaUsar.mostrar("Atención", "Por favor ingrese un código de sala", Alert.AlertType.WARNING);
+            txtPinDelJuego.requestFocus();
+            return;
         }
+
+        // Verificar que el gestor esté inicializado
+        if (gestorIngresoSala == null) {
+            AlertaParaUsar.mostrar("Error", "No se pudo conectar al servidor", Alert.AlertType.ERROR);
+            return;
+        }
+
+        // Deshabilitar el botón mientras se procesa la solicitud
+        btnIngresar.setDisable(true);
+        
+        // Intentar unir a la sala usando el gestor
+        gestorIngresoSala.unirASala(codigoIngresado);
+        
+        // El botón se habilitará después de la respuesta (en los callbacks)
     }
 
     @FXML
@@ -80,4 +124,21 @@ public class VistaPantallaDeIngresoController {
         App.setRoot("VistaLobbyDeCargaParaEntrar");
     }
 
+    /**
+     * Método llamado cuando se cierra la ventana o se navega fuera
+     */
+    public void cerrarConexion() {
+        if (gestorIngresoSala != null) {
+            gestorIngresoSala.cerrarConexion();
+        }
+    }
+
+    // Getters y Setters
+    public GestorIngresoSalaCliente getGestorIngresoSala() {
+        return gestorIngresoSala;
+    }
+
+    public void setGestorIngresoSala(GestorIngresoSalaCliente gestorIngresoSala) {
+        this.gestorIngresoSala = gestorIngresoSala;
+    }
 }
