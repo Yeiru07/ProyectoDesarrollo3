@@ -45,6 +45,7 @@ public class GestorLobbyCliente {
 
         if (sala != null) {
             lblPinSala.setText("PIN: " + sala.getCodigoSala());
+            App.salaActual = sala;
         }
 
         if (App.respuestaLobby != null) {

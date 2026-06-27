@@ -60,7 +60,8 @@ public class GestorJuegoVivoCliente {
         System.out.println("  Usuario: " + (usuarioActual != null ? usuarioActual.getNombreUsuario() : "null"));
         System.out.println("  Sala: " + (salaActual != null ? salaActual.getCodigoSala() : "null"));
         System.out.println("  Preguntas: " + preguntasActuales.size());
-        System.out.println("  Es presentador: " + esPresentador);
+        System.out.println("  Es presentador: " + esPresentador
+        );
     }
 
     public void iniciarPartida() {
@@ -216,9 +217,26 @@ public class GestorJuegoVivoCliente {
             }
 
             Preguntas pregunta = preguntasActuales.get(preguntaActualIndex);
-            String codigoSala = pregunta.getCodigoSala() != 0
-                    ? String.valueOf(pregunta.getCodigoSala())
-                    : (salaActual != null ? String.valueOf(salaActual.getCodigoSala()) : "");
+
+            // 🔴 OBTENER CÓDIGO DE SALA CORRECTAMENTE
+            String codigoSala = "";
+
+            // Primero intentar con la salaActual del gestor
+            if (salaActual != null) {
+                codigoSala = String.valueOf(salaActual.getCodigoSala());
+            } // Si no, intentar con la sala de App
+            else if (App.salaActual != null) {
+                codigoSala = String.valueOf(App.salaActual.getCodigoSala());
+            } // Si no, intentar con el código de la pregunta
+            else if (pregunta.getCodigoSala() != 0) {
+                codigoSala = String.valueOf(pregunta.getCodigoSala());
+            }
+
+            // Si aún está vacío, usar el código de sala del cliente desde la conexión
+            if (codigoSala == null || codigoSala.isEmpty()) {
+                System.out.println("⚠️ ADVERTENCIA: Código de sala vacío, usando '0'");
+                codigoSala = "0";
+            }
 
             String trama = "RESPUESTA|" + codigoSala + "|"
                     + usuarioActual.getNombreUsuario() + "|"
@@ -233,7 +251,7 @@ public class GestorJuegoVivoCliente {
             System.out.println("Error al enviar respuesta: " + e.getMessage());
         }
     }
-
+/*asdf*/
     public void siguientePregunta() {
         int siguienteIndex = preguntaActualIndex + 1;
 

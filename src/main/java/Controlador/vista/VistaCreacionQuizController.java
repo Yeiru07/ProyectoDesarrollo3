@@ -161,17 +161,13 @@ public class VistaCreacionQuizController implements Initializable {
         crearBotonPregunta(indice);
 
         limpiarCampos();
-        cmbTipoDePregunta.setValue("Quiz");
     }
 
     @FXML
     public void crearBotonPregunta(int indice) {
 
-        String tipo = sala.getListaPreguntas()
-                .get(indice)
-                .getTipoDePregunta();
+        Button boton = new Button((indice + 1) + " Quiz");
 
-        Button boton = new Button((indice + 1) + " " + tipo);
         boton.setPrefWidth(180);
 
         boton.getStyleClass().add("question-card");
@@ -209,72 +205,35 @@ public class VistaCreacionQuizController implements Initializable {
 
         Preguntas pregunta = gestorPregunta.getPreguntaActual();
 
-        if (pregunta == null) {
-            return;
-        }
-
-        // Restaurar el tipo de ESTA pregunta
-        cmbTipoDePregunta.setValue(pregunta.getTipoDePregunta());
-        cambiarTipoPregunta(null);
-
         txtTituloPregunta.setText(pregunta.getEnunciado());
-
-        txtRespuestaRojo.clear();
-        txtRespuestaAzul.clear();
-        txtRespuestaAmarillo.clear();
-        txtRespuestaVerde.clear();
-
-        if (grupoRespuestas.getSelectedToggle() != null) {
-            grupoRespuestas.getSelectedToggle().setSelected(false);
-        }
 
         if (pregunta.getArregloDeRespuestasParaPreguntas() != null) {
 
-            if (pregunta.getArregloDeRespuestasParaPreguntas().size() > 0) {
+            if (pregunta.getArregloDeRespuestasParaPreguntas().size() >= 1) {
 
                 txtRespuestaRojo.setText(
                         pregunta.getArregloDeRespuestasParaPreguntas().get(0).getRespuestas());
 
-                if (pregunta.getArregloDeRespuestasParaPreguntas().get(0).isCorrecta()) {
-                    rbRespuestaRojo.setSelected(true);
-                }
-
             }
 
-            if (pregunta.getArregloDeRespuestasParaPreguntas().size() > 1) {
+            if (pregunta.getArregloDeRespuestasParaPreguntas().size() >= 2) {
 
                 txtRespuestaAzul.setText(
                         pregunta.getArregloDeRespuestasParaPreguntas().get(1).getRespuestas());
 
-                if (pregunta.getArregloDeRespuestasParaPreguntas().get(1).isCorrecta()) {
-                    rbRespuestaAzul.setSelected(true);
-                }
+            }
+
+            if (pregunta.getArregloDeRespuestasParaPreguntas().size() >= 3) {
+
+                txtRespuestaAmarillo.setText(
+                        pregunta.getArregloDeRespuestasParaPreguntas().get(2).getRespuestas());
 
             }
 
-            if (pregunta.getTipoDePregunta().equals("Quiz")) {
+            if (pregunta.getArregloDeRespuestasParaPreguntas().size() >= 4) {
 
-                if (pregunta.getArregloDeRespuestasParaPreguntas().size() > 2) {
-
-                    txtRespuestaAmarillo.setText(
-                            pregunta.getArregloDeRespuestasParaPreguntas().get(2).getRespuestas());
-
-                    if (pregunta.getArregloDeRespuestasParaPreguntas().get(2).isCorrecta()) {
-                        rbRespuestaAmarillo.setSelected(true);
-                    }
-
-                }
-
-                if (pregunta.getArregloDeRespuestasParaPreguntas().size() > 3) {
-
-                    txtRespuestaVerde.setText(
-                            pregunta.getArregloDeRespuestasParaPreguntas().get(3).getRespuestas());
-
-                    if (pregunta.getArregloDeRespuestasParaPreguntas().get(3).isCorrecta()) {
-                        rbRespuestaVerde.setSelected(true);
-                    }
-
-                }
+                txtRespuestaVerde.setText(
+                        pregunta.getArregloDeRespuestasParaPreguntas().get(3).getRespuestas());
 
             }
 
@@ -285,7 +244,8 @@ public class VistaCreacionQuizController implements Initializable {
     @FXML
     private void cambiarTipoPregunta(ActionEvent event) {
 
-        boolean esVF = "Verdadero O Falso".equals(cmbTipoDePregunta.getValue());
+        boolean esVF = "Verdadero O Falso".equals(
+                cmbTipoDePregunta.getValue());
 
         boxRespuestaAmarilla.setVisible(!esVF);
         boxRespuestaAmarilla.setManaged(!esVF);
@@ -295,16 +255,16 @@ public class VistaCreacionQuizController implements Initializable {
 
         if (esVF) {
 
-            if (txtRespuestaRojo.getText().isBlank()) {
-                txtRespuestaRojo.setText("Verdadero");
-            }
-
-            if (txtRespuestaAzul.getText().isBlank()) {
-                txtRespuestaAzul.setText("Falso");
-            }
+            txtRespuestaRojo.setText("Verdadero");
+            txtRespuestaAzul.setText("Falso");
 
             txtRespuestaAmarillo.clear();
             txtRespuestaVerde.clear();
+
+        } else {
+
+            txtRespuestaRojo.clear();
+            txtRespuestaAzul.clear();
 
         }
 
@@ -312,11 +272,12 @@ public class VistaCreacionQuizController implements Initializable {
 
     private boolean guardarPreguntaSegunTipo() {
 
-        if (gestorPregunta.getPreguntaActual() == null) {
+        String tipo = cmbTipoDePregunta.getValue();
+
+        if (tipo == null || gestorPregunta.getNumeroDePreguntaActual() < 0) {
             return true;
         }
 
-        String tipo = gestorPregunta.getPreguntaActual().getTipoDePregunta();
         if (tipo.equals("Quiz")) {
             return guardarPreguntaActual();
         } else {
@@ -498,13 +459,6 @@ public class VistaCreacionQuizController implements Initializable {
         if (grupoRespuestas.getSelectedToggle() != null) {
             grupoRespuestas.getSelectedToggle().setSelected(false);
         }
-        cmbTipoDePregunta.setValue("Quiz");
-
-        boxRespuestaAmarilla.setVisible(true);
-        boxRespuestaAmarilla.setManaged(true);
-
-        boxRespuestaVerde.setVisible(true);
-        boxRespuestaVerde.setManaged(true);
 
     }
 
