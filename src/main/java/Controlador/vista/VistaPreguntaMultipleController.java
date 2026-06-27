@@ -63,11 +63,20 @@ public class VistaPreguntaMultipleController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         System.out.println("PREGUNTAS CARGADAS = " + App.preguntasActuales.size());
 
+        System.out.println("=== DEBUG ===");
+        System.out.println("Usuario actual: " + App.usuarioActual.getNombreUsuario());
+
+        System.out.println("Sala actual: " + App.salaActual.getCodigoSala());
+
+        System.out.println("Propietario: "
+                + (App.salaActual.getPropietario() == null
+                ? "NULL"
+                : App.salaActual.getPropietario().getNombreUsuario()));
         // Inicializar gestor de juego en vivo
         gestorJuegoVivo = new GestorJuegoVivoCliente(
-            App.usuarioActual,
-            App.salaActual,
-            App.preguntasActuales
+                App.usuarioActual,
+                App.salaActual,
+                App.preguntasActuales
         );
 
         // Configurar callbacks
@@ -117,14 +126,14 @@ public class VistaPreguntaMultipleController implements Initializable {
         gestorJuegoVivo.setOnRespuestaProcesada((esCorrecta, puntos, mensaje) -> {
             preguntaRespondida = true;
             lblEstadoSeleccion.getStyleClass().clear();
-            
+
             if (esCorrecta) {
                 lblEstadoSeleccion.getStyleClass().add(CSS_STATUS_CORRECTO);
             } else {
                 lblEstadoSeleccion.getStyleClass().add(CSS_STATUS_INCORRECTO);
             }
             lblEstadoSeleccion.setText(mensaje);
-            
+
             if (gestorJuegoVivo.isEsPresentador()) {
                 mostrarBotonSiguiente();
             }
@@ -156,8 +165,8 @@ public class VistaPreguntaMultipleController implements Initializable {
         lblEstadoSeleccion.getStyleClass().clear();
         lblEstadoSeleccion.getStyleClass().add(CSS_STATUS_NORMAL);
 
-        String textoEnunciado = "Pregunta " + (indiceActual + 1) + " de " 
-                              + totalPreguntas + ":\n" + pregunta.getEnunciado();
+        String textoEnunciado = "Pregunta " + (indiceActual + 1) + " de "
+                + totalPreguntas + ":\n" + pregunta.getEnunciado();
         lblEnunciado.setText(textoEnunciado);
 
         tiempoTotal = pregunta.getTiempoParaLasPreguntas();
@@ -257,20 +266,20 @@ public class VistaPreguntaMultipleController implements Initializable {
         actualizarCronometro();
 
         temporizador = new Timeline(
-            new KeyFrame(Duration.seconds(1), event -> {
-                tiempoRestante--;
-                Platform.runLater(this::actualizarCronometro);
-                
-                if (tiempoRestante <= 0) {
-                    temporizador.stop();
-                    Platform.runLater(() -> {
-                        if (!preguntaRespondida) {
-                            gestorJuegoVivo.procesarTiempoAgotado();
-                            tiempoAgotado();
-                        }
-                    });
-                }
-            })
+                new KeyFrame(Duration.seconds(1), event -> {
+                    tiempoRestante--;
+                    Platform.runLater(this::actualizarCronometro);
+
+                    if (tiempoRestante <= 0) {
+                        temporizador.stop();
+                        Platform.runLater(() -> {
+                            if (!preguntaRespondida) {
+                                gestorJuegoVivo.procesarTiempoAgotado();
+                                tiempoAgotado();
+                            }
+                        });
+                    }
+                })
         );
         temporizador.setCycleCount(tiempoTotal);
         temporizador.play();
@@ -315,16 +324,24 @@ public class VistaPreguntaMultipleController implements Initializable {
     }
 
     @FXML
-    private void onResponderOpcion1() { procesarRespuesta(0); }
-    
+    private void onResponderOpcion1() {
+        procesarRespuesta(0);
+    }
+
     @FXML
-    private void onResponderOpcion2() { procesarRespuesta(1); }
-    
+    private void onResponderOpcion2() {
+        procesarRespuesta(1);
+    }
+
     @FXML
-    private void onResponderOpcion3() { procesarRespuesta(2); }
-    
+    private void onResponderOpcion3() {
+        procesarRespuesta(2);
+    }
+
     @FXML
-    private void onResponderOpcion4() { procesarRespuesta(3); }
+    private void onResponderOpcion4() {
+        procesarRespuesta(3);
+    }
 
     private void procesarRespuesta(int indiceRespuesta) {
         if (gestorJuegoVivo.isEsPresentador() || preguntaRespondida) {
@@ -333,10 +350,10 @@ public class VistaPreguntaMultipleController implements Initializable {
 
         detenerTemporizador();
         deshabilitarBotones();
-        
+
         // Procesar respuesta a través del gestor
         gestorJuegoVivo.procesarRespuesta(indiceRespuesta, tiempoRestante);
-        
+
         // Marcar visualmente la respuesta seleccionada
         Preguntas pregunta = gestorJuegoVivo.getPreguntaActual();
         if (pregunta != null) {
@@ -357,7 +374,7 @@ public class VistaPreguntaMultipleController implements Initializable {
         boxBotonSiguiente.setManaged(true);
         int totalPreguntas = gestorJuegoVivo.getTotalPreguntas();
         int indiceActual = gestorJuegoVivo.getPreguntaActualIndex();
-        
+
         if (indiceActual >= totalPreguntas - 1) {
             btnSiguiente.setText("Finalizar ▶");
         } else {
@@ -401,11 +418,16 @@ public class VistaPreguntaMultipleController implements Initializable {
 
     private Button obtenerBotonPorIndice(int indice) {
         switch (indice) {
-            case 0: return btnOpcion1;
-            case 1: return btnOpcion2;
-            case 2: return btnOpcion3;
-            case 3: return btnOpcion4;
-            default: return null;
+            case 0:
+                return btnOpcion1;
+            case 1:
+                return btnOpcion2;
+            case 2:
+                return btnOpcion3;
+            case 3:
+                return btnOpcion4;
+            default:
+                return null;
         }
     }
 
