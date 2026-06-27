@@ -33,6 +33,7 @@ public class GestorJuegoVivoCliente {
     private Runnable onTiempoAgotado;
     private Runnable onFinalizarJuego;
     private Runnable onErrorConexion;
+    private Runnable onTodosRespondieron;
     private TriConsumer<Boolean, Integer, String> onRespuestaProcesada;
     private Consumer<String> onPodioActualizado;
     private Consumer<String> onRankingFinal;
@@ -138,6 +139,12 @@ public class GestorJuegoVivoCliente {
                         Platform.runLater(() -> {
                             if (onPodioActualizado != null) {
                                 onPodioActualizado.accept(podio);
+                            }
+                        });
+                    } else if (mensaje.startsWith("TODOS_RESPONDIERON")) {
+                        Platform.runLater(() -> {
+                            if (onTodosRespondieron != null) {
+                                onTodosRespondieron.run();
                             }
                         });
                     } else if (mensaje.startsWith("FINALIZAR_JUEGO")) {
@@ -395,6 +402,10 @@ public class GestorJuegoVivoCliente {
 
     public void setOnErrorConexion(Runnable onErrorConexion) {
         this.onErrorConexion = onErrorConexion;
+    }
+
+    public void setOnTodosRespondieron(Runnable onTodosRespondieron) {
+        this.onTodosRespondieron = onTodosRespondieron;
     }
 
     public void setOnRespuestaProcesada(TriConsumer<Boolean, Integer, String> onRespuestaProcesada) {

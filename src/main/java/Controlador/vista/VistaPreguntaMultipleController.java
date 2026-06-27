@@ -117,6 +117,14 @@ public class VistaPreguntaMultipleController implements Initializable {
 
         gestorJuegoVivo.setOnPodioActualizado(this::mostrarPodio);
 
+        gestorJuegoVivo.setOnTodosRespondieron(() -> {
+            if (gestorJuegoVivo.isEsPresentador()) {
+                detenerTemporizador();
+                lblEstadoSeleccion.setText("Todos respondieron. Puedes continuar.");
+                mostrarBotonSiguiente();
+            }
+        });
+
         gestorJuegoVivo.setOnRankingFinal((ranking) -> {
             try {
                 App.rankingActual = ranking;
@@ -144,10 +152,6 @@ public class VistaPreguntaMultipleController implements Initializable {
                 lblEstadoSeleccion.getStyleClass().add(CSS_STATUS_INCORRECTO);
             }
             lblEstadoSeleccion.setText(mensaje);
-
-            if (gestorJuegoVivo.isEsPresentador()) {
-                mostrarBotonSiguiente();
-            }
         });
 
         gestorJuegoVivo.setOnAbandonoExitoso(() -> {
@@ -328,10 +332,6 @@ public class VistaPreguntaMultipleController implements Initializable {
                 marcarRespuestaCorrecta(pregunta.getArregloDeRespuestasParaPreguntas());
             }
             gestorJuegoVivo.enviarRespuestaAlServidor("-1", 0, 0);
-        }
-
-        if (gestorJuegoVivo.isEsPresentador()) {
-            mostrarBotonSiguiente();
         }
     }
 

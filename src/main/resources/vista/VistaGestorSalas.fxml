@@ -28,13 +28,6 @@
                                     <String fx:value="btnBack" />
                                 </styleClass>
                             </Button>
-
-                            <Button fx:id="btnPresentar" mnemonicParsing="false"  onAction="#presentarYa"   text="▶ Presentar ya">
-                                <styleClass>
-                                    <String fx:value="adminButton" />
-                                    <String fx:value="btnPresent" />
-                                </styleClass>
-                            </Button>
                         </children>
                     </HBox>
                 </children>

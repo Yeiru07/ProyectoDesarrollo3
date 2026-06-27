@@ -63,11 +63,6 @@ public class VistaGestorSalasController implements Initializable {
     }
 
     @FXML
-    public void presentarYa() throws IOException {
-        App.setRoot("VistaPresentarSalas");
-    }
-
-    @FXML
     public void regresar() throws IOException {
         App.setRoot("VistaPantallaDeIngreso");
     }
