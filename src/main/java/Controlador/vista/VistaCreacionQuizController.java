@@ -366,42 +366,66 @@ public class VistaCreacionQuizController implements Initializable {
     }
 
     /*Con esto enviamos las pregunta por socket*/
+ /*Con esto enviamos las pregunta por socket*/
     @FXML
     public void guardarPregunta(ActionEvent event) throws IOException {
         String titulo = txtTituloSala.getText().trim();
+
+        // Validar que el titulo de la sala no este vacio
+        if (titulo.isEmpty()) {
+            AlertaParaUsar.mostrar("Error", "Debe ingresar un titulo para la sala", Alert.AlertType.WARNING);
+            return;
+        }
+
         sala.setNombreSala(titulo);
 
         boolean seGuardo = guardarPreguntaSegunTipo();
         if (!seGuardo) {
             return;
         }
-        //En esta parte limpio las variables estatitcas
+
+        //En esta parte limpio las variables estaticas
         App.preguntasActuales.clear();
         App.jugadoresLobby = null;
         App.salaActual = sala; // Actualizar la sala actual
 
         //Enviamos la sala
         enviarSalaPorSocket(sala);
-        String confirmacionSala = App.lector.readLine(); // Esperamos confirmación
 
-        // Verificar que la confirmación es correcta
-        if (confirmacionSala == null || !confirmacionSala.startsWith("OK")) {
-            AlertaParaUsar.mostrar("Error", "Error al crear la sala en el servidor", Alert.AlertType.ERROR);
+        // Esperamos confirmacion de la sala
+        String confirmacionSala = App.lector.readLine();
+        System.out.println("Confirmacion sala recibida: " + confirmacionSala);
+
+        // Verificar que la confirmacion es correcta
+        // El servidor responde "GUARDADO_OK" cuando la sala se guarda correctamente
+        if (confirmacionSala == null || !confirmacionSala.contains("GUARDADO_OK")) {
+            AlertaParaUsar.mostrar("Error", "Error al crear la sala en el servidor. Respuesta: " + confirmacionSala, Alert.AlertType.ERROR);
             return;
         }
 
         // Enviamos las preguntas UNA POR UNA con sus confirmaciones
-        for (Preguntas pregunta : sala.getListaPreguntas()) {
-            enviarPreguntaPorSocket(pregunta);
-            String confirmacionPregunta = App.lector.readLine();
+        for (int i = 0; i < sala.getListaPreguntas().size(); i++) {
+            Preguntas pregunta = sala.getListaPreguntas().get(i);
 
-            if (confirmacionPregunta == null || !confirmacionPregunta.startsWith("OK")) {
-                AlertaParaUsar.mostrar("Error", "Error al guardar pregunta", Alert.AlertType.ERROR);
+            // Solo enviamos preguntas que tengan enunciado y respuestas
+            if (pregunta.getEnunciado() == null || pregunta.getEnunciado().isEmpty()) {
+                continue; // Saltamos preguntas vacias
+            }
+
+            enviarPreguntaPorSocket(pregunta);
+
+            // Esperamos confirmacion de la pregunta
+            String confirmacionPregunta = App.lector.readLine();
+            System.out.println("Confirmacion pregunta " + (i + 1) + " recibida: " + confirmacionPregunta);
+
+            if (confirmacionPregunta == null || !confirmacionPregunta.contains("GUARDADO_OK")) {
+                AlertaParaUsar.mostrar("Error", "Error al guardar pregunta " + (i + 1) + ". Respuesta: " + confirmacionPregunta, Alert.AlertType.ERROR);
                 return;
             }
         }
+
         //Solo cuando el servidor nos confirmo todo, cambiamos de pantalla
-        AlertaParaUsar.mostrar("Éxito", "Guardado correctamente.", Alert.AlertType.INFORMATION);
+        AlertaParaUsar.mostrar("Éxito", "Sala y preguntas guardadas correctamente.", Alert.AlertType.INFORMATION);
         regresar();
     }
 

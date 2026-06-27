@@ -7,6 +7,7 @@
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
@@ -67,6 +68,14 @@
                 </GridPane>
                 
                 <Label fx:id="lblEstadoSeleccion" styleClass="statusFooterLabel" text="Selecciona una opción antes de que se agote el tiempo..." />
+                
+                <!-- BOTON SIGUIENTE (oculto inicialmente, se muestra al responder) -->
+                <HBox fx:id="boxBotonSiguiente" alignment="CENTER" visible="false" managed="false">
+                    <children>
+                        <Button fx:id="btnSiguiente" mnemonicParsing="false" onAction="#onSiguientePregunta" text="Siguiente ▶" styleClass="btnSiguienteStyle">
+                        </Button>
+                    </children>
+                </HBox>
                 
             </children>
             <padding>

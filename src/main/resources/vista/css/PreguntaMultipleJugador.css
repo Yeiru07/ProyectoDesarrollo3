@@ -11,7 +11,7 @@
 
 /* Cambiado a blanco para resaltar sobre el fondo morado */
 .timerLabel {
-    -fx-text-fill: #ffffff; 
+    -fx-text-fill: #ffffff;
     -fx-font-size: 26px;
     -fx-font-weight: bold;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 0, 0, 3, 3);
@@ -28,11 +28,11 @@
 }
 
 .customProgressBar .bar {
-    -fx-background-color: #d89e00; /* Amarillo/oro para la barra de carga */
+    -fx-background-color: #d89e00;
     -fx-background-radius: 10;
 }
 
-/* Bloque blanco sólido para la pregunta en el centro */
+/* Bloque blanco solido para la pregunta en el centro */
 .questionCard {
     -fx-background-color: #ffffff;
     -fx-padding: 30 45 30 45;
@@ -57,7 +57,6 @@
     -fx-cursor: hand;
     -fx-text-alignment: center;
     -fx-wrap-text: true;
-    /* Efecto de sombra inferior que simula profundidad 3D de Kahoot */
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.22), 0, 0, 0, 5);
 }
 
@@ -95,7 +94,7 @@
     -fx-background-color: #1e6b0a;
 }
 
-/* Texto Informativo Inferior (Cambiado a blanco semi-transparente) */
+/* Texto Informativo Inferior */
 .statusFooterLabel {
     -fx-text-fill: rgba(255, 255, 255, 0.85);
     -fx-font-size: 20px;
@@ -103,9 +102,9 @@
     -fx-font-weight: bold;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 0, 0, 2, 2);
 }
+
 /* ==================== ESTILOS PARA FEEDBACK DE RESPUESTAS ==================== */
 
-/* Etiqueta de cronometro cuando queda poco tiempo */
 .timerLabelWarning {
     -fx-text-fill: orange;
     -fx-font-size: 26px;
@@ -163,4 +162,27 @@
     -fx-font-size: 22px;
     -fx-font-weight: bold;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 0, 0, 3, 3);
+}
+
+/* ==================== BOTON SIGUIENTE ==================== */
+
+.btnSiguienteStyle {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #4b008f;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-padding: 12 40 12 40;
+    -fx-background-radius: 30;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0, 0, 3);
+}
+
+.btnSiguienteStyle:hover {
+    -fx-background-color: #f0f0f0;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.btnSiguienteStyle:pressed {
+    -fx-background-color: #e0e0e0;
 }
