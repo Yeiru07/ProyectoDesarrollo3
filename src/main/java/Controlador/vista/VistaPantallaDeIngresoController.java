@@ -107,27 +107,39 @@ public class VistaPantallaDeIngresoController {
      */
     @FXML
     public void confirmacionDeCodigo() {
+
         String codigoIngresado = txtPinDelJuego.getText().trim();
 
         if (codigoIngresado.isEmpty()) {
-            AlertaParaUsar.mostrar("Atención", "Por favor ingrese un código de sala", Alert.AlertType.WARNING);
+            AlertaParaUsar.mostrar(
+                    "Atención",
+                    "Por favor ingrese un código de sala",
+                    Alert.AlertType.WARNING);
             txtPinDelJuego.requestFocus();
             return;
         }
 
-        // Verificar que el gestor esté inicializado
         if (gestorIngresoSala == null) {
-            AlertaParaUsar.mostrar("Error", "No se pudo conectar al servidor", Alert.AlertType.ERROR);
+            AlertaParaUsar.mostrar(
+                    "Error",
+                    "No se pudo conectar al servidor",
+                    Alert.AlertType.ERROR);
             return;
         }
+
+        // Guardar la sala actual para que esté disponible en todo el juego
+        App.salaActual = new Sala(
+                Integer.parseInt(codigoIngresado),
+                "",
+                false,
+                0
+        );
 
         // Deshabilitar el botón mientras se procesa la solicitud
         btnIngresar.setDisable(true);
 
-        // Intentar unir a la sala usando el gestor
+        // Intentar unirse a la sala
         gestorIngresoSala.unirASala(codigoIngresado);
-
-        // El botón se habilitará después de la respuesta (en los callbacks)
     }
 
     @FXML
