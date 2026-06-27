@@ -325,21 +325,16 @@ public class VistaCreacionQuizController implements Initializable {
     }
 
     /*Enviamos la pregunta por socket*/
- /*Enviamos la pregunta por socket*/
     private void enviarPreguntaPorSocket(Preguntas p) {
         if (p.getEnunciado() == null || p.getEnunciado().isEmpty()) {
             return;
         }
 
         try {
-            // Obtenemos las respuestas
             ArrayList<Respuestas> respuestas = p.getArregloDeRespuestasParaPreguntas();
 
-            // SIEMPRE enviamos 4 respuestas, rellenando con vacio las que falten
-            String resp1 = "";
-            String resp2 = "";
-            String resp3 = "";
-            String resp4 = "";
+            String resp1 = "", resp2 = "", resp3 = "", resp4 = "";
+            int indiceCorrecta = 0; // 1, 2, 3 o 4 (0 = ninguna)
 
             if (respuestas != null && !respuestas.isEmpty()) {
                 if (respuestas.size() >= 1) {
@@ -354,21 +349,29 @@ public class VistaCreacionQuizController implements Initializable {
                 if (respuestas.size() >= 4) {
                     resp4 = respuestas.get(3).getRespuestas();
                 }
+
+                // Buscar cuál es la respuesta correcta
+                for (int i = 0; i < respuestas.size(); i++) {
+                    if (respuestas.get(i).isCorrecta()) {
+                        indiceCorrecta = i + 1; // 1-based (1=primera, 2=segunda, etc.)
+                        break;
+                    }
+                }
             }
 
-            // Formato FIJO: Pregunta|enunciado|resp1|resp2|resp3|resp4|codigoSala
-            // Esto genera SIEMPRE 7 partes
+            // Formato: Pregunta|enunciado|resp1|resp2|resp3|resp4|codigoSala|respuestaCorrecta
             String trama = "Pregunta|"
                     + p.getEnunciado() + "|"
                     + resp1 + "|"
                     + resp2 + "|"
                     + resp3 + "|"
                     + resp4 + "|"
-                    + p.getCodigoSala();
+                    + p.getCodigoSala() + "|"
+                    + indiceCorrecta;
 
-            // Enviamos la trama al servidor
             App.escritor.println(trama);
-            System.out.println("Enviado exitosamente: " + trama);
+            System.out.println("Enviado: " + trama);
+            System.out.println("  -> Respuesta correcta: " + indiceCorrecta);
 
         } catch (Exception e) {
             e.printStackTrace();
