@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Controlador.vista;
 
 import Modelo.Preguntas;
@@ -23,7 +19,6 @@ import proyectofinaldesarrolloIII.App;
 
 public class VistaLobbyDeLaPartidaController implements Initializable {
 
-    /*Seccion de SceneBuilder*/
     @FXML
     private Button btnIniciarJuego;
     @FXML
@@ -33,34 +28,29 @@ public class VistaLobbyDeLaPartidaController implements Initializable {
     @FXML
     private Label lblTotalJugadores;
     @FXML
-    private FlowPane flowJugadores;//Encargado de generar los nombre de los usuarios conectados a la sala
+    private FlowPane flowJugadores;
 
     Sala sala;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.sala = App.salaActual;//Se iguala la instancia a la global del App
+        this.sala = App.salaActual;
 
         if (sala != null) {
-            lblPinSala.setText("PIN: " + sala.getCodigoSala());//Traemos el codigo de la sala
+            lblPinSala.setText("PIN: " + sala.getCodigoSala());
         }
 
         escucharServidor();
         if (App.jugadoresLobby != null) {
-
             String datos = App.jugadoresLobby.replace("JUGADORES|", "");
             String[] jugadores = datos.split(",");
             actualizarJugadores(Arrays.asList(jugadores));
             lblTotalJugadores.setText("👤 " + jugadores.length + " participantes");
-
         }
-
     }
 
-    /*Este metodo actualiza el tag para cada jugador*/
     public void actualizarJugadores(List<String> nombres) {
         flowJugadores.getChildren().clear();
-
         for (String nombre : nombres) {
             Label jugador = new Label(nombre);
             jugador.getStyleClass().add("player-tag");
@@ -68,113 +58,95 @@ public class VistaLobbyDeLaPartidaController implements Initializable {
         }
     }
 
-    /*Con esto generamos el hilo para escuchar al servidor (traemos la informacion del servidor)*/
     private void escucharServidor() {
-        new Thread(() -> {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    System.out.println("ESCUCHANDO SERVIDOR...");
 
-            try {
-                System.out.println("ESCUCHANDO SERVIDOR...");
+                    while (true) {
+                        String mensaje = App.lector.readLine();
+                        System.out.println("MENSAJE RECIBIDO: " + mensaje);
+                        if (mensaje == null) {
+                            break;
+                        }
 
-                while (true) {
-                    String mensaje = App.lector.readLine();
-                    System.out.println("MENSAJE RECIBIDO: " + mensaje);
-                    if (mensaje == null) {
-                        break;
-                    }
+                        if (mensaje.startsWith("JUGADORES")) {
+                            App.jugadoresLobby = mensaje;
+                            String[] partes = mensaje.split("\\|");
 
-                    if (mensaje.startsWith("JUGADORES")) {
-                        App.jugadoresLobby = mensaje;
-                        String[] partes = mensaje.split("\\|");
+                            if (partes.length > 1) {
+                                final String[] nombres = partes[1].split(",");
 
-                        if (partes.length > 1) {
+                                Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        actualizarJugadores(Arrays.asList(nombres));
+                                        lblTotalJugadores.setText("👤 " + nombres.length + " participantes");
+                                    }
+                                });
+                            }
+                        } else if (mensaje.startsWith("PREGUNTAS")) {
+                            System.out.println("RECIBI PREGUNTAS");
+                            App.preguntasActuales.clear();
 
-                            String[] nombres = partes[1].split(",");
+                            String contenido = mensaje.replace("PREGUNTAS|", "");
+                            String[] preguntas = contenido.split(";");
 
-                            Platform.runLater(() -> {
-                                actualizarJugadores(Arrays.asList(nombres));
-                                lblTotalJugadores.setText("👤 " + nombres.length + " participantes");
+                            for (int idx = 0; idx < preguntas.length; idx++) {
+                                String bloque = preguntas[idx];
+                                if (bloque.trim().isEmpty()) {
+                                    continue;
+                                }
+
+                                String[] datos = bloque.split(",");
+
+                                Preguntas p = new Preguntas();
+                                p.setEnunciado(datos[0]);
+
+                                // El ultimo dato es el indice de la respuesta correcta
+                                int indiceCorrecta = 0;
+                                try {
+                                    indiceCorrecta = Integer.parseInt(datos[datos.length - 1]);
+                                } catch (NumberFormatException e) {
+                                    indiceCorrecta = 0;
+                                }
+
+                                ArrayList<Respuestas> respuestas = new ArrayList<>();
+                                // Las respuestas son datos[1] hasta datos[datos.length - 2]
+                                for (int i = 1; i < datos.length - 1; i++) {
+                                    boolean esCorrecta = (indiceCorrecta == i); // i es 1-based
+                                    respuestas.add(new Respuestas(i, datos[i], esCorrecta));
+                                }
+
+                                p.setArregloDeRespuestasParaPreguntas(respuestas);
+                                App.preguntasActuales.add(p);
+                            }
+
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        App.setRoot("VistaPreguntaMultiple");
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
                             });
-
                         }
-                    } // PREGUNTAS
-                    else if (mensaje.startsWith("PREGUNTAS")) {
-
-                        System.out.println("RECIBI PREGUNTAS");
-
-                        App.preguntasActuales.clear();
-
-                        String contenido
-                                = mensaje.replace("PREGUNTAS|", "");
-
-                        String[] preguntas
-                                = contenido.split(";");
-
-                        for (String bloque : preguntas) {
-
-                            if (bloque.trim().isEmpty()) {
-                                continue;
-                            }
-
-                            String[] datos
-                                    = bloque.split(",");
-
-                            Preguntas p
-                                    = new Preguntas();
-
-                            p.setEnunciado(datos[0]);
-
-                            ArrayList<Respuestas> respuestas
-                                    = new ArrayList<>();
-
-                            for (int i = 1; i < datos.length; i++) {
-
-                                respuestas.add(
-                                        new Respuestas(
-                                                i,
-                                                datos[i],
-                                                false
-                                        )
-                                );
-                            }
-
-                            p.setArregloDeRespuestasParaPreguntas(
-                                    respuestas
-                            );
-
-                            App.preguntasActuales.add(p);
-                        }
-
-                        Platform.runLater(() -> {
-
-                            try {
-
-                                App.setRoot(
-                                        "VistaPreguntaMultiple"
-                                );
-
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-
-                        });
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
-
         }).start();
     }
 
     @FXML
     public void ListoVamos() {
-
-        String trama
-                = "OBTENER_PREGUNTAS|"
-                + sala.getCodigoSala();
-
+        String trama = "OBTENER_PREGUNTAS|" + sala.getCodigoSala();
         App.escritor.println(trama);
-
     }
 
     @FXML
