@@ -61,6 +61,16 @@ public class VistaPreguntaMultipleController implements Initializable {
     // Variable para almacenar la respuesta seleccionada
     private Respuestas respuestaSeleccionada;
 
+    // Constantes para las clases CSS
+    private static final String CSS_TIMER_NORMAL = "timerLabel";
+    private static final String CSS_TIMER_WARNING = "timerLabelWarning";
+    private static final String CSS_TIMER_DANGER = "timerLabelDanger";
+    private static final String CSS_BOTON_CORRECTO = "optionButtonCorrect";
+    private static final String CSS_BOTON_INCORRECTO = "optionButtonIncorrect";
+    private static final String CSS_STATUS_CORRECTO = "statusFooterLabelCorrect";
+    private static final String CSS_STATUS_INCORRECTO = "statusFooterLabelIncorrect";
+    private static final String CSS_STATUS_NORMAL = "statusFooterLabel";
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         System.out.println("PREGUNTAS CARGADAS = " + App.preguntasActuales.size());
@@ -97,6 +107,10 @@ public class VistaPreguntaMultipleController implements Initializable {
         respuestaSeleccionada = null;
         lblEstadoSeleccion.setText("Selecciona una opcion antes de que se agote el tiempo...");
 
+        // Restauramos la clase CSS normal del estado
+        lblEstadoSeleccion.getStyleClass().clear();
+        lblEstadoSeleccion.getStyleClass().add(CSS_STATUS_NORMAL);
+
         // Obtenemos la pregunta actual
         Preguntas pregunta = App.preguntasActuales.get(preguntaActualIndex);
 
@@ -122,7 +136,8 @@ public class VistaPreguntaMultipleController implements Initializable {
 
     /**
      * Configura los botones con las respuestas de la pregunta. Muestra solo los
-     * botones necesarios segun la cantidad de respuestas.
+     * botones necesarios segun la cantidad de respuestas y restaura sus clases
+     * CSS originales.
      *
      * @param respuestas Lista de respuestas de la pregunta
      */
@@ -133,11 +148,14 @@ public class VistaPreguntaMultipleController implements Initializable {
         btnOpcion3.setVisible(false);
         btnOpcion4.setVisible(false);
 
-        // Habilitamos todos los botones (por si estaban deshabilitados)
-        habilitarBotones();
+        // Restauramos las clases CSS originales de cada boton
+        restaurarClaseBoton(btnOpcion1, "kahootRed");
+        restaurarClaseBoton(btnOpcion2, "kahootBlue");
+        restaurarClaseBoton(btnOpcion3, "kahootGold");
+        restaurarClaseBoton(btnOpcion4, "kahootGreen");
 
-        // Quitamos estilos anteriores
-        resetearEstilosBotones();
+        // Habilitamos todos los botones
+        habilitarBotones();
 
         // Mostramos los botones segun la cantidad de respuestas
         if (respuestas != null) {
@@ -161,6 +179,19 @@ public class VistaPreguntaMultipleController implements Initializable {
                 btnOpcion4.setText(respuestas.get(3).getRespuestas());
             }
         }
+    }
+
+    /**
+     * Restaura las clases CSS originales de un boton.
+     *
+     * @param boton El boton a restaurar
+     * @param claseColor La clase de color original (kahootRed, kahootBlue,
+     * etc.)
+     */
+    private void restaurarClaseBoton(Button boton, String claseColor) {
+        boton.getStyleClass().clear();
+        boton.getStyleClass().add("optionButton");
+        boton.getStyleClass().add(claseColor);
     }
 
     /**
@@ -212,7 +243,8 @@ public class VistaPreguntaMultipleController implements Initializable {
     }
 
     /**
-     * Actualiza la etiqueta del cronometro y la barra de progreso.
+     * Actualiza la etiqueta del cronometro y la barra de progreso. Usa clases
+     * CSS en lugar de setStyle().
      */
     private void actualizarCronometro() {
         lblCronometro.setText("Tiempo restante: " + tiempoRestante + "s");
@@ -221,13 +253,14 @@ public class VistaPreguntaMultipleController implements Initializable {
         double progreso = (double) tiempoRestante / (double) tiempoTotal;
         progressTiempo.setProgress(progreso);
 
-        // Cambiamos el color del texto segun el tiempo restante
+        // Cambiamos la clase CSS segun el tiempo restante
+        lblCronometro.getStyleClass().clear();
         if (tiempoRestante <= 5) {
-            lblCronometro.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+            lblCronometro.getStyleClass().add(CSS_TIMER_DANGER);
         } else if (tiempoRestante <= 10) {
-            lblCronometro.setStyle("-fx-text-fill: orange; -fx-font-weight: bold;");
+            lblCronometro.getStyleClass().add(CSS_TIMER_WARNING);
         } else {
-            lblCronometro.setStyle("-fx-text-fill: white; -fx-font-weight: bold;");
+            lblCronometro.getStyleClass().add(CSS_TIMER_NORMAL);
         }
     }
 
@@ -237,12 +270,22 @@ public class VistaPreguntaMultipleController implements Initializable {
      */
     private void tiempoAgotado() {
         if (preguntaRespondida) {
-            return; // Ya se respondio, no hacemos nada
+            return;
         }
 
         preguntaRespondida = true;
         deshabilitarBotones();
+
+        // Usamos clase CSS en lugar de setStyle
+        lblEstadoSeleccion.getStyleClass().clear();
+        lblEstadoSeleccion.getStyleClass().add(CSS_STATUS_INCORRECTO);
         lblEstadoSeleccion.setText("Se acabo el tiempo! Respuesta incorrecta");
+
+        // Marcamos la respuesta correcta para que el jugador la vea
+        Preguntas pregunta = App.preguntasActuales.get(preguntaActualIndex);
+        if (pregunta.getArregloDeRespuestasParaPreguntas() != null) {
+            marcarRespuestaCorrecta(pregunta.getArregloDeRespuestasParaPreguntas());
+        }
 
         // Enviamos respuesta vacia (tiempo agotado)
         enviarRespuestaAlServidor("TIEMPO_AGOTADO");
@@ -251,33 +294,21 @@ public class VistaPreguntaMultipleController implements Initializable {
         programarSiguientePregunta();
     }
 
-    /**
-     * Maneja la seleccion de la opcion 1.
-     */
     @FXML
     private void onResponderOpcion1() {
         procesarRespuesta(0);
     }
 
-    /**
-     * Maneja la seleccion de la opcion 2.
-     */
     @FXML
     private void onResponderOpcion2() {
         procesarRespuesta(1);
     }
 
-    /**
-     * Maneja la seleccion de la opcion 3.
-     */
     @FXML
     private void onResponderOpcion3() {
         procesarRespuesta(2);
     }
 
-    /**
-     * Maneja la seleccion de la opcion 4.
-     */
     @FXML
     private void onResponderOpcion4() {
         procesarRespuesta(3);
@@ -285,11 +316,6 @@ public class VistaPreguntaMultipleController implements Initializable {
 
     /**
      * Procesa la respuesta seleccionada por el jugador.
-     *
-     * Flujo: 1. Verifica que no se haya respondido ya 2. Detiene el
-     * temporizador 3. Obtiene la respuesta seleccionada 4. Verifica si es
-     * correcta 5. Muestra feedback visual 6. Envia la respuesta al servidor 7.
-     * Programa la siguiente pregunta
      *
      * @param indiceRespuesta Indice de la respuesta seleccionada (0-3)
      */
@@ -330,14 +356,16 @@ public class VistaPreguntaMultipleController implements Initializable {
         // Verificamos si es correcta
         boolean esCorrecta = respuestaSeleccionada.isCorrecta();
 
-        // Mostramos el resultado
+        // Mostramos el resultado usando clases CSS
         if (esCorrecta) {
+            lblEstadoSeleccion.getStyleClass().clear();
+            lblEstadoSeleccion.getStyleClass().add(CSS_STATUS_CORRECTO);
             lblEstadoSeleccion.setText("CORRECTO! +" + pregunta.getValorPuntosPreguntas() + " puntos");
-            lblEstadoSeleccion.setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
             marcarBotonCorrecto(indiceRespuesta);
         } else {
+            lblEstadoSeleccion.getStyleClass().clear();
+            lblEstadoSeleccion.getStyleClass().add(CSS_STATUS_INCORRECTO);
             lblEstadoSeleccion.setText("INCORRECTO! La respuesta era incorrecta");
-            lblEstadoSeleccion.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
             marcarBotonIncorrecto(indiceRespuesta);
             // Marcamos cual era la correcta
             marcarRespuestaCorrecta(respuestas);
@@ -351,94 +379,63 @@ public class VistaPreguntaMultipleController implements Initializable {
     }
 
     /**
-     * Marca visualmente el boton de la respuesta correcta.
-     *
-     * @param indice Indice del boton correcto
+     * Marca visualmente el boton de la respuesta correcta usando clase CSS.
      */
     private void marcarBotonCorrecto(int indice) {
-        switch (indice) {
-            case 0:
-                btnOpcion1.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;");
-                break;
-            case 1:
-                btnOpcion2.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;");
-                break;
-            case 2:
-                btnOpcion3.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;");
-                break;
-            case 3:
-                btnOpcion4.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;");
-                break;
+        Button boton = obtenerBotonPorIndice(indice);
+        if (boton != null) {
+            boton.getStyleClass().clear();
+            boton.getStyleClass().add(CSS_BOTON_CORRECTO);
         }
     }
 
     /**
-     * Marca visualmente el boton de la respuesta incorrecta seleccionada.
-     *
-     * @param indice Indice del boton incorrecto
+     * Marca visualmente el boton de la respuesta incorrecta usando clase CSS.
      */
     private void marcarBotonIncorrecto(int indice) {
-        switch (indice) {
-            case 0:
-                btnOpcion1.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-weight: bold;");
-                break;
-            case 1:
-                btnOpcion2.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-weight: bold;");
-                break;
-            case 2:
-                btnOpcion3.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-weight: bold;");
-                break;
-            case 3:
-                btnOpcion4.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-weight: bold;");
-                break;
+        Button boton = obtenerBotonPorIndice(indice);
+        if (boton != null) {
+            boton.getStyleClass().clear();
+            boton.getStyleClass().add(CSS_BOTON_INCORRECTO);
         }
     }
 
     /**
      * Marca visualmente cual era la respuesta correcta. Recorre todas las
      * respuestas y marca en verde la que es correcta.
-     *
-     * @param respuestas Lista de respuestas de la pregunta
      */
     private void marcarRespuestaCorrecta(ArrayList<Respuestas> respuestas) {
         for (int i = 0; i < respuestas.size(); i++) {
             if (respuestas.get(i).isCorrecta()) {
-                switch (i) {
-                    case 0:
-                        btnOpcion1.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;");
-                        break;
-                    case 1:
-                        btnOpcion2.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;");
-                        break;
-                    case 2:
-                        btnOpcion3.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;");
-                        break;
-                    case 3:
-                        btnOpcion4.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;");
-                        break;
-                }
+                marcarBotonCorrecto(i);
                 break; // Solo hay una correcta
             }
         }
     }
 
     /**
-     * Resetea los estilos de todos los botones a su estado original.
+     * Obtiene el boton correspondiente al indice.
+     *
+     * @param indice 0 para btnOpcion1, 1 para btnOpcion2, etc.
+     * @return El boton correspondiente o null si el indice es invalido
      */
-    private void resetearEstilosBotones() {
-        btnOpcion1.setStyle("");
-        btnOpcion2.setStyle("");
-        btnOpcion3.setStyle("");
-        btnOpcion4.setStyle("");
+    private Button obtenerBotonPorIndice(int indice) {
+        switch (indice) {
+            case 0:
+                return btnOpcion1;
+            case 1:
+                return btnOpcion2;
+            case 2:
+                return btnOpcion3;
+            case 3:
+                return btnOpcion4;
+            default:
+                return null;
+        }
     }
 
     /**
      * Envia la respuesta del jugador al servidor.
-     *
-     * Formato de trama:
-     * RESPUESTA|codigoSala|nombreUsuario|respuesta|tiempoRestante
-     *
-     * @param respuesta Texto de la respuesta seleccionada o "TIEMPO_AGOTADO"
      */
     private void enviarRespuestaAlServidor(String respuesta) {
         try {
@@ -466,12 +463,10 @@ public class VistaPreguntaMultipleController implements Initializable {
     }
 
     /**
-     * Programa la carga de la siguiente pregunta despues de una pausa. Espera 2
-     * segundos para que el jugador vea el resultado y luego carga la siguiente
-     * pregunta o finaliza el juego.
+     * Programa la carga de la siguiente pregunta despues de una pausa de 2
+     * segundos.
      */
     private void programarSiguientePregunta() {
-        // Creamos un timeline para esperar 2 segundos
         Timeline pausa = new Timeline(
                 new KeyFrame(Duration.seconds(2), new EventHandler<ActionEvent>() {
                     @Override
@@ -479,16 +474,11 @@ public class VistaPreguntaMultipleController implements Initializable {
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
-                                // Avanzamos al siguiente indice
                                 preguntaActualIndex++;
 
-                                // Verificamos si hay mas preguntas
                                 if (preguntaActualIndex < App.preguntasActuales.size()) {
-                                    // Reseteamos estilos y cargamos la siguiente
-                                    resetearEstilosBotones();
                                     cargarPreguntaActual();
                                 } else {
-                                    // No hay mas preguntas
                                     finalizarJuego();
                                 }
                             }
@@ -501,8 +491,7 @@ public class VistaPreguntaMultipleController implements Initializable {
     }
 
     /**
-     * Finaliza el juego cuando no hay mas preguntas. Muestra un mensaje y
-     * deshabilita los botones.
+     * Finaliza el juego cuando no hay mas preguntas.
      */
     private void finalizarJuego() {
         lblEnunciado.setText("Fin del juego!");
@@ -541,8 +530,7 @@ public class VistaPreguntaMultipleController implements Initializable {
     }
 
     /**
-     * Detiene el temporizador cuando se cierra la vista. Es llamado
-     * automaticamente por JavaFX al cambiar de escena.
+     * Detiene el temporizador cuando se cierra la vista.
      */
     public void detenerTemporizador() {
         if (temporizador != null) {

@@ -103,3 +103,64 @@
     -fx-font-weight: bold;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 0, 0, 2, 2);
 }
+/* ==================== ESTILOS PARA FEEDBACK DE RESPUESTAS ==================== */
+
+/* Etiqueta de cronometro cuando queda poco tiempo */
+.timerLabelWarning {
+    -fx-text-fill: orange;
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+}
+
+.timerLabelDanger {
+    -fx-text-fill: red;
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+}
+
+/* Boton de respuesta correcta (verde) */
+.optionButtonCorrect {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 14;
+    -fx-cursor: hand;
+    -fx-text-alignment: center;
+    -fx-wrap-text: true;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.22), 0, 0, 0, 5);
+}
+
+/* Boton de respuesta incorrecta (rojo) */
+.optionButtonIncorrect {
+    -fx-background-color: #f44336;
+    -fx-text-fill: white;
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 14;
+    -fx-cursor: hand;
+    -fx-text-alignment: center;
+    -fx-wrap-text: true;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.22), 0, 0, 0, 5);
+}
+
+/* Boton deshabilitado */
+.optionButton:disabled {
+    -fx-opacity: 0.7;
+}
+
+/* Etiqueta de estado - respuesta correcta */
+.statusFooterLabelCorrect {
+    -fx-text-fill: #00ff00;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 0, 0, 3, 3);
+}
+
+/* Etiqueta de estado - respuesta incorrecta */
+.statusFooterLabelIncorrect {
+    -fx-text-fill: #ff4444;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 0, 0, 3, 3);
+}
