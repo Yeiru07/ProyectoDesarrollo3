@@ -27,6 +27,7 @@ public class App extends Application {
     public static Usuario usuarioActual;
     public static Sala salaActual;
     public static String jugadoresLobby;
+    public static String respuestaLobby;
 
     @Override
     public void start(Stage stage) throws IOException {

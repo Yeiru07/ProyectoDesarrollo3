@@ -2,6 +2,7 @@ package Controlador.vista;
 
 import Controlador.gestor.GestorSesionCliente;
 import Modelo.Juego;
+import Modelo.Usuario;
 import Utilidades.AlertaParaUsar;
 import java.io.IOException;
 import javafx.event.ActionEvent;
@@ -69,7 +70,7 @@ public class VistaInicioController {
             if (respuesta != null && respuesta.startsWith("OK")) {
                 AlertaParaUsar.mostrar("Éxito", "Sesión iniciada correctamente", Alert.AlertType.INFORMATION);
 
-                //   App.usuarioActual = new Usuario(0, usuarioInicioSesion, "", contraInicioSesion, 0);
+                App.usuarioActual = new Usuario(0, usuarioInicioSesion, "", contraInicioSesion, 0);
                 App.setRoot("VistaPantallaDeIngreso");
             } else {
                 String[] partesRepuesta = respuesta.split("\\|");

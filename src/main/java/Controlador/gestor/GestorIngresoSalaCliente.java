@@ -8,6 +8,7 @@ import javafx.scene.control.Alert;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import proyectofinaldesarrolloIII.App;
 import red.ClienteSocket;
 
 public class GestorIngresoSalaCliente {
@@ -15,25 +16,27 @@ public class GestorIngresoSalaCliente {
     private ClienteSocket clienteSocket;
     private Usuario usuarioActual;
     private String codigoSala;
-    
+
     private Runnable onIngresoExitoso;
     private Runnable onIngresoFallido;
     private Runnable onErrorConexion;
-    
+
     private String jugadoresLobby;
+    private String respuestaInicialLobby;
 
     public GestorIngresoSalaCliente(Usuario usuarioActual) {
         this.usuarioActual = usuarioActual;
-        this.clienteSocket = new ClienteSocket();
+        this.clienteSocket = App.cliente;
     }
 
     /**
      * Intenta unir al usuario a una sala con el código proporcionado
+     *
      * @param codigoSala Código de la sala a la que se quiere unir
      */
     public void unirASala(String codigoSala) {
         this.codigoSala = codigoSala;
-        
+
         // Validar que el código sea numérico
         try {
             Integer.parseInt(codigoSala.trim());
@@ -46,7 +49,7 @@ public class GestorIngresoSalaCliente {
 
         // Conectar al servidor si no está conectado
         if (clienteSocket.getLector() == null) {
-            clienteSocket.conectar();
+            //CPMENTADO PORQUE ESTA EN EL MAIN clienteSocket.conectar();
         }
 
         // Enviar solicitud en un hilo separado
@@ -86,7 +89,10 @@ public class GestorIngresoSalaCliente {
 
                 // Procesar respuesta
                 if (respuesta.startsWith("JUGADORES|")) {
+
                     jugadoresLobby = respuesta;
+                    respuestaInicialLobby = respuesta;
+
                     Platform.runLater(() -> {
                         if (onIngresoExitoso != null) {
                             onIngresoExitoso.run();
@@ -121,13 +127,15 @@ public class GestorIngresoSalaCliente {
     }
 
     /**
-     * Intenta unir al usuario a una sala con el código proporcionado (versión síncrona)
+     * Intenta unir al usuario a una sala con el código proporcionado (versión
+     * síncrona)
+     *
      * @param codigoSala Código de la sala a la que se quiere unir
      * @return true si el ingreso fue exitoso, false en caso contrario
      */
     public boolean unirASalaSincrono(String codigoSala) {
         this.codigoSala = codigoSala;
-        
+
         try {
             Integer.parseInt(codigoSala.trim());
         } catch (NumberFormatException e) {
@@ -167,8 +175,18 @@ public class GestorIngresoSalaCliente {
             }
 
             if (respuesta.startsWith("JUGADORES|")) {
+
                 jugadoresLobby = respuesta;
+                respuestaInicialLobby = respuesta;
+
+                Platform.runLater(() -> {
+                    if (onIngresoExitoso != null) {
+                        onIngresoExitoso.run();
+                    }
+                });
+
                 return true;
+
             } else if (respuesta.equals("ERROR")) {
                 Platform.runLater(() -> {
                     AlertaParaUsar.mostrar("Error", "La sala no existe", Alert.AlertType.WARNING);
@@ -217,6 +235,11 @@ public class GestorIngresoSalaCliente {
     }
 
     public void cerrarConexion() {
-        clienteSocket.cerrarConexion();
+        // clienteSocket.cerrarConexion();
+        System.out.println("Cambio de vista, se mantiene la conexión.");
+    }
+
+    public String getRespuestaInicialLobby() {
+        return respuestaInicialLobby;
     }
 }

@@ -1,7 +1,7 @@
 package Controlador.vista;
 
 import Modelo.Sala;
-import red.GestorLobbyCliente;
+import Controlador.gestor.GestorLobbyCliente;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;

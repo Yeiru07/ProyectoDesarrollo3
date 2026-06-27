@@ -1,6 +1,5 @@
 package Controlador.gestor;
 
-
 import Modelo.Preguntas;
 import Modelo.Respuestas;
 import javafx.application.Platform;
@@ -11,6 +10,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import proyectofinaldesarrolloIII.App;
 import red.ClienteSocket;
 
 public class GestorLobbyJugadorCliente {
@@ -31,13 +31,13 @@ public class GestorLobbyJugadorCliente {
         this.lblEstadoSala = lblEstadoSala;
         this.lblNombreJugador = lblNombreJugador;
         this.progressLobby = progressLobby;
-        this.clienteSocket = new ClienteSocket();
+        this.clienteSocket = App.cliente;
     }
 
     public void iniciarLobby() {
         // Conectar al servidor si no está conectado
         if (clienteSocket.getLector() == null) {
-            clienteSocket.conectar();
+            //ESTA EN EL MAIN clienteSocket.conectar();
         }
 
         // Actualizar UI inicial
@@ -121,9 +121,14 @@ public class GestorLobbyJugadorCliente {
             preguntasActuales.add(p);
         }
 
-        // Almacenar preguntas en el contexto de la aplicación (o pasarlas via callback)
+        // GUARDAR TODAS LAS PREGUNTAS RECIBIDAS
+        App.preguntasActuales.clear();
+        App.preguntasActuales.addAll(preguntasActuales);
+
+        System.out.println("PREGUNTAS CARGADAS = " + App.preguntasActuales.size());
+
         if (onPreguntasRecibidas != null) {
-            Platform.runLater(() -> onPreguntasRecibidas.run());
+            Platform.runLater(onPreguntasRecibidas);
         }
     }
 
@@ -151,7 +156,9 @@ public class GestorLobbyJugadorCliente {
     }
 
     public void cerrarConexion() {
-        clienteSocket.cerrarConexion();
+        //clienteSocket.cerrarConexion();
+        System.out.println("Cambio de vista, se mantiene la conexión.");
+
     }
 
     public String getNombreJugador() {

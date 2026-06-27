@@ -10,10 +10,11 @@ public class ClienteSocket {
     private Socket socket;
     private PrintWriter escritor;
     private BufferedReader lector;
+    private static final int SERVER_PORT = 5000;
 
     public void conectar() {
         try {
-            socket = new Socket("localhost", 5000);
+            socket = new Socket("100.112.89.47", SERVER_PORT);
             escritor = new PrintWriter(socket.getOutputStream(), true);
             lector = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             System.out.println("Cliente conectado al servidor");

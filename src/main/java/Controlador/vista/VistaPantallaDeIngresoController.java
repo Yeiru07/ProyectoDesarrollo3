@@ -14,6 +14,7 @@ import proyectofinaldesarrolloIII.App;
 
 /**
  * Controlador para la pantalla de ingreso a una sala de juego
+ *
  * @author sronn
  */
 public class VistaPantallaDeIngresoController {
@@ -36,21 +37,31 @@ public class VistaPantallaDeIngresoController {
     @FXML
     public void initialize() {
         this.juego = App.partida;
-        
+
         // Inicializar el gestor de ingreso a sala
         Usuario usuarioActual = App.usuarioActual;
         if (usuarioActual != null) {
             gestorIngresoSala = new GestorIngresoSalaCliente(usuarioActual);
-            
+
             // Configurar callbacks
             gestorIngresoSala.setOnIngresoExitoso(() -> {
                 try {
-                    // Guardar los jugadores del lobby en la App
+
+                    // Guardar los jugadores del lobby
                     App.jugadoresLobby = gestorIngresoSala.getJugadoresLobby();
+
+                    // Guardar la primera respuesta del servidor
+                    App.respuestaLobby = gestorIngresoSala.getRespuestaInicialLobby();
+
                     ingresarPin();
+
                 } catch (IOException e) {
                     e.printStackTrace();
-                    AlertaParaUsar.mostrar("Error", "No se pudo cargar el lobby: " + e.getMessage(), Alert.AlertType.ERROR);
+                    AlertaParaUsar.mostrar(
+                            "Error",
+                            "No se pudo cargar el lobby: " + e.getMessage(),
+                            Alert.AlertType.ERROR
+                    );
                 }
             });
 
@@ -97,7 +108,7 @@ public class VistaPantallaDeIngresoController {
     @FXML
     public void confirmacionDeCodigo() {
         String codigoIngresado = txtPinDelJuego.getText().trim();
-        
+
         if (codigoIngresado.isEmpty()) {
             AlertaParaUsar.mostrar("Atención", "Por favor ingrese un código de sala", Alert.AlertType.WARNING);
             txtPinDelJuego.requestFocus();
@@ -112,10 +123,10 @@ public class VistaPantallaDeIngresoController {
 
         // Deshabilitar el botón mientras se procesa la solicitud
         btnIngresar.setDisable(true);
-        
+
         // Intentar unir a la sala usando el gestor
         gestorIngresoSala.unirASala(codigoIngresado);
-        
+
         // El botón se habilitará después de la respuesta (en los callbacks)
     }
 
