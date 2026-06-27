@@ -71,7 +71,7 @@ public class GestorSalaCliente {
                 + salaActual.getCodigoSala() + "|"
                 + salaActual.isEstado() + "|"
                 + salaActual.getCantidadJugadores() + "|"
-                + salaActual.getPropietario().getNombreUsuario();
+                + salaActual.getPropietario().getIdUsuario();
     }
 
     /**
