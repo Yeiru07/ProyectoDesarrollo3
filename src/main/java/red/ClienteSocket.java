@@ -10,15 +10,15 @@ public class ClienteSocket {
     private Socket socket;
     private PrintWriter escritor;
     private BufferedReader lector;
-    private static final String SERVER_HOST = System.getProperty("server.host", "100.112.89.47");
+    //private static final String SERVER_HOST = System.getProperty("server.host", "100.112.89.47");
     private static final int SERVER_PORT = 5000;
 
     public void conectar() {
         try {
-            socket = new Socket(SERVER_HOST, SERVER_PORT);
+            socket = new Socket("100.112.89.47", SERVER_PORT);
             escritor = new PrintWriter(socket.getOutputStream(), true);
             lector = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            System.out.println("Cliente conectado al servidor " + SERVER_HOST + ":" + SERVER_PORT);
+            System.out.println("Cliente conectado al servidor " + "100.112.89.47" + ":" + SERVER_PORT);
         } catch (Exception e) {
             e.printStackTrace();
         }

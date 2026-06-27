@@ -61,9 +61,17 @@ public class VistaLobbyDeLaPartidaController implements Initializable {
         gestorLobby.solicitarPreguntas();
     }
 
-    @FXML
-    public void regresar() throws IOException {
-        gestorLobby.cerrarConexion();
-        App.setRoot("VistaGestorSalas");
-    }
+   @FXML
+public void regresar() throws IOException {
+
+    System.out.println("1. Entró a regresar");
+
+    gestorLobby.cerrarConexion();
+
+    System.out.println("2. Cerró lobby");
+
+    App.setRoot("VistaGestorSalas");
+
+    System.out.println("3. Cambió de vista");
+}
 }

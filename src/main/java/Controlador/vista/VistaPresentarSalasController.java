@@ -22,43 +22,43 @@ import proyectofinaldesarrolloIII.App;
  * @author alexl
  */
 public class VistaPresentarSalasController implements Initializable {
-    
+
     @FXML
     private Button btnIniciarJuego;
-    
+
     @FXML
     private Button btnRegresar;
-    
+
     @FXML
     private FlowPane flowPaneJugadores;
-    
+
     @FXML
     private Label lblPinSala;
-    
+
     @FXML
     private Label lblTotalJugadores;
-    
+
     Juego partida;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+
         Sala sala = App.salaActual;
-        
+
         if (sala != null) {
-            
+
             lblPinSala.setText("PIN: " + sala.getCodigoSala());
-            
+
             lblTotalJugadores.setText(
                     "Jugadores conectados: "
                     + sala.getCantidadUsuarios()
             );
         }
     }
-    
+
     @FXML
     public void regresarSalaas() throws IOException {
         App.setRoot("VistaGestorSalas");
     }
-    
+
 }
