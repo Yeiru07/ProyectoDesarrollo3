@@ -11,8 +11,8 @@
       styleClass="rankingContainer" 
       stylesheets="@css/RankingFinal.css" 
       xmlns="http://javafx.com/javafx/17" 
-      xmlns:fx="http://fxml.com/fxml/1" 
-      fx:controller="controlador.RankingFinalJugadorController">
+      xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="Controlador.vista.VistaRankingFinalController">
     <children>
         
         <Label styleClass="rankingTitle" text="Tabla de Posiciones Final">

@@ -24,6 +24,7 @@ public class GestorLobbyJugadorCliente {
     private Runnable onPreguntasRecibidas;
     private Runnable onInicioPartida;
     private Runnable onErrorConexion;
+    private boolean escuchandoServidor = true;
 
     public GestorLobbyJugadorCliente(String nombreJugador, Label lblEstadoSala,
             Label lblNombreJugador, ProgressIndicator progressLobby) {
@@ -56,7 +57,7 @@ public class GestorLobbyJugadorCliente {
                 System.out.println("ESCUCHANDO SERVIDOR (JUGADOR)...");
                 BufferedReader lector = clienteSocket.getLector();
 
-                while (true) {
+                while (escuchandoServidor) {
                     String mensaje = lector.readLine();
 
                     if (mensaje == null) {
@@ -112,6 +113,7 @@ public class GestorLobbyJugadorCliente {
         System.out.println("PREGUNTAS CARGADAS = " + App.preguntasActuales.size());
 
         if (onPreguntasRecibidas != null) {
+            escuchandoServidor = false;
             Platform.runLater(onPreguntasRecibidas);
         }
     }
@@ -121,6 +123,7 @@ public class GestorLobbyJugadorCliente {
         Platform.runLater(() -> {
             lblEstadoSala.setText("¡La partida ha comenzado!");
             if (onInicioPartida != null) {
+                escuchandoServidor = false;
                 onInicioPartida.run();
             }
         });
@@ -201,6 +204,7 @@ public class GestorLobbyJugadorCliente {
 
     public void cerrarConexion() {
         //clienteSocket.cerrarConexion();
+        escuchandoServidor = false;
         System.out.println("Cambio de vista, se mantiene la conexión.");
 
     }

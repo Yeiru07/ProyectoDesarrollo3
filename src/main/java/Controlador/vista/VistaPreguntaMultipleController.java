@@ -115,6 +115,17 @@ public class VistaPreguntaMultipleController implements Initializable {
 
         gestorJuegoVivo.setOnFinalizarJuego(this::finalizarJuego);
 
+        gestorJuegoVivo.setOnPodioActualizado(this::mostrarPodio);
+
+        gestorJuegoVivo.setOnRankingFinal((ranking) -> {
+            try {
+                App.rankingActual = ranking;
+                App.setRoot("VistaRankingFinal");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
         gestorJuegoVivo.setOnErrorConexion(() -> {
             try {
                 App.setRoot("VistaPantallaDeIngreso");
@@ -316,6 +327,7 @@ public class VistaPreguntaMultipleController implements Initializable {
             if (pregunta != null && pregunta.getArregloDeRespuestasParaPreguntas() != null) {
                 marcarRespuestaCorrecta(pregunta.getArregloDeRespuestasParaPreguntas());
             }
+            gestorJuegoVivo.enviarRespuestaAlServidor("-1", 0, 0);
         }
 
         if (gestorJuegoVivo.isEsPresentador()) {
@@ -439,6 +451,13 @@ public class VistaPreguntaMultipleController implements Initializable {
     }
 
     private void finalizarJuego() {
+        try {
+            App.setRoot("VistaRankingFinal");
+            return;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         lblEnunciado.setText("¡Fin del juego!");
         lblCronometro.setText("Todas las preguntas han terminado");
         lblEstadoSeleccion.setText("Esperando resultados finales...");
@@ -446,6 +465,30 @@ public class VistaPreguntaMultipleController implements Initializable {
         deshabilitarBotones();
         boxBotonSiguiente.setVisible(false);
         boxBotonSiguiente.setManaged(false);
+    }
+
+    private void mostrarPodio(String ranking) {
+        if (ranking == null || ranking.trim().isEmpty()) {
+            return;
+        }
+
+        String[] jugadores = ranking.split(";");
+        StringBuilder texto = new StringBuilder("Podio: ");
+        int limite = Math.min(3, jugadores.length);
+
+        for (int i = 0; i < limite; i++) {
+            String[] datos = jugadores[i].split(",", -1);
+            if (datos.length >= 4) {
+                texto.append(i + 1).append(". ")
+                        .append(datos[0]).append(" ")
+                        .append(datos[3]).append(" pts");
+                if (i < limite - 1) {
+                    texto.append(" | ");
+                }
+            }
+        }
+
+        lblEstadoSeleccion.setText(texto.toString());
     }
 
     private void deshabilitarBotones() {

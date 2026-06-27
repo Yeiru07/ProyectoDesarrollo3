@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import proyectofinaldesarrolloIII.App;
 
 public class GestorJuegoVivoCliente {
@@ -33,6 +34,8 @@ public class GestorJuegoVivoCliente {
     private Runnable onFinalizarJuego;
     private Runnable onErrorConexion;
     private TriConsumer<Boolean, Integer, String> onRespuestaProcesada;
+    private Consumer<String> onPodioActualizado;
+    private Consumer<String> onRankingFinal;
     private Runnable onAbandonoExitoso;
 
     // Interfaz funcional para 3 parámetros
@@ -70,9 +73,7 @@ public class GestorJuegoVivoCliente {
             clienteSocket.conectar();
         }
 
-        if (!esPresentador) {
-            iniciarEscuchaServidor();
-        }
+        iniciarEscuchaServidor();
 
         // Cargar la primera pregunta
         if (!preguntasActuales.isEmpty()) {
@@ -122,6 +123,23 @@ public class GestorJuegoVivoCliente {
                     } else if (mensaje.startsWith("JUGADORES")) {
                         // Lista de jugadores actualizada
                         System.out.println("Lista de jugadores actualizada: " + mensaje);
+                    } else if (mensaje.startsWith("RANKING_FINAL|")) {
+                        String ranking = mensaje.substring("RANKING_FINAL|".length());
+                        App.rankingActual = ranking;
+                        Platform.runLater(() -> {
+                            if (onRankingFinal != null) {
+                                onRankingFinal.accept(ranking);
+                            } else if (onFinalizarJuego != null) {
+                                onFinalizarJuego.run();
+                            }
+                        });
+                    } else if (mensaje.startsWith("PODIO|")) {
+                        String podio = mensaje.substring("PODIO|".length());
+                        Platform.runLater(() -> {
+                            if (onPodioActualizado != null) {
+                                onPodioActualizado.accept(podio);
+                            }
+                        });
                     } else if (mensaje.startsWith("FINALIZAR_JUEGO")) {
                         Platform.runLater(() -> {
                             if (onFinalizarJuego != null) {
@@ -241,6 +259,7 @@ public class GestorJuegoVivoCliente {
 
             String trama = "RESPUESTA|" + codigoSala + "|"
                     + usuarioActual.getNombreUsuario() + "|"
+                    + preguntaActualIndex + "|"
                     + respuesta + "|" + tiempoRestante + "|" + puntos;
 
             PrintWriter escritor = clienteSocket.getEscritor();
@@ -275,6 +294,16 @@ public class GestorJuegoVivoCliente {
             });
         } else {
             // No hay más preguntas, finalizar juego
+            if (esPresentador && salaActual != null) {
+                String trama = "FINALIZAR_JUEGO|" + salaActual.getCodigoSala();
+                PrintWriter escritor = clienteSocket.getEscritor();
+                if (escritor != null) {
+                    escritor.println(trama);
+                    System.out.println("Presentador finaliza: " + trama);
+                }
+                return;
+            }
+
             Platform.runLater(() -> {
                 if (onFinalizarJuego != null) {
                     onFinalizarJuego.run();
@@ -370,6 +399,14 @@ public class GestorJuegoVivoCliente {
 
     public void setOnRespuestaProcesada(TriConsumer<Boolean, Integer, String> onRespuestaProcesada) {
         this.onRespuestaProcesada = onRespuestaProcesada;
+    }
+
+    public void setOnPodioActualizado(Consumer<String> onPodioActualizado) {
+        this.onPodioActualizado = onPodioActualizado;
+    }
+
+    public void setOnRankingFinal(Consumer<String> onRankingFinal) {
+        this.onRankingFinal = onRankingFinal;
     }
 
     public void setOnAbandonoExitoso(Runnable onAbandonoExitoso) {

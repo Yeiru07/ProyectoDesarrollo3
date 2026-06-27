@@ -25,6 +25,7 @@ public class GestorLobbyCliente {
     private Label lblTotalJugadores;
     private Runnable onPreguntasRecibidas;
     private Runnable onErrorConexion;
+    private boolean escuchandoServidor = true;
 
     // Callback para actualizar la UI de jugadores
     private List<String> jugadoresLobby = new ArrayList<>();
@@ -80,7 +81,7 @@ public class GestorLobbyCliente {
                 System.out.println("ESCUCHANDO SERVIDOR...");
                 BufferedReader lector = clienteSocket.getLector();
 
-                while (true) {
+                while (escuchandoServidor) {
                     String mensaje = lector.readLine();
 
                     if (mensaje == null) {
@@ -153,6 +154,7 @@ public class GestorLobbyCliente {
 
         // Notificar una sola vez
         if (onPreguntasRecibidas != null) {
+            escuchandoServidor = false;
             Platform.runLater(() -> onPreguntasRecibidas.run());
         }
     }
@@ -239,6 +241,7 @@ public class GestorLobbyCliente {
 
     public void cerrarConexion() {
         //clienteSocket.cerrarConexion();
+        escuchandoServidor = false;
         System.out.println("Cambio de vista, se mantiene la conexión.");
 
     }
