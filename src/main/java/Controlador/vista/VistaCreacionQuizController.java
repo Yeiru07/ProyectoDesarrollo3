@@ -323,19 +323,48 @@ public class VistaCreacionQuizController implements Initializable {
     }
 
     /*Enviamos la pregunta por socket*/
+ /*Enviamos la pregunta por socket*/
     private void enviarPreguntaPorSocket(Preguntas p) {
-        if (p.getEnunciado().isEmpty() || p.getArregloDeRespuestasParaPreguntas().isEmpty()) {
+        if (p.getEnunciado() == null || p.getEnunciado().isEmpty()) {
             return;
         }
-        try {
-            /*Se crea una trama con toda la informacion de la pregunta*/
-            String trama = "Pregunta|" + p.getEnunciado();
-            for (Respuestas r : p.getArregloDeRespuestasParaPreguntas()) {
-                trama += "|" + r.getRespuestas();
-            }
-            trama += "|" + p.getCodigoSala();
 
-            //Se envia esa trama(info de la pregunta) al app y directo al escritor
+        try {
+            // Obtenemos las respuestas
+            ArrayList<Respuestas> respuestas = p.getArregloDeRespuestasParaPreguntas();
+
+            // SIEMPRE enviamos 4 respuestas, rellenando con vacio las que falten
+            String resp1 = "";
+            String resp2 = "";
+            String resp3 = "";
+            String resp4 = "";
+
+            if (respuestas != null && !respuestas.isEmpty()) {
+                if (respuestas.size() >= 1) {
+                    resp1 = respuestas.get(0).getRespuestas();
+                }
+                if (respuestas.size() >= 2) {
+                    resp2 = respuestas.get(1).getRespuestas();
+                }
+                if (respuestas.size() >= 3) {
+                    resp3 = respuestas.get(2).getRespuestas();
+                }
+                if (respuestas.size() >= 4) {
+                    resp4 = respuestas.get(3).getRespuestas();
+                }
+            }
+
+            // Formato FIJO: Pregunta|enunciado|resp1|resp2|resp3|resp4|codigoSala
+            // Esto genera SIEMPRE 7 partes
+            String trama = "Pregunta|"
+                    + p.getEnunciado() + "|"
+                    + resp1 + "|"
+                    + resp2 + "|"
+                    + resp3 + "|"
+                    + resp4 + "|"
+                    + p.getCodigoSala();
+
+            // Enviamos la trama al servidor
             App.escritor.println(trama);
             System.out.println("Enviado exitosamente: " + trama);
 
