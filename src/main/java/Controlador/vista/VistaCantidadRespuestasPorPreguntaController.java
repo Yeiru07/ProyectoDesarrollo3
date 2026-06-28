@@ -4,10 +4,23 @@
  */
 package Controlador.vista;
 
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+
 /**
  *
  * @author sronn
  */
 public class VistaCantidadRespuestasPorPreguntaController {
-    
+
+    @FXML
+    private Label lblEstado;
+
+    @FXML
+    private void onAvanzar(ActionEvent event) {
+        if (lblEstado != null) {
+            lblEstado.setText("Avanzando a la siguiente pregunta...");
+        }
+    }
 }

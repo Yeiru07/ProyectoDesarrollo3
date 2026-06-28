@@ -74,7 +74,7 @@ public class VistaPantallaDeIngresoController {
             gestorIngresoSala.setOnErrorConexion(() -> {
                 try {
                     // Volver a la pantalla anterior en caso de error de conexión
-                    App.setRoot("VistaInicioSesion");
+                    App.setRoot("VistaLogging");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

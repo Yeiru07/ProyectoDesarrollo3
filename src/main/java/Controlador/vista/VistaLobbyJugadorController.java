@@ -57,7 +57,7 @@ public class VistaLobbyJugadorController implements Initializable {
         gestorLobbyJugador.setOnErrorConexion(() -> {
             // Manejar error de conexión - volver al menú principal o login
             try {
-                App.setRoot("VistaInicioSesion");
+                App.setRoot("VistaLogging");
             } catch (IOException e) {
                 e.printStackTrace();
             }

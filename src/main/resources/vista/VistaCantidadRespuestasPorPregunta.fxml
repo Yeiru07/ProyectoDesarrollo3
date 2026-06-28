@@ -11,8 +11,8 @@
       styleClass="creadorContainer" 
       stylesheets="@css/ControlJuegoCreador.css" 
       xmlns="http://javafx.com/javafx/17" 
-      xmlns:fx="http://fxml.com/fxml/1" 
-      fx:controller="controlador.ControlJuegoCreadorController">
+      xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="Controlador.vista.VistaCantidadRespuestasPorPreguntaController">
     <children>
         
         <Label fx:id="lblProgreso" styleClass="creadorProgreso" text="Pregunta 1 de 10">

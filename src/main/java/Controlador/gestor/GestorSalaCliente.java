@@ -34,7 +34,7 @@ public class GestorSalaCliente {
                 codigoSala,
                 "",
                 false,
-                1,
+                10,
                 propietario
         );
 

@@ -98,9 +98,9 @@ public class GestorIngresoSalaCliente {
                             onIngresoExitoso.run();
                         }
                     });
-                } else if (respuesta.equals("ERROR")) {
+                } else if (respuesta.startsWith("ERROR")) {
                     Platform.runLater(() -> {
-                        AlertaParaUsar.mostrar("Error", "La sala no existe", Alert.AlertType.WARNING);
+                        AlertaParaUsar.mostrar("Error", respuesta.replace("ERROR|", ""), Alert.AlertType.WARNING);
                         if (onIngresoFallido != null) {
                             onIngresoFallido.run();
                         }
@@ -187,9 +187,9 @@ public class GestorIngresoSalaCliente {
 
                 return true;
 
-            } else if (respuesta.equals("ERROR")) {
+            } else if (respuesta.startsWith("ERROR")) {
                 Platform.runLater(() -> {
-                    AlertaParaUsar.mostrar("Error", "La sala no existe", Alert.AlertType.WARNING);
+                    AlertaParaUsar.mostrar("Error", respuesta.replace("ERROR|", ""), Alert.AlertType.WARNING);
                 });
                 return false;
             } else {

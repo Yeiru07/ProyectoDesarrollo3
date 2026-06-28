@@ -3,7 +3,9 @@ package Controlador.gestor;
 import Modelo.Preguntas;
 import Modelo.Respuestas;
 import Modelo.Sala;
+import Utilidades.AlertaParaUsar;
 import javafx.application.Platform;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 
@@ -118,6 +120,12 @@ public class GestorLobbyCliente {
             procesarJugadores(mensaje);
         } else if (mensaje.startsWith("PREGUNTAS")) {
             procesarPreguntas(mensaje);
+        } else if (mensaje.startsWith("ERROR|")) {
+            Platform.runLater(() -> AlertaParaUsar.mostrar(
+                    "No se puede iniciar",
+                    mensaje.replace("ERROR|", ""),
+                    Alert.AlertType.WARNING
+            ));
         }
     }
 

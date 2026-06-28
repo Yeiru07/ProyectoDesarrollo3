@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" spacing="25.0" prefHeight="450.0" prefWidth="600.0" 
+<VBox alignment="CENTER" spacing="30.0" prefHeight="500.0" prefWidth="650.0" 
       styleClass="rankingContainer" 
       stylesheets="@css/RankingFinal.css" 
       xmlns="http://javafx.com/javafx/17" 
@@ -15,25 +15,26 @@
       fx:controller="Controlador.vista.VistaRankingFinalController">
     <children>
         
-        <Label styleClass="rankingTitle" text="Tabla de Posiciones Final">
+        <Label styleClass="rankingTitle" text="🏆 Tabla de Posiciones Final">
             <font>
-                <Font name="System Bold" size="26.0" />
+                <Font name="System Bold" size="28.0" />
             </font>
         </Label>
         
-        <TableView fx:id="tblRanking" maxWidth="500.0" prefHeight="250.0">
+        <TableView fx:id="tblRanking" maxWidth="560.0" prefHeight="280.0">
             <columns>
-                <TableColumn fx:id="colNombre" prefWidth="200.0" text="Jugador" />
-                <TableColumn fx:id="colCorrectas" prefWidth="150.0" text="Aciertos" />
-                <TableColumn fx:id="colIncorrectas" prefWidth="150.0" text="Errores" />
+                <TableColumn fx:id="colNombre" prefWidth="180.0" text="Jugador" />
+                <TableColumn fx:id="colCorrectas" prefWidth="120.0" text="Aciertos" />
+                <TableColumn fx:id="colIncorrectas" prefWidth="120.0" text="Errores" />
+                <TableColumn fx:id="colPuntaje" prefWidth="135.0" text="Puntaje Total" />
             </columns>
         </TableView>
         
         <Button fx:id="btnSalir" mnemonicParsing="false" onAction="#onSalir" 
                 styleClass="btnVolver" text="Volver al Menú Principal" 
-                prefWidth="220.0" prefHeight="42.0">
+                prefWidth="240.0" prefHeight="45.0">
             <font>
-                <Font size="14.0" />
+                <Font size="15.0" />
             </font>
         </Button>
         
